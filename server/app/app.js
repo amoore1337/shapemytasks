@@ -14,11 +14,11 @@ module.exports = async (callback) => {
   require('./routes/index')(app);
 
   // Basic Error handler
-  app.use(function (err, _, res, next) {
+  app.use((err, _, res, next) => {
     res.status(err.statusCode || 500);
     const errorJson = {
       message: err.message,
-    }
+    };
 
     res.json(errorJson);
     next(err);
@@ -31,9 +31,9 @@ module.exports = async (callback) => {
 
   server(app).listen(SERVER_PORT, SERVER_HOST, () => {
     console.log(`Server running on port ${SERVER_PORT}`);
-    if (callback) { return callback(); }
+    if (callback) { callback(); }
   });
-}
+};
 
 function server(app) {
   // 'Dev' mode needs to use https throughout for simplicity
@@ -52,24 +52,23 @@ function server(app) {
 }
 
 async function waitForDb(sequelize) {
-  const dbReady = (wait) => {
-    return new Promise(resolve => {
-      setTimeout(async () => {
-        try {
-          console.log('Trying to connect to db...')
-          await sequelize.authenticate();
-          resolve(true);
-        } catch (error) {
-          resolve(false);
-        }
-      }, wait);
-    });
-  };
+  const dbReady = (wait) => new Promise((resolve) => {
+    setTimeout(async () => {
+      try {
+        console.log('Trying to connect to db...');
+        await sequelize.authenticate();
+        resolve(true);
+      } catch (error) {
+        resolve(false);
+      }
+    }, wait);
+  });
 
   if (await dbReady()) { return; }
 
   let ready = false;
   while (!ready) {
+    // eslint-disable-next-line no-await-in-loop
     ready = await dbReady(500);
   }
 }

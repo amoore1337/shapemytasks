@@ -10,4 +10,4 @@ config.use('memory');
 config.argv();
 config.env();
 
-require('./app/app')()
+require('./app/app')();
