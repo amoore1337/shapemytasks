@@ -24,11 +24,12 @@ module.exports = {
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
     'import/extensions': 'off',
+    'import/no-unresolved': 'off',
   },
   settings: {
     'import/resolver': {
       node: {
-        extensions: ['.ts', '.tsx'],
+        extensions: ['js', '.ts', '.tsx'],
       },
     },
   },
