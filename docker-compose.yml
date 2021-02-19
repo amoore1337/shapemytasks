@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  proxy:
+    build: ./proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes: 
+      - ./ssl:/etc/ssl/certs/nginx/:ro
+    networks: 
+      - frontend
+      - backend
+    environment: 
+      - REVERSE_PROXY_SCHEME=http
+  
+  client:
+    build: ./client
+    networks: 
+      - frontend
+  
+  server:
+    build: ./server
+    depends_on: 
+      - "db"
+    networks: 
+      - backend
+    environment:
+      - DB_URL=postgres://postgres:postgres@db:5432/smt
+      - NODE_ENV=prod
+      - SERVER_PORT=3000
+
+  db:
+    image: postgres
+    restart: always
+    networks: 
+      - backend
+    environment: 
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=smt
+
+networks: 
+  frontend:
+  backend:

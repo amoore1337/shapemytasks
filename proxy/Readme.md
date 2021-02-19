@@ -1,0 +1,3 @@
+# Shape My Tasks > Proxy
+
+Simple Nginx container that serves as a reverse proxy for the web application. This should be the only container that receives public-facing traffic.

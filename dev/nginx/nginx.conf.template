@@ -1,0 +1,16 @@
+upstream local-dev {
+  server host.docker.internal:${REMOTE_PORT};
+}
+
+server {
+  listen ${LOCAL_PORT} ssl http2;
+
+  ssl_certificate /etc/ssl/certs/nginx/dev.crt;
+  ssl_certificate_key /etc/ssl/certs/nginx/dev.key;
+  include /etc/nginx/includes/ssl.conf;
+  
+  location / {
+    include /etc/nginx/includes/proxy.conf;
+    proxy_pass https://local-dev;
+  }
+}
