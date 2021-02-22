@@ -7,6 +7,7 @@
     "start": "nodemon index.js",
     "lint": "eslint --fix",
     "prod": "node index.js",
+    "migrate": "sequelize-cli db:migrate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "amoore1337",
@@ -28,6 +29,7 @@
     "eslint": "^7.20.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "sequelize-cli": "^6.2.0"
   }
 }

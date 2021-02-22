@@ -29,11 +29,24 @@ module.exports = async (callback) => {
 
   await sequelize.sync();
 
+  tmp('postgres://postgresU:postgresP@localhost:5432/smt');
+
   server(app).listen(SERVER_PORT, SERVER_HOST, () => {
     console.log(`Server running on port ${SERVER_PORT}`);
     if (callback) { callback(); }
   });
 };
+
+function tmp(dbString) {
+  console.log('start!', dbString);
+  const { URL } = require('url');
+  const dbUrl = new URL(dbString);
+  console.log('p?', dbUrl.password);
+  console.log('u?', dbUrl.username);
+  console.log('port?', dbUrl.port);
+  console.log('host?', dbUrl.hostname);
+  console.log('db?', dbUrl.pathname);
+}
 
 function server(app) {
   // 'Dev' mode needs to use https throughout for simplicity
