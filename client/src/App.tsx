@@ -1,27 +1,27 @@
+import { ThemeProvider } from '@material-ui/core';
 import React from 'react';
-import './App.css';
+// import tw, { styled } from 'twin.macro';
+import TopNav from './TopNav';
+import materialTheme from './materialTheme';
+
+// const NavContainer = styled.div(() => [
+//   tw`flex-freeze w-full`,
+// ]);
 
 function App() {
-  return (
-    <div className="bg-secondary">
-      <header className="text-primary">
-        <p>
-          Edit
-          {' '}
-          <code>src/App.tsx</code>
-          {' '}
-          and save to reload.
-        </p>
-        <a
-          className="App-link uppercase"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  const appContent = (
+    <div className="h-full w-full flex flex-col">
+      <div className="flex-freeze w-full">
+        <TopNav />
+      </div>
+
+      <div className="flex-grow overflow-auto bg-secondary" />
     </div>
+  );
+  return (
+    <ThemeProvider theme={materialTheme}>
+      {appContent}
+    </ThemeProvider>
   );
 }
 

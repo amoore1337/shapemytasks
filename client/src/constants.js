@@ -10,7 +10,7 @@ module.exports = {
     xl: 1920,
   },
   colors: {
-    primary: '#81d4fa',
+    primary: '#29b6f6',
     secondary: '#546e7a',
   },
 };

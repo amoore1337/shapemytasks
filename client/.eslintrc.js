@@ -22,7 +22,7 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': [2, { extensions: ['.tsx'] }],
     'no-use-before-define': 'off',
-    '@typescript-eslint/no-use-before-define': ['error'],
+    '@typescript-eslint/no-use-before-define': ['off'],
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
   },

@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import { colors, typography, breakpoints } from '../constants';
+import { colors, typography, breakpoints } from './constants';
 
 export default createMuiTheme({
   typography: {

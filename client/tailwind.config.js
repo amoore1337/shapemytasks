@@ -1,4 +1,4 @@
-const constants = require('./constants.js');
+const constants = require('./src/constants.js');
 
 const formattedBreakpoints = {};
 const breakpointEntries = Object.entries(constants.breakpoints);
@@ -19,5 +19,13 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    flexFreeze,
+  ],
 };
+
+function flexFreeze({ addComponents }) {
+  addComponents({
+    '.flex-freeze': { flex: '0 0 auto' },
+  });
+}
