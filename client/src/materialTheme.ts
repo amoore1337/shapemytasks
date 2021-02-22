@@ -9,9 +9,13 @@ export default createMuiTheme({
   palette: {
     primary: {
       main: colors.primary,
+      contrastText: colors.gray['800'],
     },
     secondary: {
       main: colors.secondary,
+    },
+    text: {
+      primary: colors.gray['800'],
     },
   },
 });

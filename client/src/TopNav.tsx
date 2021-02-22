@@ -1,8 +1,10 @@
 import React from 'react';
 import {
-  AppBar, IconButton, Toolbar, Typography,
+  AppBar, Button, IconButton, Toolbar, Typography,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import { Link as RouterLink } from 'react-router-dom';
+import routes from './routes';
 
 export default function TopNav() {
   return (
@@ -11,9 +13,12 @@ export default function TopNav() {
         <IconButton edge="start" color="inherit">
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" className="flex-grow">
+        <Typography variant="h6" className="flex-grow" color="inherit">
           Shape My Tasks
         </Typography>
+        <Button variant="outlined" component={RouterLink} to={routes.login}>
+          Login
+        </Button>
       </Toolbar>
     </AppBar>
   );
