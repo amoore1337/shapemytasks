@@ -16,13 +16,13 @@ module.exports = async (callback) => {
 
   app.use(passport.initialize());
 
-  const apollo = new ApolloServer(schema);
-  apollo.applyMiddleware({ app, path: '/api/graphql' });
-
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json({ type: '*/*' }));
 
   app.use(cookieParser());
+
+  const apollo = new ApolloServer(schema);
+  apollo.applyMiddleware({ app, path: '/api/graphql' });
 
   require('./routes/index')(app);
 

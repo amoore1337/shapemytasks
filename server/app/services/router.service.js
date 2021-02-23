@@ -10,6 +10,5 @@ exports.isAuthenticated = async (req, res, next) => {
   const token = req.cookes.t_id;
 
   const data = verifyJWT(token);
-  console.log('jwt data', data);
   return true;
 };

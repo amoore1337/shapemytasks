@@ -21,6 +21,7 @@ export default function Login() {
         <Button
           variant="outlined"
           startIcon={<GoogleIcon width={24} height={25} />}
+          href="/api/auth/google"
         >
           Sign in with Google
         </Button>

@@ -2,6 +2,7 @@ const { gql } = require('apollo-server-express');
 const { GraphQLScalarType, Kind } = require('graphql');
 
 const { User } = require('../app/models');
+const { verifyJWT } = require('../app/services/auth.service');
 
 const models = {
   User,
@@ -108,9 +109,9 @@ function queryAllResolvers(queryAllModels) {
   const resolvers = {};
   Object.values(queryAllModels).forEach((Model) => {
     const pluralName = Model.getTableName().toLowerCase();
-    resolvers[pluralName] = async (_, __, { models, modelForFieldnameMap }, { fieldName }) => {
-      const modelName = modelForFieldnameMap[fieldName];
-      return models[modelName].findAll();
+    resolvers[pluralName] = async (_, __, { user }) => {
+      if (!user) { return null; }
+      return Model.findAll();
     };
   });
   return resolvers;
@@ -125,20 +126,19 @@ const resolvers = {
 
 // ============================================================================================
 
-function modelForFieldnameMapBuilder(models) {
-  const map = {};
-  for (const [key, Model] of Object.entries(models)) {
-    const pluralName = Model.getTableName().toLowerCase();
-    map[pluralName] = key;
+async function getUserForRequest(req) {
+  let user;
+  if (req.cookies && req.cookies.t_id) {
+    const { userId } = verifyJWT(req.cookies.t_id);
+    user = await User.findByPk(userId);
   }
-
-  return map;
+  return user;
 }
 
-const context = {
+const context = async ({ req }) => ({
   models,
-  modelForFieldnameMap: modelForFieldnameMapBuilder(models),
-};
+  user: await getUserForRequest(req),
+});
 
 // ============================================================================================
 
@@ -146,4 +146,9 @@ module.exports = {
   typeDefs,
   resolvers,
   context,
+  playground: {
+    settings: {
+      'request.credentials': 'include',
+    },
+  },
 };

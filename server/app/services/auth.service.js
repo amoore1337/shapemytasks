@@ -16,11 +16,11 @@ async function loginFromGoogle(data) {
     email: data.emails[0].value,
     avatarUrl: data.photos[0].value,
   };
-  const user = await User.findOrCreate({
+  const [user] = await User.findOrCreate({
     where: { email },
     defaults,
   });
-  return generateJWT(user.userId);
+  return generateJWT(user.id);
 }
 
 module.exports = {
