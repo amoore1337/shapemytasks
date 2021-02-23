@@ -1,8 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const config = require('nconf');
+const passport = require('passport');
 const { ApolloServer } = require('apollo-server-express');
 const schema = require('../graphql/schema');
+require('./passport');
 
 const SERVER_PORT = config.get('SERVER_PORT') || 3000;
 const SERVER_HOST = config.get('SERVER_HOST');
@@ -11,11 +14,15 @@ let app;
 module.exports = async (callback) => {
   app = express();
 
+  app.use(passport.initialize());
+
   const apollo = new ApolloServer(schema);
   apollo.applyMiddleware({ app, path: '/api/graphql' });
 
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json({ type: '*/*' }));
+
+  app.use(cookieParser());
 
   require('./routes/index')(app);
 
