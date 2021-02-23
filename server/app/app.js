@@ -5,7 +5,7 @@ const config = require('nconf');
 const passport = require('passport');
 const { ApolloServer } = require('apollo-server-express');
 const schema = require('../graphql/schema');
-require('./passport');
+require('./passport.config');
 
 const SERVER_PORT = config.get('SERVER_PORT') || 3000;
 const SERVER_HOST = config.get('SERVER_HOST');
@@ -37,7 +37,7 @@ module.exports = async (callback) => {
     next(err);
   });
 
-  const { sequelize } = require('./db');
+  const { sequelize } = require('./db.config');
   await waitForDb(sequelize);
 
   await sequelize.sync();
