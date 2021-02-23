@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('nconf');
+const { ApolloServer } = require('apollo-server-express');
+const schema = require('../graphql/schema');
 
 const SERVER_PORT = config.get('SERVER_PORT') || 3000;
 const SERVER_HOST = config.get('SERVER_HOST');
@@ -8,6 +10,10 @@ const SERVER_HOST = config.get('SERVER_HOST');
 let app;
 module.exports = async (callback) => {
   app = express();
+
+  const apollo = new ApolloServer(schema);
+  apollo.applyMiddleware({ app, path: '/api/graphql' });
+
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json({ type: '*/*' }));
 
@@ -29,24 +35,11 @@ module.exports = async (callback) => {
 
   await sequelize.sync();
 
-  tmp('postgres://postgresU:postgresP@localhost:5432/smt');
-
   server(app).listen(SERVER_PORT, SERVER_HOST, () => {
-    console.log(`Server running on port ${SERVER_PORT}`);
+    console.log(`Server running on port ${SERVER_PORT} - GraphQL: ${apollo.graphqlPath}`);
     if (callback) { callback(); }
   });
 };
-
-function tmp(dbString) {
-  console.log('start!', dbString);
-  const { URL } = require('url');
-  const dbUrl = new URL(dbString);
-  console.log('p?', dbUrl.password);
-  console.log('u?', dbUrl.username);
-  console.log('port?', dbUrl.port);
-  console.log('host?', dbUrl.hostname);
-  console.log('db?', dbUrl.pathname);
-}
 
 function server(app) {
   // 'Dev' mode needs to use https throughout for simplicity
@@ -60,7 +53,7 @@ function server(app) {
     key: readFileSync(config.get('SSL_KEY_FILE')),
     cert: readFileSync(config.get('SSL_CRT_FILE')),
   };
-  console.log('setting up https');
+
   return require('https').createServer(creds, app);
 }
 
