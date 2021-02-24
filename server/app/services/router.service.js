@@ -1,14 +1,12 @@
-// const { isTokenValid } = require('./oauth.service');
-
-const { verifyJWT } = require('./auth.service');
+// const { verifyJWT } = require('./auth.service');
 
 exports.wrapAsync = (fn) => (req, res, next) => {
   fn(req, res, next).catch(next);
 };
 
-exports.isAuthenticated = async (req, res, next) => {
-  const token = req.cookes.t_id;
+// exports.isAuthenticated = async (req, res, next) => {
+//   const token = req.cookes.t_id;
 
-  const data = verifyJWT(token);
-  return true;
-};
+//   const data = verifyJWT(token);
+//   return true;
+// };
