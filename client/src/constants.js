@@ -11,8 +11,10 @@ module.exports = {
     xl: 1920,
   },
   colors: {
-    primary: '#29b6f6',
-    secondary: '#546e7a',
+    primary: '#fafafa',
+    secondary: '#03a9f4',
+    // primary: '#29b6f6',
+    // secondary: '#546e7a',
 
     gray: {
       '50': '#eceff1',

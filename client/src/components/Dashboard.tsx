@@ -2,8 +2,8 @@ import React from 'react';
 
 export default function Home() {
   return (
-    <div>
-      Welcome!
+    <div className="text-center p-8">
+      Dashboard!
     </div>
   );
 }

@@ -3,38 +3,47 @@ import React from 'react';
 import {
   Redirect, Route, Router, Switch,
 } from 'react-router-dom';
-import TopNav from './TopNav';
+import { ApolloProvider } from '@apollo/client';
 import materialTheme from './materialTheme';
+import apolloClient from './apolloClient';
 import routes, { history } from './routes';
-import Login from './Login';
-import Home from './Home';
+import TopNav from './components/Nav';
+import Login from './components/Login';
+import Home from './components/Home';
+import PrivateRoute from './PrivateRoute';
+import { CurrentUserProvider } from './CurrentUserContext';
+import Dashboard from './components/Dashboard';
 
 function App() {
   const appRoutes = (
     <Switch>
       <Route path={routes.login} component={Login} />
       <Route path={routes.home} component={Home} />
+      <PrivateRoute path={routes.dashboard} component={Dashboard} />
       <Redirect to={routes.home} />
     </Switch>
   );
 
   const appContent = (
-    <div className="h-full w-full flex flex-col">
-      <div className="flex-freeze w-full">
-        <TopNav />
-      </div>
+    <div className="flex flex-col min-h-full">
+      <TopNav />
 
-      <div className="flex-grow overflow-auto bg-gray-50 flex flex-col items-center justify-center">
+      <div className="bg-gray-50 flex-grow">
         {appRoutes}
       </div>
     </div>
   );
+
   return (
-    <Router history={history}>
-      <ThemeProvider theme={materialTheme}>
-        {appContent}
-      </ThemeProvider>
-    </Router>
+    <ApolloProvider client={apolloClient}>
+      <Router history={history}>
+        <ThemeProvider theme={materialTheme}>
+          <CurrentUserProvider>
+            {appContent}
+          </CurrentUserProvider>
+        </ThemeProvider>
+      </Router>
+    </ApolloProvider>
   );
 }
 

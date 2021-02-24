@@ -25,6 +25,7 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': ['off'],
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
+    'react/jsx-props-no-spreading': 'off',
   },
   settings: {
     'import/resolver': {
