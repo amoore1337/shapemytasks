@@ -7,8 +7,8 @@ module.exports = (app) => {
 
   Object.keys(routes).forEach((routeName) => {
     const router = express.Router();
-    require('./' + routeName)(router);
+    require(`./${routeName}`)(router);
 
-    app.use('/api/' + changeCase.paramCase(routeName), router);
+    app.use(`/api/${changeCase.paramCase(routeName)}`, router);
   });
 };
