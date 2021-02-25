@@ -1,21 +1,14 @@
 const { gql } = require('apollo-server-express');
 const { GraphQLScalarType, Kind } = require('graphql');
-const { readdirSync } = require('fs');
-const { resolve } = require('path');
 
-const allModels = require('../app/models');
+const { User } = require('../app/models');
 const { verifyJWT } = require('../app/services/auth.service');
-const { typeDefForModel } = require('./helpers');
-const customDefs = require('./custom-defs');
 
-const modelFiles = readdirSync(resolve(__dirname, '../app/models')).filter((f) => f.indexOf('index') < 0);
-const modelNames = modelFiles.map((f) => {
-  const key = f.split('.js')[0];
-  return key.charAt(0).toUpperCase() + key.slice(1);
-});
+const currentUserTypeDefs = require('./typedefs/currentUser');
+const userTypeDefs = require('./typedefs/user');
 
-const models = {};
-modelNames.forEach((model) => { models[model] = allModels[model]; });
+const currentUserResolvers = require('./resolvers/currentUser');
+const userResolvers = require('./resolvers/user');
 
 // ============================================================================================
 
@@ -23,35 +16,11 @@ const customScalarsTypeDef = `
   scalar Date
 `;
 
-function generateQueryAllForModels(models) {
-  let queryTypes = '';
-  for (const [key, Model] of Object.entries(models)) {
-    const pluralName = Model.getTableName().toLowerCase();
-    queryTypes += `${pluralName}: [${key}]\n`;
-  }
-
-  return queryTypes;
-}
-
-function generateTypeDefForModels(models) {
-  let types = '';
-  for (const [key, Model] of Object.entries(models)) {
-    types += `${typeDefForModel(Model, key)}\n`;
-  }
-  return types;
-}
-
 const typeDefs = gql`
   ${customScalarsTypeDef}
 
-  ${generateTypeDefForModels(models)}
-
-  ${customDefs.typeDefs}
-
   type Query {
-    ${generateQueryAllForModels(models)}
-
-    ${customDefs.queries}
+    root: String
   }
 `;
 
@@ -81,25 +50,8 @@ const schalars = {
 
 // ============================================================================================
 
-function queryAllResolvers(queryAllModels) {
-  const resolvers = {};
-  Object.values(queryAllModels).forEach((Model) => {
-    const tableName = Model.getTableName();
-    const pluralName = tableName.charAt(0).toLowerCase() + tableName.slice(1);
-    resolvers[pluralName] = (_, __, { user }) => {
-      if (!user) { return null; }
-      return Model.findAll();
-    };
-  });
-  return resolvers;
-}
-
 const resolvers = {
   ...schalars,
-  Query: {
-    ...queryAllResolvers(models),
-    ...customDefs.resolvers,
-  },
 };
 
 // ============================================================================================
@@ -108,21 +60,20 @@ async function getUserForRequest(req) {
   let user;
   if (req.cookies && req.cookies.t_id) {
     const { userId } = verifyJWT(req.cookies.t_id);
-    user = await models.User.findByPk(userId);
+    user = await User.findByPk(userId);
   }
   return user;
 }
 
 const context = async ({ req }) => ({
-  models,
   user: await getUserForRequest(req),
 });
 
 // ============================================================================================
 
 module.exports = {
-  typeDefs,
-  resolvers,
+  typeDefs: [typeDefs, currentUserTypeDefs, userTypeDefs],
+  resolvers: [resolvers, currentUserResolvers, userResolvers],
   context,
   playground: {
     settings: {

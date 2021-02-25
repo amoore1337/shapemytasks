@@ -33,9 +33,22 @@ function typeForAttribute(attribute) {
   return `${attribute.fieldName}: ${fieldType}${required}`;
 }
 
+function basicQueryAllResolver(Model, requireAuth = true) {
+  const resolver = {};
+  const tableName = Model.getTableName();
+  const pluralName = tableName.charAt(0).toLowerCase() + tableName.slice(1);
+  resolver[pluralName] = async (_, __, { user }) => {
+    if (!user && requireAuth) { return null; }
+    return Model.findAll();
+  };
+
+  return resolver;
+}
+
 module.exports = {
   uniqueColTypeMap,
   typeMap,
   typeDefForModel,
   typeForAttribute,
+  basicQueryAllResolver,
 };
