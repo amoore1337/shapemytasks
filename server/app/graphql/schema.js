@@ -1,8 +1,8 @@
 const { gql } = require('apollo-server-express');
 const { GraphQLScalarType, Kind } = require('graphql');
 
-const { User } = require('../app/models');
-const { verifyJWT } = require('../app/services/auth.service');
+const { User } = require('../models');
+const { verifyJWT } = require('../services/auth.service');
 
 const currentUserTypeDefs = require('./typedefs/currentUser');
 const userTypeDefs = require('./typedefs/user');

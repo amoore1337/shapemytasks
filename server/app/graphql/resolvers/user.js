@@ -1,5 +1,5 @@
 const { basicQueryAllResolver } = require('../helpers');
-const { User } = require('../../app/models');
+const { User } = require('../../models');
 
 module.exports = {
   Query: {

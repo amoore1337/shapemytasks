@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const config = require('nconf');
 const passport = require('passport');
 const { ApolloServer } = require('apollo-server-express');
-const schema = require('../graphql/schema');
+const schema = require('./graphql/schema');
 require('./passport.config');
 
 const SERVER_PORT = config.get('SERVER_PORT') || 3000;

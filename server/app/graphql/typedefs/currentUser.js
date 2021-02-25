@@ -1,11 +1,11 @@
 const { gql } = require('apollo-server-express');
 const { typeDefForModel } = require('../helpers');
-const { User } = require('../../app/models');
+const { User } = require('../../models');
 
 module.exports = gql`
-  ${typeDefForModel(User, 'User')}
+  ${typeDefForModel(User, 'CurrentUser')}
 
   extend type Query {
-    users: [User]
+    currentUser: CurrentUser
   }
 `;
