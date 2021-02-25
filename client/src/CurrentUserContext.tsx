@@ -5,11 +5,11 @@ import { CurrentUser_currentUser as CurrentUser, CurrentUser as Response } from 
 type CurrentUserCtx = {
   currentUser?: CurrentUser | null,
   loading: boolean,
-  onLogout: () => void;
+  logout: () => Promise<void>;
  };
 export const CurrentUserContext = createContext<CurrentUserCtx>({
   loading: true,
-  onLogout: () => {},
+  logout: () => Promise.resolve(),
 });
 
 const CURRENT_USER = gql`
@@ -26,8 +26,8 @@ const CURRENT_USER = gql`
 export function CurrentUserProvider({ children }: { children: React.ReactNode }) {
   const { loading, data, refetch } = useQuery<Response>(CURRENT_USER, { nextFetchPolicy: 'network-only' });
 
-  const handleLogout = () => {
-    console.log('refetching!');
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout');
     refetch();
   };
 
@@ -35,7 +35,7 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
     <CurrentUserContext.Provider value={{
       currentUser: data?.currentUser,
       loading,
-      onLogout: handleLogout,
+      logout: handleLogout,
     }}
     >
       {children}

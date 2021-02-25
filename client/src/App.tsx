@@ -12,7 +12,8 @@ import Login from './components/Login';
 import Home from './components/Home';
 import PrivateRoute from './PrivateRoute';
 import { CurrentUserProvider } from './CurrentUserContext';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/views/dashboard/Dashboard';
+import Projects from './components/views/projects/Projects';
 
 function App() {
   const appRoutes = (
@@ -20,6 +21,7 @@ function App() {
       <Route path={routes.login} component={Login} />
       <Route path={routes.home} component={Home} />
       <PrivateRoute path={routes.dashboard} component={Dashboard} />
+      <PrivateRoute path={routes.projects} component={Projects} />
       <Redirect to={routes.home} />
     </Switch>
   );

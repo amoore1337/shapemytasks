@@ -5,6 +5,7 @@ export default {
   home: '/home',
 
   dashboard: '/dashboard',
+  projects: '/projects',
 };
 
 export const history = createBrowserHistory();

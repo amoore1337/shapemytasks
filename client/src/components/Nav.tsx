@@ -6,7 +6,6 @@ import {
   IconButton,
   List,
   ListItem,
-  Popover,
   Toolbar,
   Typography,
   ListItemIcon,
@@ -16,11 +15,13 @@ import DefaultAvatar from '@material-ui/icons/AccountCircle';
 import HomeIcon from '@material-ui/icons/Home';
 import LoginIcon from '@material-ui/icons/PersonOutline';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import ProjectsIcon from '@material-ui/icons/Apps';
 import MenuIcon from '@material-ui/icons/Menu';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 import routes from '../routes';
 import { CurrentUserContext } from '../CurrentUserContext';
+import UserMenu from './UserMenu';
 
 const Avatar = styled.button`
   padding: 2px;
@@ -33,17 +34,11 @@ const Avatar = styled.button`
   }
 `;
 
-const UserMenu = styled.div`
-  ${tw`flex flex-col py-4`}
-  min-width: 200px;
-`;
-
 export default function TopNav() {
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const [userMenu, setUserMenu] = useState<HTMLButtonElement>();
   const [sideNavOpened, setSideNavOpened] = useState(false);
-  const { currentUser, onLogout } = useContext(CurrentUserContext);
-  const history = useHistory();
+  const { currentUser } = useContext(CurrentUserContext);
 
   const loginButton = (
     <Button variant="outlined" component={RouterLink} to={routes.login}>
@@ -54,13 +49,6 @@ export default function TopNav() {
   const handleAvatarClick = (event: MouseEvent) => {
     setUserMenu(event.currentTarget as HTMLButtonElement);
     setUserMenuOpened((isOpened) => !isOpened);
-  };
-
-  const handleLogout = async () => {
-    setUserMenuOpened(false);
-    await fetch('/api/auth/logout');
-    onLogout();
-    history.push('/home');
   };
 
   return (
@@ -86,18 +74,11 @@ export default function TopNav() {
             )}
           </Avatar>
         ) : loginButton}
-        <Popover
+        <UserMenu
           open={userMenuOpened}
           anchorEl={userMenu}
           onClose={() => setUserMenuOpened(false)}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-          classes={{ paper: 'p-2' }}
-        >
-          <UserMenu>
-            <Button variant="outlined" onClick={handleLogout}>Logout</Button>
-          </UserMenu>
-        </Popover>
+        />
       </Toolbar>
     </AppBar>
   );
@@ -125,12 +106,20 @@ function SideNav({ open, onClose, loggedIn }: SideNavProps) {
             <ListItemText primary="Home" />
           </ListItem>
           {loggedIn && (
+          <>
             <ListItem button component={RouterLink} to={routes.dashboard} onClick={onClose}>
               <ListItemIcon>
                 <DashboardIcon color="secondary" />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
             </ListItem>
+            <ListItem button component={RouterLink} to={routes.projects} onClick={onClose}>
+              <ListItemIcon>
+                <ProjectsIcon color="secondary" />
+              </ListItemIcon>
+              <ListItemText primary="Projects" />
+            </ListItem>
+          </>
           )}
           {!loggedIn && (
             <ListItem button component={RouterLink} to={routes.login} onClick={onClose}>
