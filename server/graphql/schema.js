@@ -86,10 +86,7 @@ function queryAllResolvers(queryAllModels) {
   Object.values(queryAllModels).forEach((Model) => {
     const tableName = Model.getTableName();
     const pluralName = tableName.charAt(0).toLowerCase() + tableName.slice(1);
-    resolvers[pluralName] = (parent, args, { user }, info) => {
-      console.log('parent: ', parent);
-      console.log('args: ', args);
-      console.log('info: ', info);
+    resolvers[pluralName] = (_, __, { user }) => {
       if (!user) { return null; }
       return Model.findAll();
     };
