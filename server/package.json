@@ -9,6 +9,8 @@
     "prod": "node index.js",
     "migrate": "sequelize-cli db:migrate",
     "seed": "sequelize-cli db:seed:all",
+    "gen:model": "sequelize-cli model:generate",
+    "gen:migration": "sequelize-cli migration:generate --name $npm_config_name",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "amoore1337",

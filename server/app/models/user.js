@@ -4,7 +4,21 @@ const {
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
+    static getModelName() {
+      return 'User';
+    }
+
+    static associate(models) {
+      User.hasOne(models.Team, { foreignKey: 'createdById', as: 'ownsTeam', onDelete: 'SET NULL' });
+      User.belongsTo(models.Team, { foreignKey: 'teamId', as: 'team', onDelete: 'SET NULL' });
+    }
   }
+
+  User.graphAssociations = {
+    ownsTeam: 'Team',
+    team: 'Team',
+  };
+
   User.init({
     name: DataTypes.STRING,
     email: {
@@ -13,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
     },
     avatarUrl: DataTypes.STRING,
+    teamId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'User',

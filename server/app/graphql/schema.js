@@ -6,9 +6,11 @@ const { verifyJWT } = require('../services/auth.service');
 
 const currentUserTypeDefs = require('./typedefs/currentUser');
 const userTypeDefs = require('./typedefs/user');
+const teamTypeDefs = require('./typedefs/team');
 
 const currentUserResolvers = require('./resolvers/currentUser');
 const userResolvers = require('./resolvers/user');
+const teamResolvers = require('./resolvers/team');
 
 // ============================================================================================
 
@@ -20,6 +22,10 @@ const typeDefs = gql`
   ${customScalarsTypeDef}
 
   type Query {
+    root: String
+  }
+
+  type Mutation {
     root: String
   }
 `;
@@ -72,8 +78,18 @@ const context = async ({ req }) => ({
 // ============================================================================================
 
 module.exports = {
-  typeDefs: [typeDefs, currentUserTypeDefs, userTypeDefs],
-  resolvers: [resolvers, currentUserResolvers, userResolvers],
+  typeDefs: [
+    typeDefs,
+    currentUserTypeDefs,
+    teamTypeDefs,
+    userTypeDefs,
+  ],
+  resolvers: [
+    resolvers,
+    currentUserResolvers,
+    teamResolvers,
+    userResolvers,
+  ],
   context,
   playground: {
     settings: {

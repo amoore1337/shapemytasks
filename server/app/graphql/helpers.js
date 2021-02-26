@@ -10,11 +10,18 @@ const typeMap = {
 
 function typeDefForModel(Model, modelName) {
   const attributes = Model.rawAttributes;
+  modelName = modelName || Model.getModelName();
 
   let formattedAttributes = '';
   Object.keys(attributes).forEach((a) => {
     formattedAttributes += `${typeForAttribute(attributes[a])}\n`;
   });
+
+  if (Model.graphAssociations) {
+    Object.keys(Model.graphAssociations).forEach((a) => {
+      formattedAttributes += `${a}: ${Model.graphAssociations[a]}\n`;
+    });
+  }
 
   return `
     type ${modelName} {
@@ -45,10 +52,22 @@ function basicQueryAllResolver(Model, requireAuth = true) {
   return resolver;
 }
 
+function basicFindByIdResolver(Model, requireAuth = true) {
+  const resolver = {};
+  const modelName = Model.getModelName().toLowerCase();
+  resolver[modelName] = async (_, { id }, { user }) => {
+    if (!user && requireAuth) { return null; }
+    return Model.findByPk(id);
+  };
+
+  return resolver;
+}
+
 module.exports = {
   uniqueColTypeMap,
   typeMap,
   typeDefForModel,
   typeForAttribute,
   basicQueryAllResolver,
+  basicFindByIdResolver,
 };
