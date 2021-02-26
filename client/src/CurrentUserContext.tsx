@@ -19,6 +19,11 @@ const CURRENT_USER = gql`
       email
       name
       avatarUrl
+
+      team {
+        id
+        name
+      }
     }
   }
 `;

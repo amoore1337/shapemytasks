@@ -7,12 +7,19 @@
 // GraphQL query operation: CurrentUser
 // ====================================================
 
+export interface CurrentUser_currentUser_team {
+  __typename: "Team";
+  id: string;
+  name: string | null;
+}
+
 export interface CurrentUser_currentUser {
   __typename: "CurrentUser";
   id: string;
   email: string;
   name: string | null;
   avatarUrl: string | null;
+  team: CurrentUser_currentUser_team | null;
 }
 
 export interface CurrentUser {
