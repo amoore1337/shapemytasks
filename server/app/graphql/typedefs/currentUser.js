@@ -8,4 +8,8 @@ module.exports = gql`
   extend type Query {
     currentUser: CurrentUser
   }
+
+  extend type Mutation {
+    joinTeam(joinCode: String!): Team
+  }
 `;

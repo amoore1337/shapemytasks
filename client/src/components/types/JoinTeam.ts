@@ -4,20 +4,18 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: CreateTeam
+// GraphQL mutation operation: JoinTeam
 // ====================================================
 
-export interface CreateTeam_createTeam {
+export interface JoinTeam_joinTeam {
   __typename: "Team";
   id: string;
-  name: string | null;
-  joinCode: string | null;
 }
 
-export interface CreateTeam {
-  createTeam: CreateTeam_createTeam | null;
+export interface JoinTeam {
+  joinTeam: JoinTeam_joinTeam | null;
 }
 
-export interface CreateTeamVariables {
-  name: string;
+export interface JoinTeamVariables {
+  joinCode: string;
 }

@@ -17,5 +17,6 @@ module.exports = {
     'import/no-dynamic-require': 'off',
     'no-restricted-syntax': ['off', { selector: 'ForOfStatement' }],
     'no-param-reassign': 'off',
+    'no-plusplus': 'off',
   },
 };

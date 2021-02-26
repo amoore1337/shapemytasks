@@ -6,10 +6,12 @@ type CurrentUserCtx = {
   currentUser?: CurrentUser | null,
   loading: boolean,
   logout: () => Promise<void>;
+  refresh: () => Promise<void>;
  };
 export const CurrentUserContext = createContext<CurrentUserCtx>({
   loading: true,
   logout: () => Promise.resolve(),
+  refresh: () => Promise.resolve(),
 });
 
 const CURRENT_USER = gql`
@@ -23,6 +25,7 @@ const CURRENT_USER = gql`
       team {
         id
         name
+        joinCode
       }
     }
   }
@@ -36,11 +39,14 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
     refetch();
   };
 
+  const handleRefresh = async () => { refetch(); };
+
   return (
     <CurrentUserContext.Provider value={{
       currentUser: data?.currentUser,
       loading,
       logout: handleLogout,
+      refresh: handleRefresh,
     }}
     >
       {children}

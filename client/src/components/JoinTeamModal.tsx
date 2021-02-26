@@ -3,15 +3,26 @@ import {
   Modal, Backdrop, Fade, Typography, IconButton, TextField, Button,
 } from '@material-ui/core';
 import CancelIcon from '@material-ui/icons/Cancel';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import tw, { styled } from 'twin.macro';
+import { CurrentUserContext } from '../CurrentUserContext';
 import { CreateTeamVariables, CreateTeam_createTeam as TeamResponse } from './types/CreateTeam';
+import { JoinTeamVariables, JoinTeam_joinTeam as JoinResponse } from './types/JoinTeam';
 
 const CREATE_TEAM = gql`
   mutation CreateTeam($name: String!) {
     createTeam(name: $name) {
       id
       name
+      joinCode
+    }
+  }
+`;
+
+const JOIN_TEAM = gql`
+  mutation JoinTeam($joinCode: String!) {
+    joinTeam(joinCode: $joinCode) {
+      id
     }
   }
 `;
@@ -32,18 +43,26 @@ export default function UserSettingsModal({ open, onClose }: Props) {
   const [teamName, setTeamName] = useState('');
   const [teamCode, setTeamCode] = useState('');
   const [formError, setFormError] = useState(false);
+
+  const { refresh: refreshUser } = useContext(CurrentUserContext);
+
   const [createTeam, { loading, called }] = useMutation<TeamResponse, CreateTeamVariables>(CREATE_TEAM);
+  const [
+    joinTeam,
+    { loading: loadingJoin, called: calledJoined },
+  ] = useMutation<JoinResponse, JoinTeamVariables>(JOIN_TEAM);
 
   useEffect(() => {
-    // If we're done creating a team, close the modal
-    if (called && !loading && onClose) {
+    // If we're done, close the modal
+    if (((called && !loading) || (calledJoined && !loadingJoin)) && onClose) {
+      refreshUser();
       onClose();
     }
-  }, [loading, called]);
+  }, [loading, called, loadingJoin, calledJoined]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.name === 'code') {
-      setTeamCode(event.target.value);
+      setTeamCode(event.target.value.toUpperCase());
     } else {
       setTeamName(event.target.value);
     }
@@ -56,7 +75,7 @@ export default function UserSettingsModal({ open, onClose }: Props) {
     if (teamName) {
       createTeam({ variables: { name: teamName } });
     } else if (teamCode) {
-      // joinTeam();
+      joinTeam({ variables: { joinCode: teamCode } });
     } else {
       setFormError(true);
     }

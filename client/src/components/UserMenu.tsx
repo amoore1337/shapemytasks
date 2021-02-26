@@ -2,10 +2,10 @@ import { Popover, Button, Typography } from '@material-ui/core';
 import React, { useContext, useState } from 'react';
 import tw, { styled } from 'twin.macro';
 import GroupIcon from '@material-ui/icons/Group';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import { useHistory } from 'react-router-dom';
 import { CurrentUserContext } from '../CurrentUserContext';
 import JoinTeamModal from './JoinTeamModal';
+import TeamCodeCopyButton from './TeamCodeCopyButton';
 
 const MenuContent = styled.div`
   ${tw`flex flex-col py-2 text-gray-800`}
@@ -55,14 +55,7 @@ export default function UserMenu(props: Props) {
           </div>
         )}
         {currentUser?.team ? (
-          <Button
-            variant="outlined"
-            className="mb-2"
-            color="secondary"
-            startIcon={<GroupAddIcon color="secondary" fontSize="large" />}
-          >
-            Invite Teammate
-          </Button>
+          <TeamCodeCopyButton teamCode={currentUser.team.joinCode || ''} />
         ) : (
           <Button
             variant="outlined"
