@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       User.hasOne(models.Team, { foreignKey: 'createdById', as: 'ownsTeam', onDelete: 'SET NULL' });
       User.belongsTo(models.Team, { foreignKey: 'teamId', as: 'team', onDelete: 'SET NULL' });
+      User.hasMany(models.Project, {
+        foreignKey: 'createdById',
+        as: 'ownedProjects',
+        onDelete: 'SET NULL',
+      });
     }
   }
 

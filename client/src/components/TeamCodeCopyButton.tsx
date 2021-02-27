@@ -17,7 +17,7 @@ export default function TeamCodeCopyButton({ teamCode }: { teamCode: string }) {
     let timeout: number;
     if (copied) {
       setButtonText(BUTTON_TEXTS.success);
-      timeout = window.setTimeout(() => setCopied(false), 500);
+      timeout = window.setTimeout(() => setCopied(false), 800);
     } else {
       setButtonText(BUTTON_TEXTS.normal);
     }

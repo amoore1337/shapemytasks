@@ -1,16 +1,12 @@
 const { gql } = require('apollo-server-express');
 const { GraphQLScalarType, Kind } = require('graphql');
+const requireDir = require('require-dir');
 
 const { User } = require('../models');
 const { verifyJWT } = require('../services/auth.service');
 
-const currentUserTypeDefs = require('./typedefs/currentUser');
-const userTypeDefs = require('./typedefs/user');
-const teamTypeDefs = require('./typedefs/team');
-
-const currentUserResolvers = require('./resolvers/currentUser');
-const userResolvers = require('./resolvers/user');
-const teamResolvers = require('./resolvers/team');
+const appTypeDefs = requireDir('./typedefs');
+const appResolvers = requireDir('./resolvers');
 
 // ============================================================================================
 
@@ -80,15 +76,11 @@ const context = async ({ req }) => ({
 module.exports = {
   typeDefs: [
     typeDefs,
-    currentUserTypeDefs,
-    teamTypeDefs,
-    userTypeDefs,
+    ...Object.values(appTypeDefs),
   ],
   resolvers: [
     resolvers,
-    currentUserResolvers,
-    teamResolvers,
-    userResolvers,
+    ...Object.values(appResolvers),
   ],
   context,
   playground: {
