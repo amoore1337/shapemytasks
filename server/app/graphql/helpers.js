@@ -1,3 +1,5 @@
+const { AuthenticationError } = require('apollo-server-express');
+
 const uniqueColTypeMap = {
   id: 'ID',
 };
@@ -63,9 +65,16 @@ function basicFindByIdResolver(Model, requireAuth = true) {
   return resolver;
 }
 
+function rejectUnauthenticated(currentUser) {
+  if (!currentUser) {
+    throw new AuthenticationError('You must be logged in to perform this action.');
+  }
+}
+
 module.exports = {
   uniqueColTypeMap,
   typeMap,
+  rejectUnauthenticated,
   typeDefForModel,
   typeForAttribute,
   basicQueryAllResolver,

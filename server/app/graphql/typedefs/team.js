@@ -9,8 +9,4 @@ module.exports = gql`
     teams: [Team]
     team(id: Int!): Team
   }
-
-  extend type Mutation {
-    createTeam(name: String!): Team
-  }
 `;

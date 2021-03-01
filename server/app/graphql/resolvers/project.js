@@ -5,7 +5,7 @@ const { Project } = require('../../models');
 
 module.exports = {
   Mutation: {
-    async createProject(_, { title, description, visibility }, { user }) {
+    createProject(_, { title, description, visibility }, { user }) {
       if (!user) {
         throw new AuthenticationError('You must be logged in to create a team.');
       }

@@ -3,20 +3,24 @@ import {
   Typography, IconButton, TextField, Button,
 } from '@material-ui/core';
 import CancelIcon from '@material-ui/icons/Cancel';
-import React, { useContext, useEffect, useState } from 'react';
-import { CurrentUserContext } from '../CurrentUserContext';
+import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
 import { JoinTeamVariables, JoinTeam_joinTeam as JoinResponse } from './types/JoinTeam';
 
 const JOIN_TEAM = gql`
   mutation JoinTeam($name: String!, $joinCode: String!, $joinTeam: Boolean!) {
     createTeam(name: $name) @skip(if: $joinTeam) {
-      id
-      name
-      joinCode
+      ...TeamInfo
     }
 
     joinTeam(joinCode: $joinCode) @include(if: $joinTeam) {
+      ...TeamInfo
+    }
+  }
+
+  fragment TeamInfo on CurrentUser {
+    id
+    team {
       id
       name
       joinCode
@@ -33,14 +37,11 @@ export default function UserSettingsModal({ open, onClose }: Props) {
   const [teamCode, setTeamCode] = useState('');
   const [formError, setFormError] = useState(false);
 
-  const { refresh: refreshUser } = useContext(CurrentUserContext);
-
   const [joinTeam, { loading, called }] = useMutation<JoinResponse, JoinTeamVariables>(JOIN_TEAM);
 
   useEffect(() => {
     // If we're done, close the modal
     if (called && !loading && onClose) {
-      refreshUser();
       onClose();
     }
   }, [loading, called]);
