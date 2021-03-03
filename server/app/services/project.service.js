@@ -1,4 +1,5 @@
 const { Project, sequelize, Sequelize } = require('../models');
+const userService = require('./user.service');
 
 async function createProject(title, description, visibility, createdBy) {
   const transaction = await sequelize.transaction();
@@ -54,8 +55,18 @@ async function findProjectForUser(projectId, user) {
   return null;
 }
 
+async function deleteProject(projectId, user) {
+  const project = await Project.findByPk(projectId);
+  if (project && userService.canEditProject(user, project)) {
+    await Project.destroy({ where: { id: projectId } });
+    return project;
+  }
+  return null;
+}
+
 module.exports = {
   createProject,
   findAllProjectsForUser,
   findProjectForUser,
+  deleteProject,
 };

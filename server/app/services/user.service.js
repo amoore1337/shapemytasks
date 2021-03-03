@@ -16,6 +16,20 @@ async function joinTeam(user, joinCode) {
   return team;
 }
 
+async function canEditProject(user, project) {
+  if (user.id === project.createdById) {
+    return true;
+  }
+
+  // TODO: This should be replaced by a permissions record lookup:
+  if (user.teamId === project.teamId && project.isVisible()) {
+    return true;
+  }
+
+  return false;
+}
+
 module.exports = {
   joinTeam,
+  canEditProject,
 };

@@ -12,5 +12,6 @@ module.exports = gql`
 
   extend type Mutation {
     createProject(title: String!, description: String, visibility: String): Project
+    deleteProjectById(id: ID!): Project
   }
 `;

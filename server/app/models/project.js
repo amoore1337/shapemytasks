@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
       Project.belongsTo(models.User, { foreignKey: 'createdById', as: 'owner', onDelete: 'SET NULL' });
       Project.belongsTo(models.Team, { foreignKey: 'teamId', as: 'team', onDelete: 'SET NULL' });
     }
+
+    isVisible() {
+      return this.visibility === 'visible';
+    }
   }
 
   Project.graphAssociations = {

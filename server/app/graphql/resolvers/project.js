@@ -1,16 +1,19 @@
-const { AuthenticationError } = require('apollo-server-express');
-const { basicFindByIdResolver } = require('../helpers');
+const { basicFindByIdResolver, rejectUnauthenticated } = require('../helpers');
 const projectService = require('../../services/project.service');
 const { Project } = require('../../models');
 
 module.exports = {
   Mutation: {
     createProject(_, { title, description, visibility }, { user }) {
-      if (!user) {
-        throw new AuthenticationError('You must be logged in to create a team.');
-      }
+      rejectUnauthenticated(user);
 
       return projectService.createProject(title, description, visibility, user);
+    },
+
+    deleteProjectById(_, { id }, { user }) {
+      rejectUnauthenticated(user);
+
+      return projectService.deleteProject(id, user);
     },
   },
 
