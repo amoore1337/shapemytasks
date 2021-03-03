@@ -1,8 +1,7 @@
-import {
-  gql, Reference, useMutation, useQuery,
-} from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { Grid } from '@material-ui/core';
 import React, { useState } from 'react';
+import { removeCacheItem } from '../../../cacheUtils';
 import ConfirmationModal from '../../ConfirmationModal';
 import AddProjectCard from './AddProjectCard';
 import ProjectCard from './ProjectCard';
@@ -32,23 +31,10 @@ export default function Projects() {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [selectedProject, setSelectedProject] = useState<null |Project>();
   const { data } = useQuery<AllProjects>(ALL_PROJECTS);
-  const [destroyProject] = useMutation<DeleteProject, DeleteProjectVariables>(DELETE_PROJECT, {
-    update(cache, { data: result }) {
-      if (!result) { return; }
-      cache.modify({
-        fields: {
-          projects(existingRefs: Reference[] = [], { readField }) {
-            const { deleteProjectById: project } = result;
-            if (!project) {
-              return existingRefs;
-            }
-
-            return existingRefs.filter((ref) => project?.id !== readField('id', ref));
-          },
-        },
-      });
-    },
-  });
+  const [destroyProject] = useMutation<DeleteProject, DeleteProjectVariables>(
+    DELETE_PROJECT,
+    removeCacheItem<DeleteProject, DeleteProjectVariables>('projects', 'deleteProjectById'),
+  );
 
   const handleProjectEdit = (projectId: string) => {
     console.log('project:', projectId);

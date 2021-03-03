@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import {
   Typography, TextField, Button,
 } from '@material-ui/core';
-import { gql, Reference, useMutation } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { useFormik, FormikConfig } from 'formik';
 import * as yup from 'yup';
 import Modal from '../../Modal';
 import { SaveProject, SaveProjectVariables } from './types/SaveProject';
+import { addCacheItem } from '../../../cacheUtils';
 
 const SAVE_PROJECT = gql`
   mutation SaveProject($title: String!, $description: String) {
@@ -39,35 +40,10 @@ export default function AddProjectModal({ onClose, ...props }: Props) {
     formik.resetForm();
   };
 
-  const [saveProject, { loading, called }] = useMutation<SaveProject, SaveProjectVariables>(SAVE_PROJECT, {
-    update(cache, { data: result }) {
-      if (!result) { return; }
-      cache.modify({
-        fields: {
-          projects(existingRefs: Reference[] = [], { readField }) {
-            const { createProject: project } = result;
-            const newProjectRef = cache.writeFragment({
-              data: project,
-              fragment: gql`
-                fragment NewProject on Project {
-                  id
-                  title
-                  description
-                }
-              `,
-            });
-
-            const existingRef = existingRefs.some((ref) => readField('id', ref) === project?.id);
-            if (existingRef) {
-              return existingRefs;
-            }
-
-            return [...existingRefs, newProjectRef];
-          },
-        },
-      });
-    },
-  });
+  const [saveProject, { loading, called }] = useMutation<SaveProject, SaveProjectVariables>(
+    SAVE_PROJECT,
+    addCacheItem<SaveProject, SaveProjectVariables>('projects', 'createProject'),
+  );
 
   const formik = useFormik<FormValues>({
     initialValues: { title: '', description: '' },
