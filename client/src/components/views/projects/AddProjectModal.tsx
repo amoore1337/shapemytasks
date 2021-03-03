@@ -1,16 +1,13 @@
 import React, { useEffect } from 'react';
-import {
-  Typography, TextField, Button,
-} from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { gql, useMutation } from '@apollo/client';
-import { useFormik, FormikConfig } from 'formik';
-import * as yup from 'yup';
 import Modal from '../../Modal';
-import { SaveProject, SaveProjectVariables } from './types/SaveProject';
+import { CreateProject, CreateProjectVariables } from './types/CreateProject';
 import { addCacheItem } from '../../../cacheUtils';
+import ProjectModalForm, { FormValues } from './ProjectModalForm';
 
-const SAVE_PROJECT = gql`
-  mutation SaveProject($title: String!, $description: String) {
+const CREATE_PROJECT = gql`
+  mutation CreateProject($title: String!, $description: String) {
     createProject(title: $title, description: $description) {
       id
       title
@@ -19,37 +16,18 @@ const SAVE_PROJECT = gql`
   }
 `;
 
-type FormValues = {
-  title: string;
-  description: string;
-}
-
-const validationSchema = yup.object({
-  title: yup.string().required('Please provide a title'),
-  description: yup.string(),
-});
-
 type Props ={
   open: boolean;
   onClose?: () => void;
 }
 
 export default function AddProjectModal({ onClose, ...props }: Props) {
-  const handleSubmit: FormikConfig<FormValues>['onSubmit'] = async (values) => {
-    saveProject({ variables: values });
-    formik.resetForm();
-  };
-
-  const [saveProject, { loading, called }] = useMutation<SaveProject, SaveProjectVariables>(
-    SAVE_PROJECT,
-    addCacheItem<SaveProject, SaveProjectVariables>('projects', 'createProject'),
+  const [createProject, { loading, called }] = useMutation<CreateProject, CreateProjectVariables>(
+    CREATE_PROJECT,
+    addCacheItem<CreateProject, CreateProjectVariables>('projects', 'createProject'),
   );
 
-  const formik = useFormik<FormValues>({
-    initialValues: { title: '', description: '' },
-    validationSchema,
-    onSubmit: handleSubmit,
-  });
+  const handleSubmit = (values: FormValues) => createProject({ variables: values });
 
   useEffect(() => {
     if (!loading && called && onClose) {
@@ -67,43 +45,7 @@ export default function AddProjectModal({ onClose, ...props }: Props) {
     >
       <div className="flex flex-col h-full">
         <Typography variant="h4">Add Project</Typography>
-        <form noValidate autoComplete="off" className="pt-8 flex-1 flex flex-col justify-between" onSubmit={formik.handleSubmit}>
-          <fieldset>
-            <TextField
-              size="small"
-              color="secondary"
-              label="Project Title"
-              variant="outlined"
-              name="title"
-              value={formik.values.title}
-              onChange={formik.handleChange}
-              error={formik.touched.title && !!formik.errors.title}
-              helperText={formik.touched.title && formik.errors.title}
-            />
-            <TextField
-              size="small"
-              color="secondary"
-              label="Project Description (Optional)"
-              variant="outlined"
-              className="mt-4 w-full"
-              name="description"
-              multiline
-              rows={3}
-              rowsMax={4}
-              value={formik.values.description}
-              onChange={formik.handleChange}
-            />
-          </fieldset>
-          <Button
-            type="submit"
-            variant="contained"
-            color="secondary"
-            className="text-white"
-            disabled={loading}
-          >
-            Submit
-          </Button>
-        </form>
+        <ProjectModalForm onSubmit={handleSubmit} disabled={loading} />
       </div>
     </Modal>
   );
