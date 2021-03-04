@@ -1,26 +1,15 @@
-import { Button } from '@material-ui/core';
 import React, { useState } from 'react';
-import tw, { styled } from 'twin.macro';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import AddProjectModal from './AddProjectModal';
-
-const StyledCard = styled(Button)`
-  ${tw`bg-blue-50 p-2 shadow`}
-  width: 265px;
-  height: 200px;
-
-  &:hover {
-    ${tw`bg-blue-100`}
-  }
-`;
+import ProjectCard from './ProjectCard';
 
 export default function AddProjectCard() {
   const [openModal, setOpenModal] = useState(false);
   return (
     <>
-      <StyledCard className="text-center p-8" onClick={() => setOpenModal(true)}>
+      <ProjectCard className="bg-blue-50 hover:bg-blue-100" onClick={() => setOpenModal(true)}>
         <AddCircleIcon className="text-5xl" color="secondary" />
-      </StyledCard>
+      </ProjectCard>
       <AddProjectModal open={openModal} onClose={() => setOpenModal(false)} />
     </>
   );

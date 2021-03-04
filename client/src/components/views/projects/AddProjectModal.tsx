@@ -1,56 +1,52 @@
-import {
-  Modal, Backdrop, Fade, Typography, IconButton, TextField,
-} from '@material-ui/core';
-import CancelIcon from '@material-ui/icons/Cancel';
-import React from 'react';
-import tw, { styled } from 'twin.macro';
+import React, { useEffect } from 'react';
+import { Typography } from '@material-ui/core';
+import { gql, useMutation } from '@apollo/client';
+import Modal from '../../Modal';
+import { CreateProject, CreateProjectVariables } from './types/CreateProject';
+import { addCacheItem } from '../../../cacheUtils';
+import ProjectModalForm, { FormValues } from './ProjectModalForm';
 
-const ModalContent = styled.div`
-  ${tw`bg-white p-4 shadow text-gray-800 relative`}
-  width: 60%;
-  height: 80%;
-  max-width: 400px;
-  max-height: 500px;
+const CREATE_PROJECT = gql`
+  mutation CreateProject($title: String!, $description: String) {
+    createProject(title: $title, description: $description) {
+      id
+      title
+      description
+    }
+  }
 `;
 
 type Props ={
   open: boolean;
   onClose?: () => void;
 }
-export default function AddProjectModal({ open, onClose }: Props) {
+
+export default function AddProjectModal({ onClose, ...props }: Props) {
+  const [createProject, { loading, called }] = useMutation<CreateProject, CreateProjectVariables>(
+    CREATE_PROJECT,
+    addCacheItem<CreateProject, CreateProjectVariables>('projects', 'createProject'),
+  );
+
+  const handleSubmit = (values: FormValues) => createProject({ variables: values });
+
+  useEffect(() => {
+    if (!loading && called && onClose) {
+      onClose();
+    }
+  }, [loading, called]);
+
   return (
     <Modal
-      className="flex items-center justify-center"
-      open={open}
+      {...props}
       onClose={onClose}
-      closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500,
+      style={{
+        width: '60%', height: '80%', maxWidth: 400, maxHeight: 500,
       }}
-      disableBackdropClick
     >
-      <Fade in={open}>
-        <ModalContent>
-          <Typography variant="h4">Add Project</Typography>
-          <IconButton onClick={onClose} className="p-1 -mt-2 absolute right-1 top-3">
-            <CancelIcon color="secondary" className="text-4xl" />
-          </IconButton>
-          <form noValidate autoComplete="off" className="pt-8">
-            <TextField size="small" color="secondary" label="Project Title" variant="outlined" />
-            <TextField
-              size="small"
-              color="secondary"
-              label="Project Description (Optional)"
-              variant="outlined"
-              className="mt-4 w-full"
-              multiline
-              rows={3}
-              rowsMax={4}
-            />
-          </form>
-        </ModalContent>
-      </Fade>
+      <div className="flex flex-col h-full">
+        <Typography variant="h4">Add Project</Typography>
+        <ProjectModalForm onSubmit={handleSubmit} disabled={loading} />
+      </div>
     </Modal>
   );
 }

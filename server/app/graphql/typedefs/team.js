@@ -7,10 +7,6 @@ module.exports = gql`
 
   extend type Query {
     teams: [Team]
-    team(id: Int!): Team
-  }
-
-  extend type Mutation {
-    createTeam(name: String!): Team
+    team(id: ID!): Team
   }
 `;

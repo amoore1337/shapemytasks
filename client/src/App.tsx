@@ -14,6 +14,7 @@ import PrivateRoute from './PrivateRoute';
 import { CurrentUserProvider } from './CurrentUserContext';
 import Dashboard from './components/views/dashboard/Dashboard';
 import Projects from './components/views/projects/Projects';
+import Project from './components/views/project/Project';
 
 function App() {
   const appRoutes = (
@@ -21,6 +22,7 @@ function App() {
       <Route path={routes.login} component={Login} />
       <Route path={routes.home} component={Home} />
       <PrivateRoute path={routes.dashboard} component={Dashboard} />
+      <PrivateRoute path={routes.project} component={Project} />
       <PrivateRoute path={routes.projects} component={Projects} />
       <Redirect to={routes.home} />
     </Switch>

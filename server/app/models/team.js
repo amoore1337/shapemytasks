@@ -1,6 +1,5 @@
-const {
-  Model,
-} = require('sequelize');
+const { Model } = require('sequelize');
+const { base26EncodeNum, randomStringGenerator } = require('../services/util.service');
 
 module.exports = (sequelize, DataTypes) => {
   class Team extends Model {
@@ -11,6 +10,13 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Team.belongsTo(models.User, { foreignKey: 'createdById', as: 'owner', onDelete: 'SET NULL' });
       Team.hasMany(models.User, { foreignKey: 'teamId', as: 'members', onDelete: 'SET NULL' });
+      Team.hasMany(models.Project, { foreignKey: 'teamId', as: 'allProjects', onDelete: 'SET NULL' });
+      Team.hasMany(models.Project, {
+        scope: { visibility: 'visible' },
+        foreignKey: 'teamId',
+        as: 'visibleProjects',
+        onDelete: 'SET NULL',
+      });
     }
   }
 
@@ -21,9 +27,16 @@ module.exports = (sequelize, DataTypes) => {
   Team.init({
     name: DataTypes.STRING,
     createdById: DataTypes.INTEGER,
+    joinCode: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Team',
+    hooks: {
+      afterCreate: async (team) => {
+        team.joinCode = `${base26EncodeNum(team.id)}-${randomStringGenerator(4)}`;
+        await team.save();
+      },
+    },
   });
   return Team;
 };

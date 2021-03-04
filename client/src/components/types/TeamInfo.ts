@@ -4,19 +4,18 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: CreateTeam
+// GraphQL fragment: TeamInfo
 // ====================================================
 
-export interface CreateTeam_createTeam {
+export interface TeamInfo_team {
   __typename: "Team";
   id: string;
   name: string | null;
+  joinCode: string | null;
 }
 
-export interface CreateTeam {
-  createTeam: CreateTeam_createTeam | null;
-}
-
-export interface CreateTeamVariables {
-  name: string;
+export interface TeamInfo {
+  __typename: "CurrentUser";
+  id: string;
+  team: TeamInfo_team | null;
 }

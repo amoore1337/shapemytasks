@@ -11,6 +11,7 @@ export interface CurrentUser_currentUser_team {
   __typename: "Team";
   id: string;
   name: string | null;
+  joinCode: string | null;
 }
 
 export interface CurrentUser_currentUser {
