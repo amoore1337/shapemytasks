@@ -1,9 +1,10 @@
+import React, { useState } from 'react';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Grid } from '@material-ui/core';
-import React, { useState } from 'react';
 import { removeCacheItem } from '../../../cacheUtils';
-import ConfirmationModal from '../../ConfirmationModal';
+import DeleteConfirmationModal from '../../ConfirmationModal';
 import AddProjectCard from './AddProjectCard';
+import EditProjectModal from './EditProjectModal';
 import ProjectCard from './ProjectCard';
 import { AllProjects, AllProjects_projects as Project } from './types/AllProjects';
 import { DeleteProject, DeleteProjectVariables } from './types/DeleteProject';
@@ -29,6 +30,7 @@ const DELETE_PROJECT = gql`
 
 export default function Projects() {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<null |Project>();
   const { data } = useQuery<AllProjects>(ALL_PROJECTS);
   const [destroyProject] = useMutation<DeleteProject, DeleteProjectVariables>(
@@ -36,8 +38,9 @@ export default function Projects() {
     removeCacheItem<DeleteProject, DeleteProjectVariables>('projects', 'deleteProjectById'),
   );
 
-  const handleProjectEdit = (projectId: string) => {
-    console.log('project:', projectId);
+  const handleProjectEdit = (project: null | Project) => {
+    setSelectedProject(project);
+    setShowEditModal(true);
   };
 
   const handleProjectDelete = (project: null | Project) => {
@@ -48,6 +51,7 @@ export default function Projects() {
   const handleCancelAction = () => {
     setSelectedProject(null);
     setShowDeleteConfirmation(false);
+    setShowEditModal(false);
   };
 
   const deleteProject = () => {
@@ -61,7 +65,11 @@ export default function Projects() {
       <Grid container spacing={2} justify="center">
         {data?.projects?.map((project) => (
           <Grid item key={project?.id}>
-            <ProjectCard onEdit={() => handleProjectEdit(project!.id)} onDelete={() => handleProjectDelete(project)}>
+            <ProjectCard
+              projectId={project?.id}
+              onEdit={() => handleProjectEdit(project)}
+              onDelete={() => handleProjectDelete(project)}
+            >
               {project?.title}
             </ProjectCard>
           </Grid>
@@ -70,7 +78,7 @@ export default function Projects() {
           <AddProjectCard />
         </Grid>
       </Grid>
-      <ConfirmationModal
+      <DeleteConfirmationModal
         open={showDeleteConfirmation}
         onCancel={handleCancelAction}
         onConfirm={deleteProject}
@@ -79,6 +87,13 @@ export default function Projects() {
         confirmText="Delete"
         confirmButtonClassName="text-white bg-danger"
       />
+      {selectedProject && (
+        <EditProjectModal
+          open={showEditModal}
+          onClose={handleCancelAction}
+          projectId={selectedProject.id}
+        />
+      )}
     </div>
   );
 }

@@ -7,6 +7,6 @@ module.exports = gql`
 
   extend type Query {
     teams: [Team]
-    team(id: Int!): Team
+    team(id: ID!): Team
   }
 `;

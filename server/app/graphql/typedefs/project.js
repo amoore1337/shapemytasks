@@ -7,11 +7,12 @@ module.exports = gql`
 
   extend type Query {
     projects: [Project]
-    project(id: Int!): Project
+    project(id: ID!): Project
   }
 
   extend type Mutation {
     createProject(title: String!, description: String, visibility: String): Project
+    updateProject(id: ID!, title: String, description: String, visibility: String): Project
     deleteProjectById(id: ID!): Project
   }
 `;

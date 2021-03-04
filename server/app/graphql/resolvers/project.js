@@ -1,6 +1,5 @@
-const { basicFindByIdResolver, rejectUnauthenticated } = require('../helpers');
+const { rejectUnauthenticated } = require('../helpers');
 const projectService = require('../../services/project.service');
-const { Project } = require('../../models');
 
 module.exports = {
   Mutation: {
@@ -8,6 +7,12 @@ module.exports = {
       rejectUnauthenticated(user);
 
       return projectService.createProject(title, description, visibility, user);
+    },
+
+    updateProject(_, { id, ...updateValues }, { user }) {
+      rejectUnauthenticated(user);
+
+      return projectService.updateProject(id, user, updateValues);
     },
 
     deleteProjectById(_, { id }, { user }) {
@@ -18,8 +23,6 @@ module.exports = {
   },
 
   Query: {
-    ...basicFindByIdResolver(Project),
-
     projects(_, __, { user }) {
       return projectService.findAllProjectsForUser(user);
     },

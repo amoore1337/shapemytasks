@@ -16,16 +16,17 @@ const validationSchema = yup.object({
 type Props = {
   onSubmit: (values: FormValues) => Promise<any>;
   disabled?: boolean;
+  initialValues?: FormValues;
 }
 
-export default function ProjectModalForm({ onSubmit, disabled }: Props) {
+export default function ProjectModalForm({ onSubmit, disabled, initialValues }: Props) {
   const handleSubmit: FormikConfig<FormValues>['onSubmit'] = async (values) => {
     await onSubmit(values);
     formik.resetForm();
   };
 
   const formik = useFormik<FormValues>({
-    initialValues: { title: '', description: '' },
+    initialValues: initialValues || { title: '', description: '' },
     validationSchema,
     onSubmit: handleSubmit,
   });

@@ -6,6 +6,8 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import tw, { styled } from 'twin.macro';
+import { Link as RouterLink } from 'react-router-dom';
+import routes, { withParams } from '../../../routes';
 
 const StyledButton = styled(Button)`
   ${tw`bg-white p-2 shadow normal-case`}
@@ -18,12 +20,13 @@ const StyledButton = styled(Button)`
 `;
 
 type Props = ButtonProps & {
+  projectId?: string;
   onEdit?: () => void;
   onDelete?: () => void;
 };
 
 export default function ProjectCard({
-  onEdit, onDelete, onClick, children, ...props
+  projectId, onEdit, onDelete, onClick, children, ...props
 }: Props) {
   const [hoverActive, setHoverActive] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLButtonElement>(null);
@@ -84,8 +87,15 @@ export default function ProjectCard({
         </>
       )}
       {children}
-      {hasActions && hoverActive && (
-        <Button as="a" variant="outlined" className="bg-white normal-case">Open Project</Button>
+      {projectId && hasActions && hoverActive && (
+        <Button
+          component={RouterLink}
+          to={withParams(routes.project, { id: projectId })}
+          variant="outlined"
+          className="bg-white normal-case"
+        >
+          Open Project
+        </Button>
       )}
     </StyledButton>
   );

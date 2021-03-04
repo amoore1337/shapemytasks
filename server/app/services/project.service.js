@@ -10,7 +10,7 @@ async function createProject(title, description, visibility, createdBy) {
       title,
       description,
       visibility,
-      teamId: createdBy.team ? createdBy.team.id : null,
+      teamId: createdBy.teamId ? createdBy.teamId : null,
       createdById: createdBy.id,
     });
     await transaction.commit();
@@ -26,7 +26,7 @@ async function findAllProjectsForUser(user) {
   return Project.findAll({
     where: {
       [Sequelize.Op.or]: [
-        { createdById: user.id },
+        { createdById: user.id, teamId: user.teamId },
         { teamId: user.teamId, visibility: 'visible' },
       ],
     },
@@ -64,9 +64,19 @@ async function deleteProject(projectId, user) {
   return null;
 }
 
+async function updateProject(projectId, user, updateValues) {
+  const project = await Project.findByPk(projectId);
+  if (project && updateValues && userService.canEditProject(user, project)) {
+    Object.keys(updateValues).forEach((field) => { project[field] = updateValues[field]; });
+    return project.save();
+  }
+  return null;
+}
+
 module.exports = {
   createProject,
   findAllProjectsForUser,
   findProjectForUser,
   deleteProject,
+  updateProject,
 };
