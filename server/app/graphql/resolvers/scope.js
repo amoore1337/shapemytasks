@@ -10,6 +10,18 @@ module.exports = {
 
       return scopeService.createScope(params, user);
     },
+
+    updateScope(_, { id, ...updateValues }, { user }) {
+      rejectUnauthenticated(user);
+
+      return scopeService.updateScope(id, user, updateValues);
+    },
+
+    deleteScopeById(_, { id }, { user }) {
+      rejectUnauthenticated(user);
+
+      return scopeService.deleteScope(id, user);
+    },
   },
 
   Query: {
