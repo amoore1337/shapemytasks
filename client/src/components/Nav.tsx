@@ -1,4 +1,3 @@
-import React, { useContext, useState } from 'react';
 import {
   AppBar,
   Button,
@@ -12,15 +11,16 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import DefaultAvatar from '@material-ui/icons/AccountCircle';
-import HomeIcon from '@material-ui/icons/Home';
-import LoginIcon from '@material-ui/icons/PersonOutline';
-import DashboardIcon from '@material-ui/icons/Dashboard';
 import ProjectsIcon from '@material-ui/icons/Apps';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
+import LoginIcon from '@material-ui/icons/PersonOutline';
+import React, { useContext, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
-import routes from '../routes';
 import { CurrentUserContext } from '../CurrentUserContext';
+import routes from '../routes';
 import UserMenu from './UserMenu';
 
 const Avatar = styled.button`

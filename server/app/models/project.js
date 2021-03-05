@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Project.belongsTo(models.User, { foreignKey: 'createdById', as: 'owner', onDelete: 'SET NULL' });
       Project.belongsTo(models.Team, { foreignKey: 'teamId', as: 'team', onDelete: 'SET NULL' });
+      Project.hasMany(models.Scope, { foreignKey: 'projectId', as: 'scopes', onDelete: 'SET NULL' });
     }
 
     isVisible() {
@@ -19,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   Project.graphAssociations = {
     owner: 'User',
     team: 'Team',
+    scopes: '[Scope]',
   };
 
   Project.init({

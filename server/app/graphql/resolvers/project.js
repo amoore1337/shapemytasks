@@ -40,5 +40,9 @@ module.exports = {
     owner(project) {
       return project.getOwner();
     },
+
+    scopes(project) {
+      return project.getScopes();
+    },
   },
 };

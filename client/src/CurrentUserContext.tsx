@@ -1,5 +1,5 @@
-import React, { createContext } from 'react';
 import { useQuery, gql } from '@apollo/client';
+import React, { createContext } from 'react';
 import { CurrentUser_currentUser as CurrentUser, CurrentUser as Response } from './types/CurrentUser';
 
 type CurrentUserCtx = {
