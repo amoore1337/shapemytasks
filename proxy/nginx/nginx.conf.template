@@ -14,11 +14,11 @@ server {
   
   location / {
     include /etc/nginx/includes/proxy.conf;
-    proxy_pass ${REVERSE_PROXY_SCHEME}://client:3030;
+    proxy_pass ${REVERSE_PROXY_SCHEME}://client:${CLIENT_PORT};
   }
 
   location /api {
     include /etc/nginx/includes/proxy.conf;
-    proxy_pass ${REVERSE_PROXY_SCHEME}://server:3000/api;
+    proxy_pass ${REVERSE_PROXY_SCHEME}://server:${SERVER_PORT}/api;
   }
 }

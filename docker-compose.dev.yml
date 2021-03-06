@@ -12,6 +12,8 @@ services:
       - dev
     environment:
       - REVERSE_PROXY_SCHEME=https
+      - SERVER_PORT=3000
+      - CLIENT_PORT=3030
   
   client:
     build: ./dev
