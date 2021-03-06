@@ -15,12 +15,13 @@ services:
       - REVERSE_PROXY_SCHEME=http
       - SERVER_PORT=3000
       - CLIENT_PORT=3030
-  
+      - USE_CERTBOT=false
+
   client:
     build: ./client
     networks: 
       - frontend
-  
+
   server:
     build: ./server
     depends_on: 

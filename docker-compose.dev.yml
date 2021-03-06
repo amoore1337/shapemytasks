@@ -14,6 +14,7 @@ services:
       - REVERSE_PROXY_SCHEME=https
       - SERVER_PORT=3000
       - CLIENT_PORT=3030
+      - USE_CERTBOT=false
   
   client:
     build: ./dev

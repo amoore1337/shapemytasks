@@ -1,12 +1,12 @@
 server {
   listen 80 default_server;
-  server_name _;
+  server_name shapemytasks;
   return 301 https://$host$request_uri;
 }
 
 server {
   listen 443 ssl http2;
-  server_name localhost;
+  server_name shapemytasks;
 
   ssl_certificate /etc/ssl/certs/nginx/dev.crt;
   ssl_certificate_key /etc/ssl/certs/nginx/dev.key;
@@ -20,5 +20,9 @@ server {
   location /api {
     include /etc/nginx/includes/proxy.conf;
     proxy_pass ${REVERSE_PROXY_SCHEME}://server:${SERVER_PORT}/api;
+  }
+
+  location /health_check {
+    return 200;
   }
 }
