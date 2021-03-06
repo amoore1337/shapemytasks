@@ -47,7 +47,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./proxy
-          file: ./client/Dockerfile
+          file: ./proxy/Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: amoore1337/shapemytasks_proxy:latest
@@ -58,8 +58,8 @@ jobs:
         id: docker_build_db
         uses: docker/build-push-action@v2
         with:
-          context: ./proxy
-          file: ./client/Dockerfile
+          context: ./db
+          file: ./db/Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: amoore1337/shapemytasks_db:latest
