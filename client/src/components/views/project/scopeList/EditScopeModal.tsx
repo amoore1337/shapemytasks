@@ -65,7 +65,6 @@ export default function EditScopeModal({ onClose, scopeId, ...props }: Props) {
   useEffect(() => {
     const { scope } = data || {};
     if (scope?.title && scope.title !== title) {
-      console.log('setting title: ', scope.title);
       setTitle(scope.title);
     }
   }, [data]);

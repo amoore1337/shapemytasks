@@ -22,3 +22,5 @@
 
 ssl/prod.crt
 ssl/prod.key
+
+.env
