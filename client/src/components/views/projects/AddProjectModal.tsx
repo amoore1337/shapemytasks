@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import { Typography } from '@material-ui/core';
 import { gql, useMutation } from '@apollo/client';
-import Modal from '../../Modal';
-import { CreateProject, CreateProjectVariables } from './types/CreateProject';
+import { Typography } from '@material-ui/core';
+import React, { useEffect } from 'react';
 import { addCacheItem } from '../../../cacheUtils';
+import Modal from '../../Modal';
 import ProjectModalForm, { FormValues } from './ProjectModalForm';
+import { CreateProject, CreateProjectVariables } from './types/CreateProject';
 
 const CREATE_PROJECT = gql`
   mutation CreateProject($title: String!, $description: String) {

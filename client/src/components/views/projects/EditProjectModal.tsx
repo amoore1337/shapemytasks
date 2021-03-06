@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { Typography } from '@material-ui/core';
 import { gql, useMutation, useQuery } from '@apollo/client';
+import { Typography } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import LoadingIndicator from '../../LoadingIndicator';
 import Modal from '../../Modal';
 import ProjectModalForm, { FormValues } from './ProjectModalForm';
 import { ProjectDetails } from './types/ProjectDetails';
 import { UpdateProject, UpdateProjectVariables } from './types/UpdateProject';
-import LoadingIndicator from '../../LoadingIndicator';
 
 const FETCH_PROJECT = gql`
   query ProjectDetails($id: ID!) {
@@ -32,7 +32,7 @@ type Props ={
   onClose?: () => void;
 }
 
-export default function AddProjectModal({ onClose, projectId, ...props }: Props) {
+export default function EditProjectModal({ onClose, projectId, ...props }: Props) {
   const { data, loading: loadingProject } = useQuery<ProjectDetails>(FETCH_PROJECT, { variables: { id: projectId } });
   const [updateProject, { loading, called }] = useMutation<UpdateProject, UpdateProjectVariables>(
     UPDATE_PROJECT,
@@ -60,7 +60,7 @@ export default function AddProjectModal({ onClose, projectId, ...props }: Props)
           <LoadingIndicator />
         ) : (
           <>
-            <Typography variant="h4">Add Project</Typography>
+            <Typography variant="h4">Edit Project</Typography>
             <ProjectModalForm
               onSubmit={handleSubmit}
               disabled={loading}

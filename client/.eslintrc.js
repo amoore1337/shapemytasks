@@ -29,7 +29,9 @@ module.exports = {
     'react/require-default-props': 'off',
     'max-len': 'off',
     'no-unused-vars': 'off',
+    'import/order': ['error', { alphabetize: { order: 'asc' } }],
     '@typescript-eslint/no-unused-vars': ['error'],
+    'react/no-array-index-key': 'warn',
   },
   settings: {
     'import/resolver': {

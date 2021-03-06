@@ -1,5 +1,6 @@
 const { basicQueryAllResolver, basicFindByIdResolver } = require('../helpers');
 const { User } = require('../../models');
+const projectService = require('../../services/project.service');
 
 module.exports = {
   Query: {
@@ -13,6 +14,9 @@ module.exports = {
     },
     team(user) {
       return user.getTeam();
+    },
+    projects(_, __, { user }) {
+      return projectService.findAllProjectsForUser(user);
     },
   },
 };

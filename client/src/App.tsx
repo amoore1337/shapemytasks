@@ -1,22 +1,30 @@
+import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from '@material-ui/core';
 import React from 'react';
+import useDimensions from 'react-cool-dimensions';
 import {
   Redirect, Route, Router, Switch,
 } from 'react-router-dom';
-import { ApolloProvider } from '@apollo/client';
-import materialTheme from './materialTheme';
-import apolloClient from './apolloClient';
-import routes, { history } from './routes';
-import TopNav from './components/Nav';
-import Login from './components/Login';
-import Home from './components/Home';
-import PrivateRoute from './PrivateRoute';
+import tw, { styled } from 'twin.macro';
 import { CurrentUserProvider } from './CurrentUserContext';
+import PrivateRoute from './PrivateRoute';
+import apolloClient from './apolloClient';
+import Home from './components/Home';
+import Login from './components/Login';
+import TopNav from './components/Nav';
 import Dashboard from './components/views/dashboard/Dashboard';
-import Projects from './components/views/projects/Projects';
 import Project from './components/views/project/Project';
+import Projects from './components/views/projects/Projects';
+import materialTheme from './materialTheme';
+import routes, { history } from './routes';
+
+const ContentContainer = styled.div`
+  ${tw`flex-grow overflow-hidden`}
+  flex-basis: 1px;
+`;
 
 function App() {
+  const { ref, width, height } = useDimensions<HTMLDivElement>();
   const appRoutes = (
     <Switch>
       <Route path={routes.login} component={Login} />
@@ -32,9 +40,11 @@ function App() {
     <div className="flex flex-col min-h-full">
       <TopNav />
 
-      <div className="bg-gray-50 flex-grow">
-        {appRoutes}
-      </div>
+      <ContentContainer ref={ref}>
+        <div className="bg-gray-50 overflow-auto" style={{ width, height }}>
+          {appRoutes}
+        </div>
+      </ContentContainer>
     </div>
   );
 

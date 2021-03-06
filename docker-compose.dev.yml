@@ -6,46 +6,46 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    volumes: 
+    volumes:
       - ./ssl:/etc/ssl/certs/nginx/:ro
-    networks: 
+    networks:
       - dev
-    environment: 
+    environment:
       - REVERSE_PROXY_SCHEME=https
   
   client:
     build: ./dev
-    networks: 
+    networks:
       - dev
-    volumes: 
+    volumes:
       - ./ssl:/etc/ssl/certs/nginx/:ro
-    environment: 
+    environment:
       - LOCAL_PORT=3030
       - REMOTE_PORT=3030
   
   server:
     build: ./dev
-    depends_on: 
+    depends_on:
       - "db"
-    networks: 
+    networks:
       - dev
-    volumes: 
+    volumes:
       - ./ssl:/etc/ssl/certs/nginx/:ro
-    environment: 
+    environment:
       - LOCAL_PORT=3000
       - REMOTE_PORT=3000
 
   db:
     image: postgres
     restart: always
-    networks: 
+    networks:
       - dev
     ports:
       - "5432:5432"
-    environment: 
+    environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=smt
 
-networks: 
+networks:
   dev:

@@ -2,6 +2,9 @@ const { AuthenticationError } = require('apollo-server-express');
 
 const uniqueColTypeMap = {
   id: 'ID',
+  createdById: 'ID',
+  projectId: 'ID',
+  teamId: 'ID',
 };
 
 const typeMap = {

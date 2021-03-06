@@ -43,7 +43,7 @@ module.exports = async (callback) => {
   await sequelize.sync();
 
   server(app).listen(SERVER_PORT, SERVER_HOST, () => {
-    console.log(`Server running on port ${SERVER_PORT} - GraphQL: ${apollo.graphqlPath}`);
+    console.log(`Server running in ${config.get('NODE_ENV')} mode on port ${SERVER_PORT} - GraphQL: ${apollo.graphqlPath}`);
     if (callback) { callback(); }
   });
 };

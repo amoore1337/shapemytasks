@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
   User.graphAssociations = {
     ownsTeam: 'Team',
     team: 'Team',
+    projects: '[Project]',
   };
 
   User.init({
