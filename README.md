@@ -11,7 +11,7 @@ $ openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout ./ssl/dev.
 ```
 2. Run
 ```bash
-$ docker-compose -f docker-compose.dev.yml -d --build
+$ docker-compose -f docker-compose.dev.yml up -d --build
 ```
 3. Navigate to `client` directory and install dependencies
 ```bash

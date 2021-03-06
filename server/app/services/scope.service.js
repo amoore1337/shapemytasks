@@ -21,7 +21,7 @@ async function deleteScope(scopeId, user) {
   const project = await scope.getProject();
   if (project && userService.canEditProject(user, project)) {
     await Scope.destroy({ where: { id: scopeId } });
-    return project;
+    return scope;
   }
   return null;
 }

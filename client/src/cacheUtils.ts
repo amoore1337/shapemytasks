@@ -3,11 +3,11 @@ import {
   BaseMutationOptions, gql, Reference, Cache,
 } from '@apollo/client';
 
-export function removeCacheItem<T extends { [key: string]: any }, V>(field: string, action: string): BaseMutationOptions<T, V> {
+export function removeCacheItem<T extends { [key: string]: any }, V>(field: string, action: string, cacheItem?: any): BaseMutationOptions<T, V> {
   return {
     update(cache, { data: result }) {
       if (!result) { return; }
-      cache.modify({
+      const cacheAction: Cache.ModifyOptions = {
         fields: {
           [field]: (existingRefs: Reference[] = [], { readField }) => {
             const item = result[action];
@@ -16,7 +16,17 @@ export function removeCacheItem<T extends { [key: string]: any }, V>(field: stri
             return existingRefs.filter((ref) => item.id !== readField('id', ref));
           },
         },
-      });
+      };
+
+      let id = cacheItem;
+      if (cacheItem && typeof cacheItem !== 'string') {
+        id = cache.identify(cacheItem);
+      }
+
+      if (id) {
+        cacheAction.id = id;
+      }
+      cache.modify(cacheAction);
     },
   };
 }

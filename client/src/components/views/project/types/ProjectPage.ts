@@ -13,6 +13,7 @@ export interface ProjectPage_project_scopes {
   title: string | null;
   progress: number;
   color: string;
+  projectId: string | null;
 }
 
 export interface ProjectPage_project {

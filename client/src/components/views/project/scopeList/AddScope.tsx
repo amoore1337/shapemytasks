@@ -48,6 +48,7 @@ export default function AddScope({ projectId }: Props) {
     <form noValidate autoComplete="off" className="flex justify-between" onSubmit={handleSubmit}>
       <TextField
         name="title"
+        className="w-2/3 max-w-lg"
         value={title}
         onChange={handleChange}
         size="small"

@@ -17,6 +17,7 @@ const PROJECT_DETAILS = gql`
         title
         progress
         color
+        projectId
       }
     }
   }

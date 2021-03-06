@@ -12,7 +12,7 @@ module.exports = gql`
 
   extend type Mutation {
     createScope(title: String!, description: String, color: String, progress: Int, projectId:ID!): Scope
-    updateScope(title: String, description: String, color: String, progress: Int): Scope
+    updateScope(id: ID!, title: String, description: String, color: String, progress: Int): Scope
     deleteScopeById(id: ID!): Scope
   }
 `;

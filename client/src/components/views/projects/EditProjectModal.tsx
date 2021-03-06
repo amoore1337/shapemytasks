@@ -32,7 +32,7 @@ type Props ={
   onClose?: () => void;
 }
 
-export default function AddProjectModal({ onClose, projectId, ...props }: Props) {
+export default function EditProjectModal({ onClose, projectId, ...props }: Props) {
   const { data, loading: loadingProject } = useQuery<ProjectDetails>(FETCH_PROJECT, { variables: { id: projectId } });
   const [updateProject, { loading, called }] = useMutation<UpdateProject, UpdateProjectVariables>(
     UPDATE_PROJECT,
@@ -60,7 +60,7 @@ export default function AddProjectModal({ onClose, projectId, ...props }: Props)
           <LoadingIndicator />
         ) : (
           <>
-            <Typography variant="h4">Add Project</Typography>
+            <Typography variant="h4">Edit Project</Typography>
             <ProjectModalForm
               onSubmit={handleSubmit}
               disabled={loading}
