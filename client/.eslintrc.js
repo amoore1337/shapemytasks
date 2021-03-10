@@ -28,9 +28,10 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
     'max-len': 'off',
+    'no-plusplus': 'off',
     'no-unused-vars': 'off',
     'import/order': ['error', { alphabetize: { order: 'asc' } }],
-    '@typescript-eslint/no-unused-vars': ['error'],
+    '@typescript-eslint/no-unused-vars': ['warn'],
     'react/no-array-index-key': 'warn',
   },
   settings: {
