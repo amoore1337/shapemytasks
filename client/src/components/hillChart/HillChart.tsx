@@ -1,5 +1,5 @@
 import {
-  SVG, Svg, Path, Circle as CircleBase, G, extend,
+  SVG, Svg, Path, Circle as CircleBase, G, extend, Element, List,
 } from '@svgdotjs/svg.js';
 import '@svgdotjs/svg.draggable.js';
 import React, { useEffect, useRef } from 'react';
@@ -23,6 +23,34 @@ type HillSvg = {
   itemsGroup: G;
 }
 
+interface Circle extends CircleBase {
+  setChartItem: (chartItem: ChartItem) => Circle;
+  getChartItem: () => ChartItem;
+}
+
+interface CircleElement extends Element {
+  chartItem: ChartItem;
+}
+
+extend(CircleBase, {
+  setChartItem(chartItem: ChartItem) {
+    (this as any).chartItem = chartItem;
+    return this;
+  },
+
+  getChartItem(): ChartItem {
+    return (this as any).chartItem;
+  },
+});
+
+const VIEW_BOX = {
+  x: 750,
+  y: 180,
+};
+
+const DOT_DIAMETER = 10;
+const PROGRESS_OFFSET = DOT_DIAMETER / 2;
+
 let hillChartSvg: HillSvg;
 export default function HillChart({ width, height, data = [] }: Props) {
   const container = useRef<HTMLDivElement>(null);
@@ -34,9 +62,9 @@ export default function HillChart({ width, height, data = [] }: Props) {
   }, [container]);
 
   useEffect(() => {
-    const chartItemsCount = hillChartSvg?.itemsGroup.children().length || 0;
-    if (hillChartSvg && data.length < chartItemsCount) {
-      hillChartSvg.itemsGroup.children().forEach((item) => {
+    const chartItems = hillChartSvg?.itemsGroup.children() as List<CircleElement>;
+    if (hillChartSvg && data.length < (chartItems?.length || 0)) {
+      chartItems.forEach((item) => {
         const stillExists = data.find((i) => i?.id === (item as any).chartItem.id);
         if (!stillExists) {
           item.off(); // TODO: Is this necessary?
@@ -45,7 +73,7 @@ export default function HillChart({ width, height, data = [] }: Props) {
       });
     } else if (hillChartSvg && data.length) {
       data.forEach((item) => {
-        const existingDot = findChartItem(hillChartSvg.itemsGroup, item);
+        const existingDot = findChartItem(chartItems, item);
         if (existingDot) {
           (existingDot as any).chartItem = item;
         } else if (item) {
@@ -60,10 +88,6 @@ export default function HillChart({ width, height, data = [] }: Props) {
   );
 }
 
-const VIEW_BOX = {
-  x: 750,
-  y: 180,
-};
 function createSvg(parent: HTMLDivElement): HillSvg {
   const existingCanvas = SVG('svg.hill-chart');
   if (existingCanvas) {
@@ -86,21 +110,30 @@ function createSvg(parent: HTMLDivElement): HillSvg {
   };
 }
 
-const DOT_DIAMETER = 10;
-const PROGRESS_OFFSET = DOT_DIAMETER / 2;
 function addChartItem(svg: HillSvg, chartItem: ChartItem) {
-  const x = VIEW_BOX.x * (chartItem.progress / 100);
+  let x = VIEW_BOX.x * (chartItem.progress / 100);
+  if (x > VIEW_BOX.x - PROGRESS_OFFSET) {
+    x = VIEW_BOX.x - PROGRESS_OFFSET;
+  } else if (x < PROGRESS_OFFSET) {
+    x = PROGRESS_OFFSET;
+  }
   const y = VIEW_BOX.y - hillForumula(x);
   const item = svg.itemsGroup.circle(DOT_DIAMETER) as Circle;
   item.center(x, y)
-    .fill('#f06')
+    .fill(chartItem.color)
     .setChartItem(chartItem)
     .draggable();
 
   item.on('dragmove.progressUpdate', (event: any) => {
     const { handler, box } = event.detail;
     event.preventDefault();
-    handler.move(box.cx - PROGRESS_OFFSET, VIEW_BOX.y - hillForumula(box.cx) - PROGRESS_OFFSET);
+    let moveX = box.cx;
+    if (box.x2 > VIEW_BOX.x) {
+      moveX = VIEW_BOX.x - PROGRESS_OFFSET;
+    } else if (box.x < 0) {
+      moveX = PROGRESS_OFFSET;
+    }
+    handler.move(moveX - PROGRESS_OFFSET, VIEW_BOX.y - hillForumula(moveX) - PROGRESS_OFFSET);
   });
 
   return item;
@@ -112,24 +145,7 @@ function hillForumula(x: number) {
   return -(VIEW_BOX.y / 2) * Math.sin(x * ((2 * Math.PI) / VIEW_BOX.x) - 1.5 * Math.PI) + (VIEW_BOX.y / 2);
 }
 
-interface Circle extends CircleBase {
-  setChartItem: (chartItem: ChartItem) => Circle;
-  getChartItem: () => ChartItem;
-}
-
-extend(CircleBase, {
-  setChartItem(chartItem: ChartItem) {
-    (this as any).chartItem = chartItem;
-    return this;
-  },
-
-  getChartItem(): ChartItem {
-    return (this as any).chartItem;
-  },
-});
-
-function findChartItem(itemsGroup: G, item: ChartItem | null) {
-  const items = itemsGroup.children();
+function findChartItem(items: List<CircleElement>, item: ChartItem | null) {
   if (!items.length || !item) {
     return null;
   }

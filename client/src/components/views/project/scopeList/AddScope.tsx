@@ -39,6 +39,7 @@ export default function AddScope({ projectId }: Props) {
     event.preventDefault();
     if (!title) {
       setShowError(true);
+      return;
     }
     await createScope({ variables: { projectId, title } });
     setTitle('');
