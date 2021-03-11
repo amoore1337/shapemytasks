@@ -31,7 +31,7 @@ export default function Project() {
   return (
     <div className="h-full p-4 flex justify-center">
       <Paper className="h-full w-full p-4 flex flex-col items-center" style={{ maxWidth: 1600 }}>
-        <div className="flex justify-center w-full pb-4" style={{ height: '50%', maxHeight: 400 }}>
+        <div className="flex justify-center w-full pb-4" style={{ height: '75%', maxHeight: 400 }}>
           <HillChart width="80%" height="100%" data={scopes} />
         </div>
         <ScopeList scopes={scopes} projectId={id} />

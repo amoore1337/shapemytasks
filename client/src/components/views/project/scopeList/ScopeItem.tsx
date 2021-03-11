@@ -10,6 +10,7 @@ import { removeCacheItem } from '../../../../cacheUtils';
 import DeleteConfirmationModal from '../../../ConfirmationModal';
 import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
 import EditScopeModal from './EditScopeModal';
+import ScopeDot from './ScopeDot';
 import { DeleteScope, DeleteScopeVariables } from './types/DeleteScope';
 
 type Props = {
@@ -59,7 +60,10 @@ export default function ScopeItem({ scope }: Props) {
 
   return (
     <div className="p-2 flex justify-between">
-      <Typography>{scope.title}</Typography>
+      <div className="flex items-center">
+        <ScopeDot color={scope.color} />
+        <Typography className="ml-2">{scope.title}</Typography>
+      </div>
       <IconButton size="small" onClick={handleMenuOpen}>
         <MoreIcon fontSize="inherit" />
       </IconButton>
