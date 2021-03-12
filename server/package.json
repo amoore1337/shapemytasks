@@ -8,6 +8,8 @@
     "lint": "eslint --fix",
     "prod": "node index.js",
     "migrate": "sequelize-cli db:migrate",
+    "migrate:undo": "sequelize-cli db:migrate:undo",
+    "migrate:undo:all": "sequelize-cli db:migrate:undo:all",
     "seed": "sequelize-cli db:seed:all",
     "gen:model": "sequelize-cli model:generate",
     "gen:migration": "sequelize-cli migration:generate --name $npm_config_name",

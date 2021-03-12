@@ -30,6 +30,8 @@ module.exports = {
           },
           key: 'id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       color: {
         type: Sequelize.STRING,
