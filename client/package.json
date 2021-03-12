@@ -80,6 +80,7 @@
     "@typescript-eslint/parser": "^4.15.1",
     "apollo": "^2.32.5",
     "autoprefixer": "^9.8.6",
+    "craco-alias": "^2.2.0",
     "eslint": "^7.20.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",

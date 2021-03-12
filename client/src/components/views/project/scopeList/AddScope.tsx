@@ -1,8 +1,8 @@
+import { addCacheItem } from '@/utils/cache';
 import { gql, useMutation } from '@apollo/client';
 import { Button, TextField } from '@material-ui/core';
 import { Color } from '@svgdotjs/svg.js';
 import React, { useState } from 'react';
-import { addCacheItem } from '../../../../cacheUtils';
 import ScopeDot from './ScopeDot';
 import { CreateScope, CreateScopeVariables } from './types/CreateScope';
 

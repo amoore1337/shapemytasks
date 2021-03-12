@@ -1,5 +1,6 @@
+import { debounced } from '@/utils/timing';
 import {
-  SVG, Svg, Path, Circle as CircleBase, G, extend, List, Color,
+  SVG, Svg, Path, Circle as CircleBase, G, extend, List,
 } from '@svgdotjs/svg.js';
 import '@svgdotjs/svg.draggable.js';
 import React, { useEffect, useRef, useState } from 'react';
@@ -13,6 +14,7 @@ type Props = {
   width?: string | number;
   height?: string | number;
   data?: (ChartItem | null)[];
+  allowEdit?: boolean;
 }
 
 type HillSvg = {
@@ -37,7 +39,9 @@ const DOT_DIAMETER = 10;
 const DOT_RADIUS = DOT_DIAMETER / 2;
 
 let hillChartSvg: HillSvg;
-export default function HillChart({ width, height, data = [] }: Props) {
+export default function HillChart({
+  width, height, allowEdit, data = [],
+}: Props) {
   const container = useRef<HTMLDivElement>(null);
   const [chartItems, setChartItems] = useState<Circle[]>([]);
 
@@ -64,7 +68,7 @@ export default function HillChart({ width, height, data = [] }: Props) {
         if (existingDot) {
           (existingDot as any).chartItem = item;
         } else if (item) {
-          const newChartItem = addChartItem(hillChartSvg, item);
+          const newChartItem = addChartItem(hillChartSvg, item, allowEdit);
           if (!chartItems.find((i) => i.chartItem.id === newChartItem.chartItem.id)) {
             setChartItems((existingItems) => [...existingItems, newChartItem]);
           }
@@ -72,6 +76,20 @@ export default function HillChart({ width, height, data = [] }: Props) {
       });
     }
   }, [data]);
+
+  useEffect(() => {
+    const updateAllLabelPos = () => chartItems.forEach((item) => updateItemLabelPos(item));
+    window.addEventListener('resize', debounced(500, updateAllLabelPos));
+    return () => window.removeEventListener('resize', updateAllLabelPos);
+  }, [chartItems]);
+
+  useEffect(() => {
+    if (allowEdit) {
+      chartItems.forEach((item) => enableItemDrag(item));
+    } else {
+      chartItems.forEach((item) => disableItemDrag(item));
+    }
+  }, [allowEdit]);
 
   return (
     <div ref={container} className="relative" style={{ width, height }}>
@@ -119,7 +137,7 @@ function createSvg(parent: HTMLDivElement): HillSvg {
   };
 }
 
-function addChartItem(svg: HillSvg, chartItem: ChartItem) {
+function addChartItem(svg: HillSvg, chartItem: ChartItem, enableDrag?: boolean) {
   let x = VIEW_BOX.x * (chartItem.progress / 100);
   if (x > VIEW_BOX.x - DOT_RADIUS) {
     x = VIEW_BOX.x - DOT_RADIUS;
@@ -134,6 +152,30 @@ function addChartItem(svg: HillSvg, chartItem: ChartItem) {
     .setChartItem(chartItem)
     .draggable();
 
+  if (enableDrag) {
+    enableItemDrag(item);
+  } else {
+    item.on('beforedrag.disabled', (event: any) => {
+      event.preventDefault();
+    });
+  }
+
+  updateItemLabelPos(item);
+  return item;
+}
+
+function disableItemDrag(item: Circle) {
+  item.off('beforedrag.disabled');
+  item.off('dragmove.progressUpdate');
+  item.on('beforedrag.disabled', (event: any) => {
+    event.preventDefault();
+  });
+}
+
+function enableItemDrag(item: Circle) {
+  item.off('beforedrag.disabled');
+  item.off('dragmove.progressUpdate');
+
   item.on('dragmove.progressUpdate', (event: any) => {
     const { handler, box } = event.detail;
     event.preventDefault();
@@ -146,7 +188,4 @@ function addChartItem(svg: HillSvg, chartItem: ChartItem) {
     handler.move(moveX - DOT_RADIUS, VIEW_BOX.y - hillForumula(moveX, VIEW_BOX) - DOT_RADIUS);
     updateItemLabelPos(item);
   });
-
-  updateItemLabelPos(item);
-  return item;
 }

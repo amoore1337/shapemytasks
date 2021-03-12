@@ -1,7 +1,7 @@
+import { addCacheItem } from '@/utils/cache';
 import { gql, useMutation } from '@apollo/client';
 import { Typography } from '@material-ui/core';
 import React, { useEffect } from 'react';
-import { addCacheItem } from '../../../cacheUtils';
 import Modal from '../../Modal';
 import ProjectModalForm, { FormValues } from './ProjectModalForm';
 import { CreateProject, CreateProjectVariables } from './types/CreateProject';

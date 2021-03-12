@@ -1,3 +1,4 @@
+import { removeCacheItem } from '@/utils/cache';
 import { gql, useMutation } from '@apollo/client';
 import {
   IconButton, Menu, MenuItem, Typography,
@@ -6,7 +7,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import React, { useState, MouseEvent } from 'react';
-import { removeCacheItem } from '../../../../cacheUtils';
 import DeleteConfirmationModal from '../../../ConfirmationModal';
 import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
 import EditScopeModal from './EditScopeModal';
