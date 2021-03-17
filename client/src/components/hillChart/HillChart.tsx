@@ -134,7 +134,7 @@ export default function HillChart({
     <div ref={container} className="relative" style={{ width, height }}>
       {plottedItems.map((itemId) => {
         const plot = findChartItem(currentPlots(), itemId);
-        return plot && <ChartItemLabel key={itemId} item={plot} />;
+        return plot && <ChartItemLabel key={itemId} item={plot} dragEnabled={allowEdit} />;
       })}
       {allowEdit && (
         <div className="absolute top-2 right-2 flex">
@@ -218,6 +218,7 @@ function addChartItem(svg: HillSvg, chartItem: ChartItem, enableDrag?: boolean) 
 function disableItemDrag(point: Circle | CircleElement) {
   point.off('beforedrag.disabled');
   point.off('dragmove.progressUpdate');
+  point.toggleClass('cursor-move');
   point.on('beforedrag.disabled', (event: any) => {
     event.preventDefault();
   });
@@ -227,6 +228,7 @@ function enableItemDrag(point: Circle | CircleElement) {
   point.off('beforedrag.disabled');
   point.off('dragmove.progressUpdate');
 
+  point.toggleClass('cursor-move');
   point.on('dragmove.progressUpdate', (event: any) => {
     const { handler, box } = event.detail;
     event.preventDefault();

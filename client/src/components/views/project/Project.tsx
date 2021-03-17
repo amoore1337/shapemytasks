@@ -4,7 +4,7 @@ import { gql, useQuery } from '@apollo/client';
 import { Button, Paper } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 
-import HillChart, { UpdatedItemsMap } from '../../hillChart/HillChart';
+import HillChart, { UpdatedItemsMap } from '@/components/hillChart/HillChart';
 
 import ScopeList from './scopeList/ScopeList';
 import { ProjectPage } from './types/ProjectPage';
