@@ -11,7 +11,7 @@ import { debounced } from '@/utils/timing';
 
 import ChartItemLabel, { updatePointLabelPos } from './ChartItemLabel';
 import {
-  ChartItem, Circle, CircleElement, findChartItem, getProgressFromPosition, hillForumula, ViewBox,
+  ChartItem, Circle, CircleElement, findChartItem, getProgressFromPosition, hillForumula, DEFAULT_VIEW_BOX,
 } from './helpers';
 
 type Props = {
@@ -40,10 +40,7 @@ extend(CircleBase, {
   },
 });
 
-const VIEW_BOX: ViewBox = {
-  x: 750,
-  y: 180,
-};
+const VIEW_BOX = DEFAULT_VIEW_BOX;
 
 const DOT_DIAMETER = 10;
 const DOT_RADIUS = DOT_DIAMETER / 2;
@@ -53,11 +50,11 @@ let updatedItems: UpdatedItemsMap = {};
 export default function HillChart({
   width, height, allowEdit, onSave, onCancel, data = [],
 }: Props) {
-  const circles = (hillChartSvg?.itemsGroup.children().toArray() || []) as CircleElement[];
   const container = useRef<HTMLDivElement>(null);
   const [plottedItems, setPlottedItems] = useState<string[]>([]);
 
   const plotPoints = () => {
+    const circles = currentPlots();
     if (hillChartSvg && data.length < circles.length) {
       circles.forEach((point) => {
         const stillExists = data.find((i) => i?.id === point.chartItem.id);
@@ -68,10 +65,8 @@ export default function HillChart({
         }
       });
     } else if (hillChartSvg && data.length) {
-      console.log('looking for chart items to replace');
       data.forEach((item) => {
         const existingDot = findChartItem(circles, item?.id);
-        console.log('existing dot!', existingDot);
         if (existingDot && item) {
           existingDot.chartItem = item;
         } else if (item) {
@@ -91,7 +86,7 @@ export default function HillChart({
 
   const handleCancel = () => {
     Object.keys(updatedItems).forEach((itemId) => {
-      const point = findChartItem(circles, itemId);
+      const point = findChartItem(currentPlots(), itemId);
       if (point) {
         point.remove();
       }
@@ -115,7 +110,7 @@ export default function HillChart({
 
   useEffect(() => {
     const updateAllLabelPos = () => plottedItems.forEach((item) => {
-      const plot = findChartItem(circles, item);
+      const plot = findChartItem(currentPlots(), item);
       if (plot) {
         updatePointLabelPos(plot);
       }
@@ -126,6 +121,7 @@ export default function HillChart({
   }, [plottedItems]);
 
   useEffect(() => {
+    const circles = currentPlots();
     if (allowEdit) {
       circles.forEach((point) => enableItemDrag(point));
     } else {
@@ -137,7 +133,7 @@ export default function HillChart({
   return (
     <div ref={container} className="relative" style={{ width, height }}>
       {plottedItems.map((itemId) => {
-        const plot = findChartItem(circles, itemId);
+        const plot = findChartItem(currentPlots(), itemId);
         return plot && <ChartItemLabel key={itemId} item={plot} />;
       })}
       {allowEdit && (
@@ -148,6 +144,10 @@ export default function HillChart({
       )}
     </div>
   );
+}
+
+function currentPlots() {
+  return (hillChartSvg?.itemsGroup.children().toArray() || []) as CircleElement[];
 }
 
 function createSvg(parent: HTMLDivElement): HillSvg {

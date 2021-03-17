@@ -43,7 +43,7 @@ export default function Project() {
         <div className="flex justify-center w-full pb-4 relative" style={{ height: '75%', maxHeight: 400 }}>
           {!enableProgressEdit && (
             <Button
-              className="text-white absolute top-8 left-8"
+              className="text-white absolute top-8 left-8 z-10"
               variant="contained"
               color="secondary"
               onClick={() => setEnableProgressEdit(true)}
