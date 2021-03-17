@@ -1,8 +1,11 @@
+import React, { useEffect, useState } from 'react';
+
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Button, TextField, Typography } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+
 import LoadingIndicator from '../../../LoadingIndicator';
 import Modal from '../../../Modal';
+
 import { QueryEditScope } from './types/QueryEditScope';
 import { UpdateScope, UpdateScopeVariables } from './types/UpdateScope';
 

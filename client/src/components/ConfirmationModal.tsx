@@ -1,6 +1,8 @@
+import React from 'react';
+
 import { Button, Typography } from '@material-ui/core';
 import { CSSProperties } from '@material-ui/core/styles/withStyles';
-import React from 'react';
+
 import Modal from './Modal';
 
 type Props = {

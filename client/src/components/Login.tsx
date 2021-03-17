@@ -1,6 +1,8 @@
-import { Button, Paper, Typography } from '@material-ui/core';
 import React from 'react';
+
+import { Button, Paper, Typography } from '@material-ui/core';
 import tw, { styled } from 'twin.macro';
+
 import { ReactComponent as GoogleIcon } from '../icons/google.svg';
 
 const LoginContainer = styled(Paper)(() => [

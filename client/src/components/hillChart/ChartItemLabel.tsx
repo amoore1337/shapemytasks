@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+
 import { Circle, CircleElement } from './helpers';
 
 type EventListener = (event: Event) => void;
@@ -37,8 +38,8 @@ export default function ChartItemLabel({ item }: { item: CircleElement }) {
   );
 }
 
-export function updateItemLabelPos(item: Circle) {
-  const { top, left } = item.node.getBoundingClientRect();
-  const moveEvent = new CustomEvent(`item.${item.chartItem.id}`, { detail: { top, left } });
-  document.getElementById(`item.${item.chartItem.id}.label`)?.dispatchEvent(moveEvent);
+export function updatePointLabelPos(point: Circle | CircleElement) {
+  const { top, left } = point.node.getBoundingClientRect();
+  const moveEvent = new CustomEvent(`item.${point.chartItem.id}`, { detail: { top, left } });
+  document.getElementById(`item.${point.chartItem.id}.label`)?.dispatchEvent(moveEvent);
 }

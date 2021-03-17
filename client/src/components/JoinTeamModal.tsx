@@ -1,9 +1,11 @@
+import React, { useEffect, useState } from 'react';
+
 import { gql, useMutation } from '@apollo/client';
 import {
   Typography, IconButton, TextField, Button,
 } from '@material-ui/core';
 import CancelIcon from '@material-ui/icons/Cancel';
-import React, { useEffect, useState } from 'react';
+
 import Modal from './Modal';
 import { JoinTeamVariables, JoinTeam_joinTeam as JoinResponse } from './types/JoinTeam';
 

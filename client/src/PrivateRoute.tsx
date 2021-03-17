@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
+
 import { Redirect, Route, RouteProps } from 'react-router-dom';
+
 import { CurrentUserContext } from './CurrentUserContext';
 import routes from './routes';
 

@@ -1,8 +1,11 @@
+import React, { useEffect } from 'react';
+
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Typography } from '@material-ui/core';
-import React, { useEffect } from 'react';
+
 import LoadingIndicator from '../../LoadingIndicator';
 import Modal from '../../Modal';
+
 import ProjectModalForm, { FormValues } from './ProjectModalForm';
 import { ProjectDetails } from './types/ProjectDetails';
 import { UpdateProject, UpdateProjectVariables } from './types/UpdateProject';

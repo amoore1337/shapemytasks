@@ -1,10 +1,12 @@
+import React, { useContext, useState } from 'react';
+
 import {
   AppBar, Button, IconButton, Popover, Toolbar, Typography,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import React, { useContext, useState } from 'react';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
+
 import { CurrentUserContext } from '../CurrentUserContext';
 import routes from '../routes';
 

@@ -1,9 +1,12 @@
+import React, { useContext, useState } from 'react';
+
 import { Popover, Button, Typography } from '@material-ui/core';
 import GroupIcon from '@material-ui/icons/Group';
-import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
+
 import { CurrentUserContext } from '../CurrentUserContext';
+
 import JoinTeamModal from './JoinTeamModal';
 import TeamCodeCopyButton from './TeamCodeCopyButton';
 
