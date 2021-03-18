@@ -61,7 +61,7 @@ export default function Project() {
     <div className="h-full p-4 flex justify-center">
       <Paper className="h-full w-full p-4 flex flex-col items-center" style={{ maxWidth: 1600 }}>
         <div className="flex justify-center w-full pb-4 relative" style={{ height: '75%', maxHeight: 400 }}>
-          {!enableProgressEdit && (
+          {!enableProgressEdit && scopes.length > 0 && (
             <Button
               className="text-white absolute top-8 left-8 z-10"
               variant="contained"

@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  MutableRefObject, useEffect, useRef, useState,
+} from 'react';
 
 import { Button } from '@material-ui/core';
 import {
@@ -34,6 +36,11 @@ export type UpdatedItemsMap = {
 };
 
 extend(CircleBase, {
+  setChart(chartId: number) {
+    (this as any).chart = chartId;
+    return this;
+  },
+
   setChartItem(chartItem: ChartItem) {
     (this as any).chartItem = chartItem;
     return this;
@@ -45,20 +52,21 @@ const VIEW_BOX = DEFAULT_VIEW_BOX;
 const DOT_DIAMETER = 10;
 const DOT_RADIUS = DOT_DIAMETER / 2;
 
-let hillChartSvg: HillSvg;
-let updatedItems: UpdatedItemsMap = {};
 export default function HillChart({
   width, height, allowEdit, onSave, onCancel, data = [],
 }: Props) {
+  const chartId = useRef<number>(Math.floor(Math.random() * Math.floor(101)));
+  const updatedItems = useRef<UpdatedItemsMap>({});
+  const hillChartSvg = useRef<HillSvg>();
   const container = useRef<HTMLDivElement>(null);
   const [plottedItems, setPlottedItems] = useState<string[]>([]);
 
   const plotPoints = () => {
-    const circles = currentChartPoints();
+    const circles = currentChartPoints(hillChartSvg.current);
     const items: string[] = [];
 
     // Remove any points that were deleted:
-    if (hillChartSvg && data.length < circles.length) {
+    if (hillChartSvg.current && data.length < circles.length) {
       circles.forEach((point) => {
         const stillExists = data.find((i) => i?.id === point.chartItem.id);
         if (!stillExists) {
@@ -69,13 +77,14 @@ export default function HillChart({
     }
 
     // Update/create points from data:
-    if (hillChartSvg && data.length) {
+    if (hillChartSvg.current && data.length) {
       data.forEach((item) => {
         let plot = findChartPoint(circles, item?.id);
         if (plot && item) {
-          plot.chartItem = item;
-        } else if (item) {
-          plot = addChartPoint(hillChartSvg, item, allowEdit);
+          plot.remove();
+        }
+        if (item && hillChartSvg.current) {
+          plot = addChartPoint(hillChartSvg.current, chartId.current, item, updatedItems, allowEdit);
         }
         if (plot) {
           items.push(plot?.chartItem.id);
@@ -87,13 +96,13 @@ export default function HillChart({
   };
 
   const handleSave = () => {
-    if (!onSave || !Object.keys(updatedItems).length) { return; }
-    onSave(updatedItems);
+    if (!onSave || !Object.keys(updatedItems.current).length) { return; }
+    onSave(updatedItems.current);
   };
 
   const handleCancel = () => {
-    Object.keys(updatedItems).forEach((itemId) => {
-      const point = findChartPoint(currentChartPoints(), itemId);
+    Object.keys(updatedItems.current).forEach((itemId) => {
+      const point = findChartPoint(currentChartPoints(hillChartSvg.current), itemId);
       if (point) { point.remove(); }
     });
 
@@ -103,7 +112,7 @@ export default function HillChart({
 
   useEffect(() => {
     if (container.current) {
-      hillChartSvg = createSvg(container.current);
+      hillChartSvg.current = createSvg(container.current);
     }
   }, [container]);
 
@@ -114,9 +123,9 @@ export default function HillChart({
   // Fix labels on window resize:
   useEffect(() => {
     const updateAllLabelPos = () => plottedItems.forEach((itemId) => {
-      const point = findChartPoint(currentChartPoints(), itemId);
+      const point = findChartPoint(currentChartPoints(hillChartSvg.current), itemId);
       if (point) {
-        updatePointLabelPos(point);
+        updatePointLabelPos(point, VIEW_BOX);
       }
     });
 
@@ -125,19 +134,19 @@ export default function HillChart({
   }, [plottedItems]);
 
   useEffect(() => {
-    const points = currentChartPoints();
+    const points = currentChartPoints(hillChartSvg.current);
     if (allowEdit) {
-      points.forEach((point) => enableDragForPoint(point));
+      points.forEach((point) => enableDragForPoint(point, updatedItems));
     } else {
       points.forEach((point) => disableDragForPoint(point));
-      updatedItems = {};
+      updatedItems.current = {};
     }
   }, [allowEdit]);
 
   return (
-    <div ref={container} className="relative" style={{ width, height }}>
+    <div ref={container} id={`chart-container-${chartId.current}`} className="relative" style={{ width, height }}>
       {plottedItems.map((itemId) => {
-        const point = findChartPoint(currentChartPoints(), itemId);
+        const point = findChartPoint(currentChartPoints(hillChartSvg.current), itemId);
         return point && <ChartPointLabel key={itemId} point={point} dragEnabled={allowEdit} />;
       })}
       {allowEdit && (
@@ -150,12 +159,12 @@ export default function HillChart({
   );
 }
 
-function currentChartPoints() {
-  return (hillChartSvg?.pointsGroup.children().toArray() || []) as CircleElement[];
+function currentChartPoints(svg?: HillSvg) {
+  return (svg?.pointsGroup.children().toArray() || []) as CircleElement[];
 }
 
 function createSvg(parent: HTMLDivElement): HillSvg {
-  const existingCanvas = SVG('svg.hill-chart');
+  const existingCanvas = SVG(`#${parent.id} svg.hill-chart`);
   if (existingCanvas) {
     existingCanvas.remove();
   }
@@ -193,7 +202,13 @@ function createSvg(parent: HTMLDivElement): HillSvg {
   };
 }
 
-function addChartPoint(svg: HillSvg, chartItem: ChartItem, enableDrag?: boolean) {
+function addChartPoint(
+  svg: HillSvg,
+  chartId: number,
+  chartItem: ChartItem,
+  updatedItemsRef: MutableRefObject<UpdatedItemsMap>,
+  enableDrag?: boolean,
+) {
   let x = VIEW_BOX.x * (chartItem.progress / 100);
   if (x > VIEW_BOX.x - DOT_RADIUS) {
     x = VIEW_BOX.x - DOT_RADIUS;
@@ -204,35 +219,36 @@ function addChartPoint(svg: HillSvg, chartItem: ChartItem, enableDrag?: boolean)
   const point = svg.pointsGroup.circle(DOT_DIAMETER) as Circle;
   point.center(x, y)
     .fill(chartItem.color)
+    .setChart(chartId)
     .setChartItem(chartItem)
     .draggable();
 
   if (enableDrag) {
-    enableDragForPoint(point);
+    enableDragForPoint(point, updatedItemsRef);
   } else {
     point.on('beforedrag.disabled', (event: any) => {
       event.preventDefault();
     });
   }
 
-  updatePointLabelPos(point);
+  updatePointLabelPos(point, VIEW_BOX);
   return point;
 }
 
 function disableDragForPoint(point: Circle | CircleElement) {
   point.off('beforedrag.disabled');
   point.off('dragmove.progressUpdate');
-  point.toggleClass('cursor-move');
+  point.removeClass('cursor-move');
   point.on('beforedrag.disabled', (event: any) => {
     event.preventDefault();
   });
 }
 
-function enableDragForPoint(point: Circle | CircleElement) {
+function enableDragForPoint(point: Circle | CircleElement, updatedItemsRef: MutableRefObject<UpdatedItemsMap>) {
   point.off('beforedrag.disabled');
   point.off('dragmove.progressUpdate');
 
-  point.toggleClass('cursor-move');
+  point.addClass('cursor-move');
   point.on('dragmove.progressUpdate', (event: any) => {
     const { handler, box } = event.detail;
     event.preventDefault();
@@ -243,8 +259,9 @@ function enableDragForPoint(point: Circle | CircleElement) {
       moveX = DOT_RADIUS;
     }
 
-    updatedItems[point.chartItem.id] = getProgressFromPosition(box.cx);
+    // eslint-disable-next-line no-param-reassign
+    updatedItemsRef.current[point.chartItem.id] = getProgressFromPosition(box.cx); // Bleh, stop mutating this arg
     handler.move(moveX - DOT_RADIUS, VIEW_BOX.y - hillForumula(moveX, VIEW_BOX) - DOT_RADIUS);
-    updatePointLabelPos(point);
+    updatePointLabelPos(point, VIEW_BOX);
   });
 }

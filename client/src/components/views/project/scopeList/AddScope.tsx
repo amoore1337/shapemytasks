@@ -58,7 +58,7 @@ export default function AddScope({ projectId }: Props) {
         <ScopeDot color={color} />
         <TextField
           name="title"
-          className="ml-2 max-w-lg"
+          className="ml-2 w-full"
           value={title}
           onChange={handleChange}
           size="small"

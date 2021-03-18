@@ -53,6 +53,7 @@ async function updateScopeProgresses(updatesMap, user) {
     where: {
       id: updatesMap.map((s) => s.id),
     },
+    order: [['id', 'ASC']],
   });
 
   const outOfProjectScopes = scopes.filter((s) => s.projectId !== project.id);

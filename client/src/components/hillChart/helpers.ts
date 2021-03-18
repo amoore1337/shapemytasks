@@ -20,11 +20,14 @@ export const DEFAULT_VIEW_BOX: ViewBox = {
 };
 
 export interface Circle extends CircleBase {
+  setChart: (chartId: number) => Circle;
   setChartItem: (chartItem: ChartItem) => Circle;
+  chart: number;
   chartItem: ChartItem;
 }
 
 export interface CircleElement extends Element {
+  chart: number;
   chartItem: ChartItem;
 }
 
