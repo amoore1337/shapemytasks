@@ -34,7 +34,7 @@ export function hillForumula(x: number, viewbox: ViewBox = DEFAULT_VIEW_BOX) {
   return -(viewbox.y / 2) * Math.sin(x * ((2 * Math.PI) / viewbox.x) - 1.5 * Math.PI) + (viewbox.y / 2);
 }
 
-export function findChartItem(points: CircleElement[], itemId?: string | null) {
+export function findChartPoint(points: CircleElement[], itemId?: string | null) {
   if (!points.length || !itemId) {
     return null;
   }
@@ -48,13 +48,6 @@ export function findChartItem(points: CircleElement[], itemId?: string | null) {
 }
 
 export function getProgressFromPosition(position: number, viewbox: ViewBox = DEFAULT_VIEW_BOX) {
-  // const cx = point.node.attributes.getNamedItem('cx');
-  // // Attribute not set for some reason? Bail
-  // if (!cx) { return null; }
-
-  // const position = parseInt(cx.value, 10);
-  // if (Number.isNaN(position)) { return null; }
-
   let progress = (position / (viewbox.x)) * 100;
   progress = Math.min(progress, 100);
   progress = Math.max(progress, 0);

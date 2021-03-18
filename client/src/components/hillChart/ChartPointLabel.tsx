@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Circle, CircleElement } from './helpers';
 
 type EventListener = (event: Event) => void;
-export default function ChartItemLabel({ item, dragEnabled }: { item: CircleElement, dragEnabled?: boolean }) {
-  const startPos = item.node.getBoundingClientRect();
+export default function ChartPointLabel({ point, dragEnabled }: { point: CircleElement, dragEnabled?: boolean }) {
+  const startPos = point.node.getBoundingClientRect();
   const [pos, setPos] = useState<{ top: number, left: number }>({ top: startPos.top, left: startPos.left });
   const labelEl = useRef<HTMLDivElement>(null);
 
@@ -13,10 +13,10 @@ export default function ChartItemLabel({ item, dragEnabled }: { item: CircleElem
       setPos(event.detail);
     };
     const redirectMouseEvent = (event: Event) => {
-      item.dispatchEvent(new MouseEvent(event.type, event));
+      point.dispatchEvent(new MouseEvent(event.type, event));
     };
     if (labelEl.current) {
-      labelEl.current.addEventListener(`item.${item.chartItem.id}`, handlePosChange as EventListener);
+      labelEl.current.addEventListener(`item.${point.chartItem.id}`, handlePosChange as EventListener);
       if (dragEnabled) {
         labelEl.current.addEventListener('mousedown', redirectMouseEvent);
       }
@@ -24,7 +24,7 @@ export default function ChartItemLabel({ item, dragEnabled }: { item: CircleElem
 
     return () => {
       if (labelEl.current) {
-        labelEl.current.removeEventListener(`item.${item.chartItem.id}`, handlePosChange as EventListener);
+        labelEl.current.removeEventListener(`item.${point.chartItem.id}`, handlePosChange as EventListener);
         labelEl.current.removeEventListener('mousedown', redirectMouseEvent);
       }
     };
@@ -33,14 +33,14 @@ export default function ChartItemLabel({ item, dragEnabled }: { item: CircleElem
   return (
     <div
       ref={labelEl}
-      id={`item.${item.chartItem.id}.label`}
+      id={`item.${point.chartItem.id}.label`}
       className={`fixed ${dragEnabled ? 'cursor-move' : ''}`}
       style={{
         top: pos.top - 5,
         left: pos.left + 20,
       }}
     >
-      {item.chartItem.title}
+      {point.chartItem.title}
     </div>
   );
 }
