@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { Button, Paper } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 
@@ -8,6 +8,7 @@ import HillChart, { UpdatedItemsMap } from '@/components/hillChart/HillChart';
 
 import ScopeList from './scopeList/ScopeList';
 import { ProjectPage } from './types/ProjectPage';
+import { UpdateScopeProgresses, UpdateScopeProgressesVariables } from './types/UpdateScopeProgresses';
 
 const PROJECT_DETAILS = gql`
   query ProjectPage($id: ID!) {
@@ -26,14 +27,33 @@ const PROJECT_DETAILS = gql`
   }
 `;
 
+const UPDATE_SCOPE_PROGRESSES = gql`
+  mutation UpdateScopeProgresses($inputs: [BatchUpdateScopeProgressMap!]!) {
+    batchUpdateScopeProgress(inputs: $inputs) {
+      id
+      title
+      progress
+      color
+      projectId
+    }
+  }
+`;
+
 export default function Project() {
   const [enableProgressEdit, setEnableProgressEdit] = useState(false);
   const { id } = useParams<{ id: string }>();
   const { data } = useQuery<ProjectPage>(PROJECT_DETAILS, { variables: { id }, skip: !id });
+  const [updateProject] = useMutation<UpdateScopeProgresses, UpdateScopeProgressesVariables>(
+    UPDATE_SCOPE_PROGRESSES,
+  );
 
   const handleSave = (updatedItems: UpdatedItemsMap) => {
     setEnableProgressEdit(false);
-    console.log('saved!', updatedItems);
+    const updates: { id: string, progress: number }[] = [];
+    Object.keys(updatedItems).forEach((itemId) => {
+      updates.push({ id: itemId, progress: updatedItems[itemId] });
+    });
+    updateProject({ variables: { inputs: updates } });
   };
 
   const scopes = data?.project?.scopes || [];

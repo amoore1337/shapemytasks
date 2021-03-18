@@ -38,7 +38,7 @@ export default function EditScopeModal({ onClose, scopeId, ...props }: Props) {
   const [title, setTitle] = useState('');
   const [showError, setShowError] = useState(false);
   const { data, loading: loadingScope } = useQuery<QueryEditScope>(FETCH_SCOPE, { variables: { id: scopeId } });
-  const [updateProject, { loading, called }] = useMutation<UpdateScope, UpdateScopeVariables>(
+  const [updateScope, { loading, called }] = useMutation<UpdateScope, UpdateScopeVariables>(
     UPDATE_SCOPE,
   );
 
@@ -49,7 +49,7 @@ export default function EditScopeModal({ onClose, scopeId, ...props }: Props) {
       return;
     }
 
-    updateProject({ variables: { id: scopeId, title } });
+    updateScope({ variables: { id: scopeId, title } });
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

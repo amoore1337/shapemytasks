@@ -9,6 +9,7 @@ const uniqueColTypeMap = {
 
 const typeMap = {
   INTEGER: 'Int',
+  FLOAT: 'Float',
   STRING: 'String',
   DATE: 'Date',
 };

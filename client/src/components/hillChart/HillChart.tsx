@@ -66,9 +66,13 @@ export default function HillChart({
       });
     } else if (hillChartSvg && data.length) {
       data.forEach((item) => {
-        const existingDot = findChartItem(circles, item?.id);
-        if (existingDot && item) {
-          existingDot.chartItem = item;
+        const existingPoint = findChartItem(circles, item?.id);
+        if (existingPoint && item) {
+          existingPoint.chartItem = item;
+          setPlottedItems((plots) => [
+            ...plots.filter((i) => i !== existingPoint.chartItem.id),
+            existingPoint.chartItem.id,
+          ]);
         } else if (item) {
           const newChartItem = addChartItem(hillChartSvg, item, allowEdit);
           if (!plottedItems.find((i) => i === newChartItem.chartItem.id)) {

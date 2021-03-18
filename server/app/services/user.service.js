@@ -17,12 +17,12 @@ async function joinTeam(user, joinCode) {
 }
 
 async function canEditProject(user, project) {
-  if (user.id === project.createdById) {
+  if (project && user.id === project.createdById) {
     return true;
   }
 
   // TODO: This should be replaced by a permissions record lookup:
-  if (user.teamId === project.teamId && project.isVisible()) {
+  if (project && user.teamId === project.teamId && project.isVisible()) {
     return true;
   }
 
