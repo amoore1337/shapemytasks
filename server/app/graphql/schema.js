@@ -61,8 +61,12 @@ const resolvers = {
 async function getUserForRequest(req) {
   let user;
   if (req.cookies && req.cookies.t_id) {
-    const { userId } = verifyJWT(req.cookies.t_id);
-    user = await User.findByPk(userId);
+    try {
+      const { userId } = verifyJWT(req.cookies.t_id);
+      user = await User.findByPk(userId);
+    } catch (error) {
+      return null;
+    }
   }
   return user;
 }

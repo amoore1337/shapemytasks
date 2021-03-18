@@ -71,12 +71,15 @@ export default function ScopeItem({ scope }: Props) {
   };
 
   const inProgress = scope.progress > 0 && scope.progress < 100;
+  const completed = scope.progress === 100;
 
   return (
     <div className="p-2 flex justify-between">
       <div className="flex items-center">
         <ScopeDot color={scope.color} />
-        <Typography className={`ml-2 ${inProgress ? 'font-bold' : ''}`}>{scope.title}</Typography>
+        <Typography className={`ml-2 ${inProgress ? 'font-bold' : ''} ${completed ? 'line-through' : ''}`}>
+          {scope.title}
+        </Typography>
         <Typography className={`ml-3 text-sm text-gray-600 ${inProgress ? 'font-bold' : ''}`}>
           (
           {summaryForProgress(scope.progress)}
@@ -133,7 +136,7 @@ function summaryForProgress(progress: number) {
   } else if (progress < 10) {
     summary = 'Getting started';
   } else if (progress < 30) {
-    summary = 'Derisking';
+    summary = 'De-risking';
   } else if (progress < 48) {
     summary = 'Mostly derisked';
   } else if (progress < 60) {

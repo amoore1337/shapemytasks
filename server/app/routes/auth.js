@@ -13,6 +13,6 @@ module.exports = (router) => {
   router.get('/google/callback', passport.authenticate('google'), wrapAsync(async (req, res) => {
     const token = await loginFromGoogle(req.user);
     res.cookie('t_id', token, { httpOnly: true });
-    res.redirect('/dashboard');
+    res.redirect('/projects');
   }));
 };
