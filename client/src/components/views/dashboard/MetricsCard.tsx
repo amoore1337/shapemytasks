@@ -20,7 +20,7 @@ const FETCH_METRICS = gql`
 `;
 
 export default function MetricsCard() {
-  const { loading, data } = useQuery<DashboardMetrics>(FETCH_METRICS);
+  const { loading, data } = useQuery<DashboardMetrics>(FETCH_METRICS, { fetchPolicy: 'cache-and-network' });
 
   const metrics = data?.metrics;
 

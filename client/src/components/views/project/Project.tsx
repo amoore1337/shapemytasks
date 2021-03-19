@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Button, Paper, Typography } from '@material-ui/core';
+import {
+  Button, Paper, Typography, useMediaQuery, useTheme,
+} from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 
 import HillChart, { UpdatedItemsMap } from '@/components/hillChart/HillChart';
@@ -40,6 +42,8 @@ const UPDATE_SCOPE_PROGRESSES = gql`
 `;
 
 export default function Project() {
+  const { breakpoints } = useTheme();
+  const isMobile = useMediaQuery(breakpoints.down('sm'));
   const [enableProgressEdit, setEnableProgressEdit] = useState(false);
   const { id } = useParams<{ id: string }>();
   const { data } = useQuery<ProjectPage>(PROJECT_DETAILS, { variables: { id }, skip: !id });
@@ -60,7 +64,10 @@ export default function Project() {
   return (
     <div className="h-full p-4 flex justify-center">
       <Paper className="h-full w-full p-4 flex flex-col items-center" style={{ maxWidth: 1600 }}>
-        <div className="flex justify-center w-full pb-4 relative" style={{ height: '70%', maxHeight: 400 }}>
+        <div
+          className="flex justify-center w-full pb-4 relative"
+          style={isMobile ? { height: '100%' } : { height: '70%', maxHeight: 400 }}
+        >
           {!enableProgressEdit && scopes.length > 0 && (
             <Button
               className="text-white absolute top-8 left-8 z-10"
@@ -80,10 +87,14 @@ export default function Project() {
             onCancel={() => setEnableProgressEdit(false)}
           />
         </div>
-        <div className="w-full px-4" style={{ maxWidth: 1200 }}>
-          <Typography variant="h6" component="h2">{data?.project?.title}</Typography>
-        </div>
-        <ScopeList scopes={scopes} projectId={id} />
+        {!isMobile && (
+          <>
+            <div className="w-full px-4" style={{ maxWidth: 1200 }}>
+              <Typography variant="h6" component="h2">{data?.project?.title}</Typography>
+            </div>
+            <ScopeList scopes={scopes} projectId={id} />
+          </>
+        )}
       </Paper>
     </div>
   );

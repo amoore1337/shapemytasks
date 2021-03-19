@@ -57,11 +57,12 @@ export default function ChartPointLabel({ point, dragEnabled }: { point: CircleE
     setLabelStyle(style);
   }, [labelEl, pos]);
 
+  const inProgress = Math.floor(pos.progress) > 0 && Math.ceil(pos.progress) < 100;
   return (
     <div
       ref={labelEl}
       id={`${point.chart}.item.${point.chartItem.id}.label`}
-      className={`fixed ${dragEnabled ? 'cursor-move' : ''}`}
+      className={`fixed ${dragEnabled ? 'cursor-move' : ''} ${inProgress ? 'text-gray-800' : 'text-gray-300'}`}
       style={labelStyle}
     >
       {point.chartItem.title}
