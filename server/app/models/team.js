@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Team.graphAssociations = {
     members: '[User]',
+    // metrics: 'TeamMetrics',
   };
 
   Team.init({

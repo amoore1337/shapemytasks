@@ -65,7 +65,7 @@ export default function TopNav() {
           onClose={() => setSideNavOpened(false)}
           loggedIn={!!currentUser}
         />
-        <Typography variant="h6" className="flex-grow" color="inherit">
+        <Typography variant="h6" component="h1" className="flex-grow" color="inherit">
           Shape My Tasks
         </Typography>
         {currentUser ? (

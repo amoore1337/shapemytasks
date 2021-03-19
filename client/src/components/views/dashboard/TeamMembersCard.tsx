@@ -46,7 +46,7 @@ export default function TeamMembersCard() {
         )}
       </div>
       {loading && <LoadingIndicator />}
-      {members.length && (
+      {members.length > 0 && (
         <ul>
           {members.map((member) => member && (
             <li className="border-b border-solid border-blue-200 last:border-b-0 py-2" key={member.id}>
