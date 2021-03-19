@@ -29,7 +29,7 @@ export default function TeamCodeCopyButton({ teamCode }: { teamCode: string }) {
     <CopyToClipboard text={teamCode} onCopy={() => setCopied(true)}>
       <Button
         variant="outlined"
-        className="mb-2"
+        className="mb-2 w-full"
         color="secondary"
         onMouseEnter={() => !copied && setButtonText(BUTTON_TEXTS.hover)}
         onMouseLeave={() => !copied && setButtonText(BUTTON_TEXTS.normal)}
