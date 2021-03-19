@@ -35,7 +35,7 @@ export default function TeamMembersCard() {
   const members = data?.currentUser?.team?.members || [];
 
   return (
-    <section className="p-4 bg-white shadow rounded">
+    <section className="p-4 bg-white shadow rounded text-gray-800">
       <div className="flex w-full justify-between">
         <Typography variant="h6" component="h2">Team Members</Typography>
         {currentUser?.team && (
