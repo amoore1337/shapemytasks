@@ -37,22 +37,14 @@ async function findProjectForUser(projectId, user) {
   const project = await Project.findOne({
     where: {
       id: projectId,
-      teamId: user.teamId,
+      [Sequelize.Op.or]: [
+        { createdById: user.id, teamId: user.teamId },
+        { teamId: user.teamId, visibility: 'visible' },
+      ],
     },
   });
 
-  if (!project) { return null; }
-
-  if (project.createdById === user.id) {
-    return project;
-  }
-
-  const team = await project.getTeam();
-  if (team && team.visibility === 'visible') {
-    return project;
-  }
-
-  return null;
+  return project;
 }
 
 async function deleteProject(projectId, user) {
