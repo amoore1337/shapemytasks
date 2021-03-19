@@ -4,10 +4,10 @@ const { rejectUnauthenticated } = require('../helpers');
 
 module.exports = {
   Mutation: {
-    async createTeam(_, { name }, { user }) {
+    async createTeam(_, { name, restrictEmailDomain }, { user }) {
       rejectUnauthenticated(user);
 
-      await teamService.createTeam(name, user);
+      await teamService.createTeam(name, restrictEmailDomain, user);
       return user.reload();
     },
 

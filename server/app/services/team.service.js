@@ -1,11 +1,12 @@
 const { Team, Project, sequelize } = require('../models');
 
-async function createTeam(name, createdBy) {
+async function createTeam(name, restrictEmailDomain, createdBy) {
   const transaction = await sequelize.transaction();
   let team;
   try {
     team = await Team.create({
       name,
+      restrictEmailDomain,
       createdById: createdBy.id,
     });
 

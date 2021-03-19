@@ -10,6 +10,13 @@ async function joinTeam(user, joinCode) {
     throw new Error('No team found for code!');
   }
 
+  if (team.restrictEmailDomain) {
+    const emailDomain = user.email.split('@')[1];
+    if (emailDomain !== team.restrictEmailDomain) {
+      throw new Error('You do not have the necessary permissions to join this team.');
+    }
+  }
+
   user.teamId = team.id;
   await user.save();
 

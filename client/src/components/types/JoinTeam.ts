@@ -42,4 +42,5 @@ export interface JoinTeamVariables {
   name: string;
   joinCode: string;
   joinTeam: boolean;
+  restrictEmailDomain?: string | null;
 }

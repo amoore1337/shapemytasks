@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { gql, useMutation } from '@apollo/client';
 import {
-  Typography, IconButton, TextField, Button,
+  Typography, IconButton, TextField, Button, FormControlLabel, Checkbox, Snackbar,
 } from '@material-ui/core';
 import CancelIcon from '@material-ui/icons/Cancel';
+import Alert from '@material-ui/lab/Alert';
+
+import { CurrentUserContext } from '@/CurrentUserContext';
 
 import Modal from './Modal';
 import { JoinTeamVariables, JoinTeam_joinTeam as JoinResponse } from './types/JoinTeam';
 
 const JOIN_TEAM = gql`
-  mutation JoinTeam($name: String!, $joinCode: String!, $joinTeam: Boolean!) {
-    createTeam(name: $name) @skip(if: $joinTeam) {
+  mutation JoinTeam($name: String!, $joinCode: String!, $joinTeam: Boolean!, $restrictEmailDomain: String) {
+    createTeam(name: $name, restrictEmailDomain: $restrictEmailDomain) @skip(if: $joinTeam) {
       ...TeamInfo
     }
 
@@ -35,15 +38,22 @@ type Props ={
   onClose?: () => void;
 }
 export default function UserSettingsModal({ open, onClose }: Props) {
+  const { currentUser } = useContext(CurrentUserContext);
   const [teamName, setTeamName] = useState('');
   const [teamCode, setTeamCode] = useState('');
+  const [emailDomain, setEmailDomain] = useState(currentUser?.email.split('@')[1] || '');
+  const [enforceDomainRestriction, setEnforceDomainRestriction] = useState(false);
   const [formError, setFormError] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
-  const [joinTeam, { loading, called }] = useMutation<JoinResponse, JoinTeamVariables>(JOIN_TEAM);
+  const [joinTeam, { loading, called, error }] = useMutation<JoinResponse, JoinTeamVariables>(
+    JOIN_TEAM,
+    { onError: () => setShowErrorToast(true) },
+  );
 
   useEffect(() => {
     // If we're done, close the modal
-    if (called && !loading && onClose) {
+    if (called && !loading && !error && onClose) {
       onClose();
     }
   }, [loading, called]);
@@ -51,17 +61,27 @@ export default function UserSettingsModal({ open, onClose }: Props) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.name === 'code') {
       setTeamCode(event.target.value.toUpperCase());
-    } else {
+    } else if (event.target.name === 'name') {
       setTeamName(event.target.value);
+    } else if (event.target.name === 'domain') {
+      setEmailDomain(event.target.value);
+    } else {
+      setEnforceDomainRestriction(event.target.checked);
     }
+
     if (event.target.value && formError) {
       setFormError(false);
     }
   };
 
   const submitTeam = () => {
-    if (teamName) {
-      joinTeam({ variables: { name: teamName, joinCode: '', joinTeam: false } });
+    if (teamName && (!enforceDomainRestriction || emailDomain)) {
+      const restrictEmailDomain = enforceDomainRestriction ? emailDomain : '';
+      joinTeam({
+        variables: {
+          name: teamName, joinCode: '', restrictEmailDomain, joinTeam: false,
+        },
+      });
     } else if (teamCode) {
       joinTeam({ variables: { name: '', joinCode: teamCode, joinTeam: true } });
     } else {
@@ -74,15 +94,17 @@ export default function UserSettingsModal({ open, onClose }: Props) {
     submitTeam();
   };
 
-  const showCodeError = formError && !teamName;
-  const showNameError = formError && !teamCode;
+  // TODO: Bleh, refactor all of this and maybe use formik
+  const showCodeError = formError && !teamName && !teamCode;
+  const showNameError = showCodeError;
+  const showDomainError = formError && enforceDomainRestriction && !emailDomain;
 
   return (
     <Modal
       open={open}
       onClose={onClose}
       style={{
-        width: '60%', height: '80%', maxWidth: 400, maxHeight: 400,
+        width: '60%', height: '80%', maxWidth: 400, maxHeight: 600,
       }}
     >
       <div>
@@ -96,6 +118,7 @@ export default function UserSettingsModal({ open, onClose }: Props) {
           </Typography>
           <form noValidate autoComplete="off" className="py-6" onSubmit={handleSubmit}>
             <TextField
+              autoFocus
               name="code"
               value={teamCode}
               onChange={handleChange}
@@ -123,6 +146,32 @@ export default function UserSettingsModal({ open, onClose }: Props) {
               error={showNameError}
               helperText={showNameError && 'Please provide a name for the team'}
             />
+            <FormControlLabel
+              control={(
+                <Checkbox
+                  name="domain-restriction"
+                  checked={enforceDomainRestriction}
+                  onChange={handleChange}
+                />
+              )}
+              label="Enforce by email domain"
+            />
+            {enforceDomainRestriction && (
+              <div className="flex items-center">
+                <span className="mr-1 text-xl font-bold text-gray-600">@</span>
+                <TextField
+                  name="domain"
+                  value={emailDomain}
+                  onChange={handleChange}
+                  size="small"
+                  color="secondary"
+                  label="example.com"
+                  variant="outlined"
+                  error={showDomainError}
+                  helperText={showDomainError && 'Please provide an email domain name'}
+                />
+              </div>
+            )}
           </form>
         </div>
         <div className="flex justify-end">
@@ -137,6 +186,13 @@ export default function UserSettingsModal({ open, onClose }: Props) {
             Submit
           </Button>
         </div>
+        {showErrorToast && (
+          <Snackbar open={open} autoHideDuration={6000} onClose={() => setShowErrorToast(false)}>
+            <Alert onClose={() => setShowErrorToast(false)} severity="error">
+              {error?.message || 'Oops! Something went wrong, please try again.'}
+            </Alert>
+          </Snackbar>
+        )}
       </div>
     </Modal>
   );

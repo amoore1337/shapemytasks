@@ -12,6 +12,7 @@ export interface UpdateScopeProgress_updateScope {
   id: string;
   title: string | null;
   description: string | null;
+  progress: number;
 }
 
 export interface UpdateScopeProgress {

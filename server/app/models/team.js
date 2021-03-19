@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     createdById: DataTypes.INTEGER,
     joinCode: DataTypes.STRING,
+    restrictEmailDomain: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Team',

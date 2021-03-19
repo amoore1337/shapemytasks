@@ -10,7 +10,7 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createTeam(name: String!): CurrentUser
+    createTeam(name: String!, restrictEmailDomain: String): CurrentUser
     joinTeam(joinCode: String!): CurrentUser
   }
 `;
