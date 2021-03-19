@@ -13,7 +13,7 @@ export default function ChartPointLabel({ point, dragEnabled }: { point: CircleE
     left: startPos.left,
     bottom: startPos.bottom,
     right: startPos.right,
-    progress: 0,
+    progress: getProgressFromPosition(chartPositionForPoint(point)),
   });
   const [labelStyle, setLabelStyle] = useState<React.CSSProperties>({
     top: startPos.top - 5,
@@ -69,11 +69,15 @@ export default function ChartPointLabel({ point, dragEnabled }: { point: CircleE
   );
 }
 
+function chartPositionForPoint(point: Circle | CircleElement) {
+  return parseInt(point.node.getAttribute('cx') || '0', 10);
+}
+
 export function updatePointLabelPos(point: Circle | CircleElement, viewbox: ViewBox) {
   const {
     top, left, bottom, right,
   } = point.node.getBoundingClientRect();
-  const chartPos = parseInt(point.node.getAttribute('cx') || '0', 10);
+  const chartPos = chartPositionForPoint(point);
   const moveEvent = new CustomEvent(`${point.chart}.item.${point.chartItem.id}`, {
     detail: {
       top,
