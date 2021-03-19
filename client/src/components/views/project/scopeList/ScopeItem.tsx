@@ -1,15 +1,22 @@
+import React, { useState, MouseEvent } from 'react';
+
 import { gql, useMutation } from '@apollo/client';
 import {
+  Button,
   IconButton, Menu, MenuItem, Typography,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import React, { useState, MouseEvent } from 'react';
-import { removeCacheItem } from '../../../../cacheUtils';
-import DeleteConfirmationModal from '../../../ConfirmationModal';
+
+import DeleteConfirmationModal from '@/components/ConfirmationModal';
+import { removeCacheItem } from '@/utils/cache';
+
 import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
+
 import EditScopeModal from './EditScopeModal';
+import EditScopeProgressModal from './EditScopeProgressModal';
+import ScopeDot from './ScopeDot';
 import { DeleteScope, DeleteScopeVariables } from './types/DeleteScope';
 
 type Props = {
@@ -28,6 +35,7 @@ export default function ScopeItem({ scope }: Props) {
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLButtonElement>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showUpdateProgressModal, setShowUpdateProgressModal] = useState(false);
   const [destroyScope] = useMutation<DeleteScope, DeleteScopeVariables>(
     DELETE_SCOPE,
     removeCacheItem<DeleteScope, DeleteScopeVariables>('scopes', 'deleteScopeById', `Project:${scope.projectId}`),
@@ -47,9 +55,14 @@ export default function ScopeItem({ scope }: Props) {
     setShowDeleteConfirmation(true);
   };
 
+  const handleUpdateProgress = () => {
+    setShowUpdateProgressModal(true);
+  };
+
   const handleCancelAction = () => {
     setShowDeleteConfirmation(false);
     setShowEditModal(false);
+    setShowUpdateProgressModal(false);
   };
 
   const deleteScope = () => {
@@ -57,12 +70,28 @@ export default function ScopeItem({ scope }: Props) {
     setShowDeleteConfirmation(false);
   };
 
+  const inProgress = scope.progress > 0 && scope.progress < 100;
+  const completed = scope.progress === 100;
+
   return (
     <div className="p-2 flex justify-between">
-      <Typography>{scope.title}</Typography>
-      <IconButton size="small" onClick={handleMenuOpen}>
-        <MoreIcon fontSize="inherit" />
-      </IconButton>
+      <div className="flex items-center">
+        <ScopeDot color={scope.color} />
+        <Typography className={`ml-2 ${inProgress ? 'font-bold' : ''} ${completed ? 'line-through' : ''}`}>
+          {scope.title}
+        </Typography>
+        <Typography className={`ml-3 text-sm text-gray-600 ${inProgress ? 'font-bold' : ''}`}>
+          (
+          {summaryForProgress(scope.progress)}
+          )
+        </Typography>
+      </div>
+      <div className="flex items-center">
+        <Button className="mr-3" variant="outlined" color="secondary" onClick={handleUpdateProgress}>Update Progress</Button>
+        <IconButton size="small" onClick={handleMenuOpen}>
+          <MoreIcon fontSize="inherit" />
+        </IconButton>
+      </div>
       <Menu anchorEl={menuAnchor} open={!!menuAnchor} onClose={() => setMenuAnchor(null)} keepMounted>
         <MenuItem onClick={handleEdit}>
           <EditIcon fontSize="small" className="mr-3" />
@@ -89,6 +118,34 @@ export default function ScopeItem({ scope }: Props) {
           onClose={handleCancelAction}
         />
       )}
+      {showUpdateProgressModal && (
+        <EditScopeProgressModal
+          scope={scope}
+          open={showUpdateProgressModal}
+          onClose={handleCancelAction}
+        />
+      )}
     </div>
   );
+}
+
+function summaryForProgress(progress: number) {
+  let summary = 'Done';
+  if (progress === 0) {
+    summary = 'Not started';
+  } else if (progress < 10) {
+    summary = 'Getting started';
+  } else if (progress < 30) {
+    summary = 'De-risking';
+  } else if (progress < 48) {
+    summary = 'Mostly derisked';
+  } else if (progress < 60) {
+    summary = 'Derisked';
+  } else if (progress < 80) {
+    summary = 'Implementing';
+  } else if (progress < 100) {
+    summary = 'Wrapping up';
+  }
+
+  return summary;
 }

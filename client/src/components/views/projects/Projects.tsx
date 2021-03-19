@@ -1,8 +1,11 @@
+import React, { useState } from 'react';
+
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { Grid } from '@material-ui/core';
-import React, { useState } from 'react';
-import { removeCacheItem } from '../../../cacheUtils';
-import DeleteConfirmationModal from '../../ConfirmationModal';
+
+import DeleteConfirmationModal from '@/components/ConfirmationModal';
+import { removeCacheItem } from '@/utils/cache';
+
 import AddProjectCard from './AddProjectCard';
 import EditProjectModal from './EditProjectModal';
 import ProjectCard from './ProjectCard';

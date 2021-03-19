@@ -1,11 +1,13 @@
+import React from 'react';
+
 import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from '@material-ui/core';
-import React from 'react';
 import useDimensions from 'react-cool-dimensions';
 import {
   Redirect, Route, Router, Switch,
 } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
+
 import { CurrentUserProvider } from './CurrentUserContext';
 import PrivateRoute from './PrivateRoute';
 import apolloClient from './apolloClient';

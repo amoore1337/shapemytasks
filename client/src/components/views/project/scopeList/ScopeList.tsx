@@ -1,7 +1,10 @@
 import React from 'react';
+
 import useDimensions from 'react-cool-dimensions';
 import tw, { styled } from 'twin.macro';
+
 import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
+
 import AddScope from './AddScope';
 import ScopeItem from './ScopeItem';
 

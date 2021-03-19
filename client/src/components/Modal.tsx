@@ -1,8 +1,9 @@
+import React from 'react';
+
 import {
   Modal, Backdrop, Fade, IconButton, ModalProps,
 } from '@material-ui/core';
 import CancelIcon from '@material-ui/icons/Cancel';
-import React from 'react';
 
 type Props = ModalProps & {
   noCloseButton?: boolean;

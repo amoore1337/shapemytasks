@@ -21,7 +21,10 @@ module.exports = async (callback) => {
 
   app.use(cookieParser());
 
-  const apollo = new ApolloServer(schema);
+  const apollo = new ApolloServer({
+    ...schema,
+    playground: config.get('NODE_ENV') === 'dev',
+  });
   apollo.applyMiddleware({ app, path: '/api/graphql' });
 
   require('./routes/index')(app);

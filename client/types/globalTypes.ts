@@ -7,6 +7,11 @@
 // START Enums and Input Objects
 //==============================================================
 
+export interface BatchUpdateScopeProgressMap {
+  id: string;
+  progress: number;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

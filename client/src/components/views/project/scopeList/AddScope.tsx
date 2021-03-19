@@ -1,7 +1,12 @@
+import React, { useState } from 'react';
+
 import { gql, useMutation } from '@apollo/client';
 import { Button, TextField } from '@material-ui/core';
-import React, { useState } from 'react';
-import { addCacheItem } from '../../../../cacheUtils';
+import { Color } from '@svgdotjs/svg.js';
+
+import { addCacheItem } from '@/utils/cache';
+
+import ScopeDot from './ScopeDot';
 import { CreateScope, CreateScopeVariables } from './types/CreateScope';
 
 const CREATE_SCOPE = gql`
@@ -22,6 +27,7 @@ type Props = {
 
 export default function AddScope({ projectId }: Props) {
   const [title, setTitle] = useState('');
+  const [color, setColor] = useState<string>(getRandomColor());
   const [showError, setShowError] = useState(false);
   const [createScope] = useMutation<CreateScope, CreateScopeVariables>(
     CREATE_SCOPE,
@@ -39,25 +45,30 @@ export default function AddScope({ projectId }: Props) {
     event.preventDefault();
     if (!title) {
       setShowError(true);
+      return;
     }
-    await createScope({ variables: { projectId, title } });
+    await createScope({ variables: { projectId, title, color } });
     setTitle('');
+    setColor(getRandomColor());
   };
 
   return (
     <form noValidate autoComplete="off" className="flex justify-between" onSubmit={handleSubmit}>
-      <TextField
-        name="title"
-        className="w-2/3 max-w-lg"
-        value={title}
-        onChange={handleChange}
-        size="small"
-        color="secondary"
-        label="Task Title"
-        variant="outlined"
-        error={showError}
-        helperText={showError && 'Please provide a title for the task.'}
-      />
+      <div className="flex items-center w-2/3">
+        <ScopeDot color={color} />
+        <TextField
+          name="title"
+          className="ml-2 w-full"
+          value={title}
+          onChange={handleChange}
+          size="small"
+          color="secondary"
+          label="Task Title"
+          variant="outlined"
+          error={showError}
+          helperText={showError && 'Please provide a title for the task.'}
+        />
+      </div>
       <div>
         <Button
           type="submit"
@@ -71,4 +82,8 @@ export default function AddScope({ projectId }: Props) {
       </div>
     </form>
   );
+}
+
+function getRandomColor() {
+  return (Color as any).random().toHex();
 }

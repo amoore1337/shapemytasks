@@ -17,6 +17,12 @@ module.exports = {
       return scopeService.updateScope(id, user, updateValues);
     },
 
+    batchUpdateScopeProgress(_, { inputs }, { user }) {
+      rejectUnauthenticated(user);
+
+      return scopeService.updateScopeProgresses(inputs, user);
+    },
+
     deleteScopeById(_, { id }, { user }) {
       rejectUnauthenticated(user);
 

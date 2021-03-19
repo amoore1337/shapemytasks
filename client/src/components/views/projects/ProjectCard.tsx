@@ -1,12 +1,14 @@
+import React, { useState, MouseEvent, useEffect } from 'react';
+
 import {
   Button, ButtonProps, IconButton, Menu, MenuItem,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import React, { useState, MouseEvent, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
+
 import routes, { withParams } from '../../../routes';
 
 const StyledButton = styled(Button)`

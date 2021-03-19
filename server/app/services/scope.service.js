@@ -38,8 +38,43 @@ async function updateScope(scopeId, user, updateValues) {
   return null;
 }
 
+async function updateScopeProgresses(updatesMap, user) {
+  if (!updatesMap.length) { return null; }
+
+  const scope = await Scope.findByPk(updatesMap[0].id);
+  if (!scope) { return null; }
+
+  const project = await scope.getProject();
+  if (!project || !userService.canEditProject(user, project)) {
+    return null;
+  }
+
+  const scopes = await Scope.findAll({
+    where: {
+      id: updatesMap.map((s) => s.id),
+    },
+    order: [['id', 'ASC']],
+  });
+
+  const outOfProjectScopes = scopes.filter((s) => s.projectId !== project.id);
+  if (outOfProjectScopes.length) {
+    return new Error('All scopes must belong to the same project');
+  }
+
+  scopes.forEach((s) => {
+    const update = updatesMap.find(({ id }) => id === s.id.toString());
+    if (update) {
+      s.progress = update.progress;
+      s.save();
+    }
+  });
+
+  return scopes;
+}
+
 module.exports = {
   createScope,
   deleteScope,
   updateScope,
+  updateScopeProgresses,
 };

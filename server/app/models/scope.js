@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       Scope.belongsTo(models.User, { foreignKey: 'createdById', as: 'createdBy', onDelete: 'SET NULL' });
-      Scope.belongsTo(models.Project, { foreignKey: 'projectId', as: 'project', onDelete: 'SET NULL' });
+      Scope.belongsTo(models.Project, { foreignKey: 'projectId', as: 'project', onDelete: 'CASCADE' });
     }
   }
 
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: '#0277bd',
     },
     progress: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: false,
       defaultValue: 0,
     },

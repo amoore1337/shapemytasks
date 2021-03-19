@@ -42,7 +42,7 @@ module.exports = {
     },
 
     scopes(project) {
-      return project.getScopes();
+      return project.getScopes({ order: [['id', 'ASC']] });
     },
   },
 };

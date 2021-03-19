@@ -30,6 +30,8 @@ module.exports = {
           },
           key: 'id',
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       color: {
         type: Sequelize.STRING,
@@ -37,7 +39,7 @@ module.exports = {
         defaultValue: '#0277bd',
       },
       progress: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull: false,
         defaultValue: 0,
       },

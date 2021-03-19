@@ -10,9 +10,15 @@ module.exports = gql`
     scope(id: ID!): Scope
   }
 
+  input BatchUpdateScopeProgressMap {
+    id: ID!
+    progress: Float!
+  }
+
   extend type Mutation {
-    createScope(title: String!, description: String, color: String, progress: Int, projectId:ID!): Scope
-    updateScope(id: ID!, title: String, description: String, color: String, progress: Int): Scope
+    createScope(title: String!, description: String, color: String, progress: Float, projectId:ID!): Scope
+    updateScope(id: ID!, title: String, description: String, color: String, progress: Float): Scope
     deleteScopeById(id: ID!): Scope
+    batchUpdateScopeProgress(inputs: [BatchUpdateScopeProgressMap!]!): [Scope]
   }
 `;

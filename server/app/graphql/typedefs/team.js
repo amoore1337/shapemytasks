@@ -6,7 +6,6 @@ module.exports = gql`
   ${typeDefForModel(Team)}
 
   extend type Query {
-    teams: [Team]
     team(id: ID!): Team
   }
 `;
