@@ -9,6 +9,7 @@ import Alert from '@material-ui/lab/Alert';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
 
+import ErrorToast from './ErrorToast';
 import Modal from './Modal';
 import { JoinTeamVariables, JoinTeam_joinTeam as JoinResponse } from './types/JoinTeam';
 
@@ -187,11 +188,7 @@ export default function UserSettingsModal({ open, onClose }: Props) {
           </Button>
         </div>
         {showErrorToast && (
-          <Snackbar open={open} autoHideDuration={6000} onClose={() => setShowErrorToast(false)}>
-            <Alert onClose={() => setShowErrorToast(false)} severity="error">
-              {error?.message || 'Oops! Something went wrong, please try again.'}
-            </Alert>
-          </Snackbar>
+          <ErrorToast open={open} onClose={() => setShowErrorToast(false)} message={error?.message} />
         )}
       </div>
     </Modal>

@@ -4,6 +4,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { Grid } from '@material-ui/core';
 
 import DeleteConfirmationModal from '@/components/ConfirmationModal';
+import LoadingIndicator from '@/components/LoadingIndicator';
 import { removeCacheItem } from '@/utils/cache';
 
 import AddProjectCard from './AddProjectCard';
@@ -35,7 +36,7 @@ export default function Projects() {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<null |Project>();
-  const { data } = useQuery<AllProjects>(ALL_PROJECTS);
+  const { data, loading } = useQuery<AllProjects>(ALL_PROJECTS);
   const [destroyProject] = useMutation<DeleteProject, DeleteProjectVariables>(
     DELETE_PROJECT,
     removeCacheItem<DeleteProject, DeleteProjectVariables>('projects', 'deleteProjectById'),
@@ -62,6 +63,14 @@ export default function Projects() {
     setSelectedProject(null);
     setShowDeleteConfirmation(false);
   };
+
+  if (!data && loading) {
+    return (
+      <div className="text-center p-8">
+        <LoadingIndicator />
+      </div>
+    );
+  }
 
   return (
     <div className="text-center p-8">

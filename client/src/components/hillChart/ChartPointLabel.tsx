@@ -1,8 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import tw, { styled } from 'twin.macro';
+
 import {
   Circle, CircleElement, getProgressFromPosition, ViewBox,
 } from './helpers';
+
+const StyledLabel = styled.div`
+  max-width: 400px;
+  ${tw`overflow-hidden overflow-ellipsis whitespace-nowrap px-1`}
+  
+  &:hover {
+    ${tw`whitespace-normal overflow-auto rounded bg-white z-10 shadow`}
+  }
+`;
 
 type EventListener = (event: Event) => void;
 type Position = { top: number, left: number, bottom: number, right: number, progress: number };
@@ -59,14 +70,14 @@ export default function ChartPointLabel({ point, dragEnabled }: { point: CircleE
 
   const inProgress = Math.floor(pos.progress) > 0 && Math.ceil(pos.progress) < 100;
   return (
-    <div
+    <StyledLabel
       ref={labelEl}
       id={`${point.chart}.item.${point.chartItem.id}.label`}
       className={`fixed ${dragEnabled ? 'cursor-move' : ''} ${inProgress ? 'text-gray-800' : 'text-gray-300'}`}
       style={labelStyle}
     >
       {point.chartItem.title}
-    </div>
+    </StyledLabel>
   );
 }
 

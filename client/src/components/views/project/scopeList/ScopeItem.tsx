@@ -77,7 +77,7 @@ export default function ScopeItem({ scope }: Props) {
     <div className="p-2 flex justify-between">
       <div className="flex items-center">
         <ScopeDot color={scope.color} />
-        <Typography className={`ml-2 ${inProgress ? 'font-bold' : ''} ${completed ? 'line-through' : ''}`}>
+        <Typography className={`ml-2 ${inProgress ? 'font-bold' : ''} ${completed ? 'line-through' : ''}`} style={{ maxWidth: '70%' }}>
           {scope.title}
         </Typography>
         <Typography className={`ml-3 text-sm text-gray-600 ${inProgress ? 'font-bold' : ''}`}>
@@ -87,7 +87,7 @@ export default function ScopeItem({ scope }: Props) {
         </Typography>
       </div>
       <div className="flex items-center">
-        <Button className="mr-3" variant="outlined" color="secondary" onClick={handleUpdateProgress}>Update Progress</Button>
+        <Button style={{ width: 180 }} className="mr-3" variant="outlined" color="secondary" onClick={handleUpdateProgress}>Update Progress</Button>
         <IconButton size="small" onClick={handleMenuOpen}>
           <MoreIcon fontSize="inherit" />
         </IconButton>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import {
@@ -6,6 +6,8 @@ import {
 } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 
+import ErrorToast from '@/components/ErrorToast';
+import LoadingIndicator from '@/components/LoadingIndicator';
 import HillChart, { UpdatedItemsMap } from '@/components/hillChart/HillChart';
 
 import ScopeList from './scopeList/ScopeList';
@@ -46,19 +48,30 @@ export default function Project() {
   const isMobile = useMediaQuery(breakpoints.down('sm'));
   const [enableProgressEdit, setEnableProgressEdit] = useState(false);
   const { id } = useParams<{ id: string }>();
-  const { data } = useQuery<ProjectPage>(PROJECT_DETAILS, { variables: { id }, skip: !id });
+  const { data, loading, error } = useQuery<ProjectPage>(PROJECT_DETAILS, { variables: { id }, skip: !id });
   const [updateProject] = useMutation<UpdateScopeProgresses, UpdateScopeProgressesVariables>(
     UPDATE_SCOPE_PROGRESSES,
   );
+  const [hasError, setHasError] = useState(false);
 
-  const handleSave = (updatedItems: UpdatedItemsMap) => {
+  const handleSave = async (updatedItems: UpdatedItemsMap) => {
     setEnableProgressEdit(false);
     const updates: { id: string, progress: number }[] = [];
     Object.keys(updatedItems).forEach((itemId) => {
       updates.push({ id: itemId, progress: updatedItems[itemId] });
     });
-    updateProject({ variables: { inputs: updates } });
+    try {
+      await updateProject({ variables: { inputs: updates } });
+    } catch (err) {
+      setHasError(true);
+    }
   };
+
+  useEffect(() => {
+    if (!hasError && error) {
+      setHasError(true);
+    }
+  }, [error]);
 
   const scopes = data?.project?.scopes || [];
   return (
@@ -87,15 +100,18 @@ export default function Project() {
             onCancel={() => setEnableProgressEdit(false)}
           />
         </div>
-        {!isMobile && (
-          <>
-            <div className="w-full px-4" style={{ maxWidth: 1200 }}>
-              <Typography variant="h6" component="h2">{data?.project?.title}</Typography>
-            </div>
-            <ScopeList scopes={scopes} projectId={id} />
-          </>
+        {!data && loading ? <LoadingIndicator /> : (
+          !isMobile && (
+            <>
+              <div className="w-full px-4" style={{ maxWidth: 1200 }}>
+                <Typography variant="h6" component="h2">{data?.project?.title}</Typography>
+              </div>
+              <ScopeList scopes={scopes} projectId={id} />
+            </>
+          )
         )}
       </Paper>
+      <ErrorToast open={hasError} onClose={() => setHasError(false)} />
     </div>
   );
 }
