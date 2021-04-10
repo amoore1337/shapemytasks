@@ -11,7 +11,7 @@ $ openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout ./ssl/dev.
 ```
 2. Run
 ```bash
-$ docker-compose -f docker-compose.dev.yml up -d --build
+$ docker-compose up -d --build
 ```
 3. Navigate to `client` directory and install dependencies
 ```bash
@@ -35,7 +35,7 @@ $ npm start
 1. Ensure `prod` SSL cert values are in the `./ssl` directory
 2. Run
 ```bash
-$ docker-compose up -d --build
+$ docker-compose -f docker-compose.prod-sim.yml up -d --build
 ```
 3. Go to https://localhost/ in your browser
 
