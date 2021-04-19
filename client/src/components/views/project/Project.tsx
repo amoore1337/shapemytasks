@@ -4,11 +4,12 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import {
   Button, Paper, Typography, useMediaQuery, useTheme,
 } from '@material-ui/core';
+import useDimensions from 'react-cool-dimensions';
 import { useParams } from 'react-router-dom';
 
 import ErrorToast from '@/components/ErrorToast';
 import LoadingIndicator from '@/components/LoadingIndicator';
-import HillChart, { UpdatedItemsMap } from '@/components/hillChart/HillChart';
+import HillChart, { UpdatedItemsMap, VIEW_BOX } from '@/components/hillChart/HillChart';
 
 import ScopeList from './scopeList/ScopeList';
 import { ProjectPage } from './types/ProjectPage';
@@ -46,6 +47,7 @@ const UPDATE_SCOPE_PROGRESSES = gql`
 export default function Project() {
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('sm'));
+  const { ref: chartContainerRef, width } = useDimensions<HTMLDivElement>();
   const [enableProgressEdit, setEnableProgressEdit] = useState(false);
   const { id } = useParams<{ id: string }>();
   const { data, loading, error } = useQuery<ProjectPage>(PROJECT_DETAILS, { variables: { id }, skip: !id });
@@ -73,13 +75,14 @@ export default function Project() {
     }
   }, [error]);
 
+  const chartHeight = (VIEW_BOX.y / VIEW_BOX.x) * width;
+
   const scopes = data?.project?.scopes || [];
   return (
     <div className="h-full p-4 flex justify-center">
       <Paper className="h-full w-full p-4 flex flex-col items-center" style={{ maxWidth: 1600 }}>
         <div
-          className="flex justify-center w-full pb-4 relative"
-          style={isMobile ? { height: '100%' } : { height: '70%', maxHeight: 400 }}
+          className={`flex justify-center w-full pb-4 relative ${isMobile ? 'items-center h-full' : ''}`}
         >
           {!enableProgressEdit && scopes.length > 0 && (
             <Button
@@ -91,14 +94,16 @@ export default function Project() {
               Update Progress
             </Button>
           )}
-          <HillChart
-            width="80%"
-            height="100%"
-            data={scopes}
-            allowEdit={enableProgressEdit}
-            onSave={handleSave}
-            onCancel={() => setEnableProgressEdit(false)}
-          />
+          <div ref={chartContainerRef} style={{ width: isMobile ? '100%' : '80%', height: chartHeight }}>
+            <HillChart
+              width="100%"
+              height="100%"
+              data={scopes}
+              allowEdit={enableProgressEdit}
+              onSave={handleSave}
+              onCancel={() => setEnableProgressEdit(false)}
+            />
+          </div>
         </div>
         {!data && loading ? <LoadingIndicator /> : (
           !isMobile && (

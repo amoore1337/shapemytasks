@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Grid } from '@material-ui/core';
+import { Grid, Link } from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
 
 import DeleteConfirmationModal from '@/components/ConfirmationModal';
 import LoadingIndicator from '@/components/LoadingIndicator';
+import routes, { withParams } from '@/routes';
 import { removeCacheItem } from '@/utils/cache';
 
 import AddProjectCard from './AddProjectCard';
@@ -78,11 +80,16 @@ export default function Projects() {
         {data?.projects?.map((project) => (
           <Grid item key={project?.id}>
             <ProjectCard
-              projectId={project?.id}
               onEdit={() => handleProjectEdit(project)}
               onDelete={() => handleProjectDelete(project)}
             >
-              {project?.title}
+              <Link
+                component={RouterLink}
+                to={withParams(routes.project, { id: project!.id })}
+                className="text-gray-800"
+              >
+                {project?.title}
+              </Link>
             </ProjectCard>
           </Grid>
         ))}

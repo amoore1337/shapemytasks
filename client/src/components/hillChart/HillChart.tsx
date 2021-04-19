@@ -5,6 +5,7 @@ import React, {
 import { Button } from '@material-ui/core';
 import {
   SVG, Svg, Path, Circle as CircleBase, G, extend,
+  ViewBox,
 } from '@svgdotjs/svg.js';
 
 import '@svgdotjs/svg.draggable.js';
@@ -47,7 +48,7 @@ extend(CircleBase, {
   },
 });
 
-const VIEW_BOX = DEFAULT_VIEW_BOX;
+export const VIEW_BOX = DEFAULT_VIEW_BOX;
 
 const DOT_DIAMETER = 10;
 const DOT_RADIUS = DOT_DIAMETER / 2;
@@ -172,7 +173,9 @@ function createSvg(parent: HTMLDivElement): HillSvg {
   const canvas = SVG()
     .addTo(parent)
     .size('100%', '100%')
-    .viewbox(`0 0 ${VIEW_BOX.x} ${VIEW_BOX.y}`)
+    // VIEW_BOX + 20 to account for chart labels
+    // TODO: Get rid of magic number...
+    .viewbox(`0 0 ${VIEW_BOX.x} ${VIEW_BOX.y + 20}`)
     .addClass('hill-chart');
 
   const axis = canvas.group();

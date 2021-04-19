@@ -31,10 +31,14 @@ export interface CircleElement extends Element {
   chartItem: ChartItem;
 }
 
+// How far to keep the hill from the top of the viewbox:
+const Y_OFFSET = 2;
+
 export function hillForumula(x: number, viewbox: ViewBox = DEFAULT_VIEW_BOX) {
   // TODO: Eh, performance seems fine so far, but this function is called a TON.
   // Maybe round x values to nearest int and store cache of results in-memory?
-  return -(viewbox.y / 2) * Math.sin(x * ((2 * Math.PI) / viewbox.x) - 1.5 * Math.PI) + (viewbox.y / 2);
+  const amp = (viewbox.y / 2) - Y_OFFSET;
+  return -amp * Math.sin(x * ((2 * Math.PI) / viewbox.x) - 1.5 * Math.PI) + amp;
 }
 
 export function findChartPoint(points: CircleElement[], itemId?: string | null) {

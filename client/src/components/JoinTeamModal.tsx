@@ -2,10 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { gql, useMutation } from '@apollo/client';
 import {
-  Typography, IconButton, TextField, Button, FormControlLabel, Checkbox, Snackbar,
+  Typography, IconButton, TextField, Button, FormControlLabel, Checkbox,
 } from '@material-ui/core';
 import CancelIcon from '@material-ui/icons/Cancel';
-import Alert from '@material-ui/lab/Alert';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
 
@@ -105,7 +104,7 @@ export default function UserSettingsModal({ open, onClose }: Props) {
       open={open}
       onClose={onClose}
       style={{
-        width: '60%', height: '80%', maxWidth: 400, maxHeight: 600,
+        width: '60%', height: 475, maxWidth: 400,
       }}
     >
       <div>

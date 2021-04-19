@@ -45,6 +45,7 @@ export default function ProjectModalForm({ onSubmit, disabled, initialValues }: 
           onChange={formik.handleChange}
           error={formik.touched.title && !!formik.errors.title}
           helperText={formik.touched.title && formik.errors.title}
+          autoFocus
         />
         <TextField
           size="small"

@@ -19,14 +19,22 @@ const ContentContainer = styled.div`
   max-width: 1200px;
 `;
 
+const SCOPE_INPUT_HEIGHT = 60;
+
 export default function ScopeList({ scopes, projectId }: Props) {
   const { ref, width, height } = useDimensions<HTMLDivElement>();
+
+  // TODO: Yuck, need to come back to this.
+  // In order for the list to take up only the exact height it needs,
+  // we need to calculate the max-height based off of:
+  // available container height - input component height - border of list container.
+  const maxListHeight = height - SCOPE_INPUT_HEIGHT - 2;
 
   return (
     <ContentContainer ref={ref}>
       <div style={{ width, height }}>
         <div className="border border-solid border-secondary rounded-md relative box-border">
-          <ul className="overflow-y-auto" style={{ maxHeight: Math.floor(height * 0.7) }}>
+          <ul className="overflow-y-auto" style={{ maxHeight: maxListHeight }}>
             {scopes.map((scope) => scope && (
               <li
                 key={scope.id}
@@ -36,7 +44,10 @@ export default function ScopeList({ scopes, projectId }: Props) {
               </li>
             ))}
           </ul>
-          <div className={`p-2 ${scopes.length ? 'border-t' : ''} border-solid border-blue-200`}>
+          <div
+            className={`p-2 ${scopes.length ? 'border-t' : ''} border-solid border-blue-200 box-border`}
+            style={{ height: SCOPE_INPUT_HEIGHT }}
+          >
             <AddScope projectId={projectId} />
           </div>
         </div>
