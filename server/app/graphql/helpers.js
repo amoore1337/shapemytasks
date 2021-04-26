@@ -51,7 +51,9 @@ function basicQueryAllResolver(Model, requireAuth = true) {
   const tableName = Model.getTableName();
   const pluralName = tableName.charAt(0).toLowerCase() + tableName.slice(1);
   resolver[pluralName] = async (_, __, { user }) => {
-    if (!user && requireAuth) { return null; }
+    if (!user && requireAuth) {
+      rejectUnauthenticated(user);
+    }
     return Model.findAll({ order: [['id', 'ASC']] });
   };
 

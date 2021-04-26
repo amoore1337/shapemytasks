@@ -5,11 +5,12 @@ import {
   Button, Paper, Typography, useMediaQuery, useTheme,
 } from '@material-ui/core';
 import useDimensions from 'react-cool-dimensions';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import ErrorToast from '@/components/ErrorToast';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import HillChart, { UpdatedItemsMap, VIEW_BOX } from '@/components/hillChart/HillChart';
+import routes from '@/routes';
 
 import ScopeList from './scopeList/ScopeList';
 import { ProjectPage } from './types/ProjectPage';
@@ -55,6 +56,7 @@ export default function Project() {
     UPDATE_SCOPE_PROGRESSES,
   );
   const [hasError, setHasError] = useState(false);
+  const history = useHistory();
 
   const handleSave = async (updatedItems: UpdatedItemsMap) => {
     setEnableProgressEdit(false);
@@ -74,6 +76,14 @@ export default function Project() {
       setHasError(true);
     }
   }, [error]);
+
+  // TODO: Tweak the backend to make this more graceful
+  // If the project doesn't exist, send the user to the projects page for now.
+  useEffect(() => {
+    if (!loading && !data) {
+      history.replace(routes.projects);
+    }
+  }, [loading, data]);
 
   const chartHeight = (VIEW_BOX.y / VIEW_BOX.x) * width;
 

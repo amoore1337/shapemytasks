@@ -24,10 +24,14 @@ module.exports = {
 
   Query: {
     projects(_, __, { user }) {
+      rejectUnauthenticated(user);
+
       return projectService.findAllProjectsForUser(user);
     },
 
     project(_, { id }, { user }) {
+      rejectUnauthenticated(user);
+
       return projectService.findProjectForUser(id, user);
     },
   },

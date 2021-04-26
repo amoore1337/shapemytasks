@@ -5,9 +5,9 @@ import { Button, Typography } from '@material-ui/core';
 import GroupIcon from '@material-ui/icons/Group';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
-import JoinTeamModal from '@/components/JoinTeamModal';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import TeamCodeCopyButton from '@/components/TeamCodeCopyButton';
+import JoinTeamModal from '@/components/joinTeamModal/JoinTeamModal';
 
 import { DashboardTeamMembersList } from './types/DashboardTeamMembersList';
 

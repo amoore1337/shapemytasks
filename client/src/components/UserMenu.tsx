@@ -5,10 +5,12 @@ import GroupIcon from '@material-ui/icons/Group';
 import { useHistory } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
+import routes from '@/routes';
+
 import { CurrentUserContext } from '../CurrentUserContext';
 
-import JoinTeamModal from './JoinTeamModal';
 import TeamCodeCopyButton from './TeamCodeCopyButton';
+import JoinTeamModal from './joinTeamModal/JoinTeamModal';
 
 const MenuContent = styled.div`
   ${tw`flex flex-col py-2 text-gray-800`}
@@ -32,7 +34,7 @@ export default function UserMenu(props: Props) {
       props.onClose();
     }
 
-    history.push('/home');
+    history.push(routes.home);
   };
 
   return (
