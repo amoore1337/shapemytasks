@@ -11,7 +11,7 @@ import tw, { styled } from 'twin.macro';
 import { CurrentUserProvider } from './CurrentUserContext';
 import PrivateRoute from './PrivateRoute';
 import apolloClient from './apolloClient';
-import TopNav from './components/Nav';
+import Nav from './components/Nav';
 import Login from './components/views/Login';
 import Dashboard from './components/views/dashboard/Dashboard';
 import Home from './components/views/home/Home';
@@ -40,7 +40,7 @@ function App() {
 
   const appContent = (
     <div className="flex flex-col min-h-full">
-      <TopNav />
+      <Nav />
 
       <ContentContainer ref={ref}>
         <div className="bg-gray-50 overflow-auto" style={{ width, height }}>

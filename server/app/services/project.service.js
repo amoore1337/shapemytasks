@@ -23,6 +23,7 @@ async function createProject(title, description, visibility, createdBy) {
 }
 
 async function findAllProjectsForUser(user) {
+  if (!user) { return []; }
   return Project.findAll({
     where: {
       [Sequelize.Op.or]: [
@@ -34,6 +35,7 @@ async function findAllProjectsForUser(user) {
 }
 
 async function findProjectForUser(projectId, user) {
+  if (!user) { return null; }
   const project = await Project.findOne({
     where: {
       id: projectId,

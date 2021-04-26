@@ -24,6 +24,7 @@ async function joinTeam(user, joinCode) {
 }
 
 async function canEditProject(user, project) {
+  if (!user) { return false; }
   if (project && user.id === project.createdById) {
     return true;
   }

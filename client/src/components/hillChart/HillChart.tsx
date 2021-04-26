@@ -5,7 +5,6 @@ import React, {
 import { Button } from '@material-ui/core';
 import {
   SVG, Svg, Path, Circle as CircleBase, G, extend,
-  ViewBox,
 } from '@svgdotjs/svg.js';
 
 import '@svgdotjs/svg.draggable.js';
@@ -66,16 +65,14 @@ export default function HillChart({
     const circles = currentChartPoints(hillChartSvg.current);
     const items: string[] = [];
 
-    // Remove any points that were deleted:
-    if (hillChartSvg.current && data.length < circles.length) {
-      circles.forEach((point) => {
-        const stillExists = data.find((i) => i?.id === point.chartItem.id);
-        if (!stillExists) {
-          point.off(); // TODO: Is this necessary?
-          point.remove();
-        }
-      });
-    }
+    // Remove any points that should no longer exist:
+    circles.forEach((point) => {
+      const stillExists = data.find((i) => i?.id === point.chartItem.id);
+      if (!stillExists) {
+        point.off(); // TODO: Is this necessary?
+        point.remove();
+      }
+    });
 
     // Update/create points from data:
     if (hillChartSvg.current && data.length) {
