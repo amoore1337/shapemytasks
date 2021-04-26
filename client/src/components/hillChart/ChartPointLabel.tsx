@@ -19,18 +19,18 @@ type EventListener = (event: Event) => void;
 type Position = { top: number, left: number, bottom: number, right: number, progress: number };
 export default function ChartPointLabel({ point, dragEnabled }: { point: CircleElement, dragEnabled?: boolean }) {
   const startPos = point.node.getBoundingClientRect();
-  const [pos, setPos] = useState<Position>({
-    top: startPos.top,
-    left: startPos.left,
-    bottom: startPos.bottom,
-    right: startPos.right,
-    progress: getProgressFromPosition(chartPositionForPoint(point)),
-  });
+  const [pos, setPos] = useState<Position>(getStartPosition(startPos, point));
   const [labelStyle, setLabelStyle] = useState<React.CSSProperties>({
     top: startPos.top - 5,
     left: startPos.left + 20,
   });
   const labelEl = useRef<HTMLDivElement>(null);
+
+  // Bleh, the start position isn't always initialized to real values at first.
+  // TODO: Investigate this more...
+  useEffect(() => {
+    setPos(getStartPosition(startPos, point));
+  }, [startPos.top, startPos.bottom, startPos.left, startPos.right]);
 
   useEffect(() => {
     const handlePosChange = ({ detail: { ...newPos } }: CustomEvent<Position>) => {
@@ -100,4 +100,14 @@ export function updatePointLabelPos(point: Circle | CircleElement, viewbox: View
     },
   });
   document.getElementById(`${point.chart}.item.${point.chartItem.id}.label`)?.dispatchEvent(moveEvent);
+}
+
+function getStartPosition(startPos: DOMRect, point: CircleElement) {
+  return {
+    top: startPos.top,
+    left: startPos.left,
+    bottom: startPos.bottom,
+    right: startPos.right,
+    progress: getProgressFromPosition(chartPositionForPoint(point)),
+  };
 }
