@@ -11,7 +11,8 @@ import { CurrentUserContext } from '@/CurrentUserContext';
 
 import ErrorToast from '../ErrorToast';
 import Modal from '../Modal';
-import { JoinTeamVariables, JoinTeam_joinTeam as JoinResponse } from '../types/JoinTeam';
+
+import { JoinTeamVariables, JoinTeam_joinTeam as JoinResponse } from './types/JoinTeam';
 
 const JOIN_TEAM = gql`
   mutation JoinTeam($name: String!, $joinCode: String!, $joinTeam: Boolean!, $restrictEmailDomain: String) {
