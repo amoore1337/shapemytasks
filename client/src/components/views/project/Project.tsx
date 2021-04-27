@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import {
-  Button, Paper, Typography, useMediaQuery, useTheme,
+  Button, FormControl, InputLabel, Paper, Select, Typography, useMediaQuery, useTheme,
 } from '@material-ui/core';
 import useDimensions from 'react-cool-dimensions';
 import { useHistory, useParams } from 'react-router-dom';
@@ -12,6 +12,7 @@ import LoadingIndicator from '@/components/LoadingIndicator';
 import HillChart, { UpdatedItemsMap, VIEW_BOX } from '@/components/hillChart/HillChart';
 import routes from '@/routes';
 
+import { Scopes, SCOPE_SORT_OPTIONS, SortOption } from './helpers';
 import ScopeList from './scopeList/ScopeList';
 import { ProjectPage } from './types/ProjectPage';
 import { UpdateScopeProgresses, UpdateScopeProgressesVariables } from './types/UpdateScopeProgresses';
@@ -45,6 +46,8 @@ const UPDATE_SCOPE_PROGRESSES = gql`
   }
 `;
 
+// TODO: Too many concerns in this component. Come back and break it up.
+
 export default function Project() {
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('sm'));
@@ -56,6 +59,8 @@ export default function Project() {
     UPDATE_SCOPE_PROGRESSES,
   );
   const [hasError, setHasError] = useState(false);
+  const [sortOption, setSortOption] = useState<SortOption>(SCOPE_SORT_OPTIONS[0]);
+  const [sortedScopes, setSortedScopes] = useState<Scopes>([]);
   const history = useHistory();
 
   const handleSave = async (updatedItems: UpdatedItemsMap) => {
@@ -77,6 +82,11 @@ export default function Project() {
     }
   }, [error]);
 
+  useEffect(() => {
+    const scopes = data?.project?.scopes || [];
+    setSortedScopes(sortOption.sort(scopes));
+  }, [sortOption, data]);
+
   // TODO: Tweak the backend to make this more graceful
   // If the project doesn't exist, send the user to the projects page for now.
   useEffect(() => {
@@ -85,16 +95,20 @@ export default function Project() {
     }
   }, [loading, data]);
 
+  const handleSortChange = (value: string) => {
+    const newOption = SCOPE_SORT_OPTIONS.find((o) => o.value === value);
+    setSortOption(newOption || SCOPE_SORT_OPTIONS[0]);
+  };
+
   const chartHeight = (VIEW_BOX.y / VIEW_BOX.x) * width;
 
-  const scopes = data?.project?.scopes || [];
   return (
     <div className="h-full p-4 flex justify-center">
       <Paper className="h-full w-full p-4 flex flex-col items-center" style={{ maxWidth: 1600 }}>
         <div
           className={`flex justify-center w-full pb-4 relative ${isMobile ? 'items-center h-full' : ''}`}
         >
-          {!enableProgressEdit && scopes.length > 0 && (
+          {!enableProgressEdit && sortedScopes.length > 0 && (
             <Button
               className="text-white absolute top-8 left-8 z-10"
               variant="contained"
@@ -108,7 +122,7 @@ export default function Project() {
             <HillChart
               width="100%"
               height="100%"
-              data={scopes}
+              data={sortedScopes}
               allowEdit={enableProgressEdit}
               onSave={handleSave}
               onCancel={() => setEnableProgressEdit(false)}
@@ -118,10 +132,25 @@ export default function Project() {
         {!data && loading ? <LoadingIndicator /> : (
           !isMobile && (
             <>
-              <div className="w-full px-4" style={{ maxWidth: 1200 }}>
-                <Typography variant="h6" component="h2">{data?.project?.title}</Typography>
+              <div className="w-full px-4 flex justify-between" style={{ maxWidth: 1200 }}>
+                <Typography className="flex-grow self-end" variant="h6" component="h2">{data?.project?.title}</Typography>
+                <FormControl className="flex-shrink-0 pb-2" variant="outlined" color="secondary">
+                  <InputLabel htmlFor="scope-sort-input">Sort by</InputLabel>
+                  <Select
+                    native
+                    label="Sort by"
+                    value={sortOption.value}
+                    onChange={(event) => handleSortChange(event.target.value as string)}
+                    classes={{ select: 'py-3' }}
+                    inputProps={{ name: 'age', id: 'scope-sort-input', className: 'text-sm leading-4' }}
+                  >
+                    {SCOPE_SORT_OPTIONS.map((o) => (
+                      <option key={o.value} value={o.value}>{o.label}</option>
+                    ))}
+                  </Select>
+                </FormControl>
               </div>
-              <ScopeList scopes={scopes} projectId={id} />
+              <ScopeList scopes={sortedScopes} projectId={id} />
             </>
           )
         )}
