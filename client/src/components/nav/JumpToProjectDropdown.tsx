@@ -4,8 +4,8 @@ import { gql, useQuery } from '@apollo/client';
 import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 
-import LoadingIndicator from './LoadingIndicator';
-import { JumpToProjectOptions, JumpToProjectOptions_projects as Project } from './types/JumpToProjectOptions';
+import LoadingIndicator from '../LoadingIndicator';
+import { JumpToProjectOptions, JumpToProjectOptions_projects as Project } from '../types/JumpToProjectOptions';
 
 const PROJECT_OPTIONS = gql`
   query JumpToProjectOptions {

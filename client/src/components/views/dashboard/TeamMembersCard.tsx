@@ -7,7 +7,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import { CurrentUserContext } from '@/CurrentUserContext';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import TeamCodeCopyButton from '@/components/TeamCodeCopyButton';
-import JoinTeamModal from '@/components/joinTeamModal/JoinTeamModal';
+import ManageTeamModal from '@/components/manageTeamModal/ManageTeamModal';
 
 import { DashboardTeamMembersList } from './types/DashboardTeamMembersList';
 
@@ -69,7 +69,7 @@ export default function TeamMembersCard() {
           </Button>
         </>
       )}
-      <JoinTeamModal open={openTeamsModal} onClose={() => setOpenTeamsModal(false)} />
+      <ManageTeamModal open={openTeamsModal} onClose={() => setOpenTeamsModal(false)} />
     </section>
   );
 }

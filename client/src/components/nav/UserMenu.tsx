@@ -7,10 +7,9 @@ import tw, { styled } from 'twin.macro';
 
 import routes from '@/routes';
 
-import { CurrentUserContext } from '../CurrentUserContext';
-
-import TeamCodeCopyButton from './TeamCodeCopyButton';
-import JoinTeamModal from './joinTeamModal/JoinTeamModal';
+import { CurrentUserContext } from '../../CurrentUserContext';
+import TeamCodeCopyButton from '../TeamCodeCopyButton';
+import ManageTeamModal from '../manageTeamModal/ManageTeamModal';
 
 const MenuContent = styled.div`
   ${tw`flex flex-col py-2 text-gray-800`}
@@ -74,7 +73,7 @@ export default function UserMenu(props: Props) {
         )}
         <Button variant="outlined" color="inherit" className="text-danger" onClick={handleLogout}>Logout</Button>
       </MenuContent>
-      <JoinTeamModal open={openTeamsModal} onClose={() => setOpenTeamsModal(false)} />
+      <ManageTeamModal open={openTeamsModal} onClose={() => setOpenTeamsModal(false)} />
     </Popover>
   );
 }

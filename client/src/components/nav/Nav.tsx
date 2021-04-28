@@ -23,8 +23,8 @@ import LoginIcon from '@material-ui/icons/PersonOutline';
 import { Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
-import { CurrentUserContext } from '../CurrentUserContext';
-import routes, { withParams } from '../routes';
+import { CurrentUserContext } from '../../CurrentUserContext';
+import routes, { withParams } from '../../routes';
 
 import JumpToProjectDropdown from './JumpToProjectDropdown';
 import UserMenu from './UserMenu';

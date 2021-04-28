@@ -9,9 +9,9 @@ import {
 import tw, { styled } from 'twin.macro';
 
 import { CurrentUserProvider } from './CurrentUserContext';
-import PrivateRoute from './PrivateRoute';
 import apolloClient from './apolloClient';
-import Nav from './components/Nav';
+import PrivateRoute from './components/PrivateRoute';
+import Nav from './components/nav/Nav';
 import Login from './components/views/Login';
 import Dashboard from './components/views/dashboard/Dashboard';
 import Home from './components/views/home/Home';
