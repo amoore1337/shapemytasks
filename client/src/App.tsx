@@ -15,7 +15,7 @@ import Nav from './components/Nav';
 import Login from './components/views/Login';
 import Dashboard from './components/views/dashboard/Dashboard';
 import Home from './components/views/home/Home';
-import Project from './components/views/project/Project';
+import ProjectContainer from './components/views/project/ProjectContainer';
 import Projects from './components/views/projects/Projects';
 import materialTheme from './materialTheme';
 import routes, { history } from './routes';
@@ -32,7 +32,7 @@ function App() {
       <Route path={routes.login} component={Login} />
       <Route path={routes.home} component={Home} />
       <PrivateRoute path={routes.dashboard} component={Dashboard} />
-      <PrivateRoute path={routes.project} component={Project} />
+      <PrivateRoute path={routes.project} component={ProjectContainer} />
       <PrivateRoute path={routes.projects} component={Projects} />
       <Redirect to={routes.home} />
     </Switch>
