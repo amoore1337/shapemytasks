@@ -22,7 +22,7 @@ const ContentContainer = styled.div`
 const SCOPE_INPUT_HEIGHT = 60;
 
 export default function ScopeList({ scopes, projectId }: Props) {
-  const { ref, width, height } = useDimensions<HTMLDivElement>();
+  const { observe, width, height } = useDimensions<HTMLDivElement>();
 
   // TODO: Yuck, need to come back to this.
   // In order for the list to take up only the exact height it needs,
@@ -31,7 +31,7 @@ export default function ScopeList({ scopes, projectId }: Props) {
   const maxListHeight = height - SCOPE_INPUT_HEIGHT - 2;
 
   return (
-    <ContentContainer ref={ref}>
+    <ContentContainer ref={observe}>
       <div style={{ width, height }}>
         <div className="border border-solid border-secondary rounded-md relative box-border">
           <ul className="overflow-y-auto" style={{ maxHeight: maxListHeight }}>

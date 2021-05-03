@@ -31,7 +31,7 @@ type Props = {
 export default function Project(props: Props) {
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('sm'));
-  const { ref: chartContainerRef, width } = useDimensions<HTMLDivElement>();
+  const { observe: chartContainerRef, width } = useDimensions<HTMLDivElement | null>();
 
   const chartHeight = (VIEW_BOX.y / VIEW_BOX.x) * width;
   const {
