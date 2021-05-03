@@ -26,7 +26,7 @@ const ContentContainer = styled.div`
 `;
 
 function App() {
-  const { ref, width, height } = useDimensions<HTMLDivElement>();
+  const { observe, width, height } = useDimensions<HTMLDivElement>();
   const appRoutes = (
     <Switch>
       <Route path={routes.login} component={Login} />
@@ -42,7 +42,7 @@ function App() {
     <div className="flex flex-col min-h-full">
       <Nav />
 
-      <ContentContainer ref={ref}>
+      <ContentContainer ref={observe}>
         <div className="bg-gray-50 overflow-auto" style={{ width, height }}>
           {appRoutes}
         </div>

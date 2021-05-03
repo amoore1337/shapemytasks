@@ -63,10 +63,10 @@ export default function AddScope({ projectId }: Props) {
           onChange={handleChange}
           size="small"
           color="secondary"
-          label="Task Title"
+          label="Scope Title"
           variant="outlined"
           error={showError}
-          helperText={showError && 'Please provide a title for the task.'}
+          helperText={showError && 'Please provide a title for the scope.'}
         />
       </div>
       <div>
