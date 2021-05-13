@@ -23,6 +23,7 @@ const PROJECT_DETAILS = gql`
         progress
         color
         projectId
+        position
       }
     }
   }

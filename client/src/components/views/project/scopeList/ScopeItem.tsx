@@ -6,6 +6,7 @@ import {
   IconButton, Menu, MenuItem, Typography,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import DragIcon from '@material-ui/icons/DragIndicator';
 import EditIcon from '@material-ui/icons/Edit';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
@@ -18,9 +19,12 @@ import EditScopeModal from './EditScopeModal';
 import EditScopeProgressModal from './EditScopeProgressModal';
 import ScopeDot from './ScopeDot';
 import { DeleteScope, DeleteScopeVariables } from './types/DeleteScope';
+import useScopeDnd from './useScopeDnD';
 
 type Props = {
   scope: Scope;
+  findScopeIndex: (scopeId: string) => number;
+  dragEnabled?: boolean;
 }
 
 const DELETE_SCOPE = gql`
@@ -31,7 +35,7 @@ const DELETE_SCOPE = gql`
   }
 `;
 
-export default function ScopeItem({ scope }: Props) {
+export default function ScopeItem({ scope, dragEnabled, findScopeIndex }: Props) {
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLButtonElement>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -40,6 +44,8 @@ export default function ScopeItem({ scope }: Props) {
     DELETE_SCOPE,
     removeCacheItem<DeleteScope, DeleteScopeVariables>('scopes', 'deleteScopeById', `Project:${scope.projectId}`),
   );
+
+  const [dragRef, preview] = useScopeDnd<HTMLButtonElement>(scope, () => {}, findScopeIndex);
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setMenuAnchor(event.currentTarget);
@@ -74,8 +80,11 @@ export default function ScopeItem({ scope }: Props) {
   const completed = scope.progress === 100;
 
   return (
-    <div className="p-2 flex justify-between">
+    <div ref={preview} className="p-2 flex justify-between">
       <div className="flex items-center flex-grow">
+        <button ref={dragRef} type="button">
+          <DragIcon className={dragEnabled ? 'text-gray-600 cursor-move' : 'text-gray-100'} />
+        </button>
         <ScopeDot color={scope.color} />
         <Typography className={`ml-2 ${inProgress ? 'font-bold' : ''} ${completed ? 'line-through' : ''}`} style={{ maxWidth: '70%' }}>
           {scope.title}

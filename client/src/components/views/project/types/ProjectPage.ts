@@ -14,6 +14,7 @@ export interface ProjectPage_project_scopes {
   progress: number;
   color: string;
   projectId: string | null;
+  position: string | null;
 }
 
 export interface ProjectPage_project {

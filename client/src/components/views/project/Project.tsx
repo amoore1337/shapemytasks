@@ -82,7 +82,7 @@ export default function Project(props: Props) {
                 <Typography className="flex-grow self-end" variant="h6" component="h2">{project.title}</Typography>
                 <ScopeSortDropdown sortOption={scopeSortOption} onChange={onScopeSortChange} />
               </div>
-              <ScopeList scopes={scopes} projectId={project.id} />
+              <ScopeList scopes={scopes} projectId={project.id} dragEnabled={scopeSortOption.allowDrag} />
             </>
           )
         )}
