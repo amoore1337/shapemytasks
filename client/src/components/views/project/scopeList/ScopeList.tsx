@@ -14,6 +14,7 @@ type Props = {
   projectId: string;
   scopes: (Scope | null)[];
   dragEnabled?: boolean;
+  moveScope: (scopeId: string, toIndex: number) => void;
 }
 
 const ContentContainer = styled.div`
@@ -24,7 +25,9 @@ const ContentContainer = styled.div`
 
 const SCOPE_INPUT_HEIGHT = 60;
 
-export default function ScopeList({ scopes, projectId, dragEnabled }: Props) {
+export default function ScopeList({
+  scopes, projectId, dragEnabled, moveScope,
+}: Props) {
   const { observe, width, height } = useDimensions<HTMLDivElement>();
 
   // TODO: Yuck, need to come back to this.
@@ -46,7 +49,7 @@ export default function ScopeList({ scopes, projectId, dragEnabled }: Props) {
                 key={scope.id}
                 className="border-b border-solid border-blue-200 last:border-b-0"
               >
-                <ScopeItem scope={scope} dragEnabled={dragEnabled} findScopeIndex={findScopeIndex} />
+                <ScopeItem scope={scope} dragEnabled={dragEnabled} findScopeIndex={findScopeIndex} moveScope={moveScope} />
               </li>
               ))}
             </ul>

@@ -24,6 +24,7 @@ import useScopeDnd from './useScopeDnD';
 type Props = {
   scope: Scope;
   findScopeIndex: (scopeId: string) => number;
+  moveScope: (scopeId: string, toIndex: number) => void;
   dragEnabled?: boolean;
 }
 
@@ -35,7 +36,9 @@ const DELETE_SCOPE = gql`
   }
 `;
 
-export default function ScopeItem({ scope, dragEnabled, findScopeIndex }: Props) {
+export default function ScopeItem({
+  scope, dragEnabled, findScopeIndex, moveScope,
+}: Props) {
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLButtonElement>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -45,7 +48,7 @@ export default function ScopeItem({ scope, dragEnabled, findScopeIndex }: Props)
     removeCacheItem<DeleteScope, DeleteScopeVariables>('scopes', 'deleteScopeById', `Project:${scope.projectId}`),
   );
 
-  const [dragRef, preview] = useScopeDnd<HTMLButtonElement>(scope, () => {}, findScopeIndex);
+  const [dragRef, dropRef, preview] = useScopeDnd(scope, moveScope, findScopeIndex);
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setMenuAnchor(event.currentTarget);
@@ -80,7 +83,7 @@ export default function ScopeItem({ scope, dragEnabled, findScopeIndex }: Props)
   const completed = scope.progress === 100;
 
   return (
-    <div ref={preview} className="p-2 flex justify-between">
+    <div ref={(node) => dropRef(preview(node))} className="p-2 flex justify-between">
       <div className="flex items-center flex-grow">
         <button ref={dragRef} type="button">
           <DragIcon className={dragEnabled ? 'text-gray-600 cursor-move' : 'text-gray-100'} />

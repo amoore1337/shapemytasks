@@ -9,6 +9,19 @@ export type SortOption = {
   allowDrag: boolean;
 }
 
+export function findScopeIndex(scopes: Scopes, scopeId: string) {
+  return scopes.findIndex((s) => s?.id === scopeId);
+}
+
+export function moveArrayItem<I>(arr: I[], fromIndex: number, toIndex: number) {
+  const item = arr[fromIndex];
+  if (!item) { return arr; }
+  const arrCopy = [...arr];
+  arrCopy.splice(fromIndex, 1);
+  arrCopy.splice(toIndex, 0, item);
+  return arrCopy;
+}
+
 export const SCOPE_SORT_OPTIONS: SortOption[] = [
   {
     label: 'Position',

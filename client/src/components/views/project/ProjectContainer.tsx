@@ -7,8 +7,11 @@ import { UpdatedItemsMap } from '@/components/hillChart/HillChart';
 import routes from '@/routes';
 
 import Project from './Project';
-import { Scopes, SCOPE_SORT_OPTIONS, SortOption } from './helpers';
-import { ProjectPage } from './types/ProjectPage';
+import {
+  findScopeIndex,
+  moveArrayItem, Scopes, SCOPE_SORT_OPTIONS, SortOption,
+} from './helpers';
+import { ProjectPage, ProjectPage_project_scopes as Scope } from './types/ProjectPage';
 import { UpdateScopeProgresses, UpdateScopeProgressesVariables } from './types/UpdateScopeProgresses';
 
 const PROJECT_DETAILS = gql`
@@ -66,6 +69,15 @@ export default function ProjectContainer() {
     }
   };
 
+  const moveScope = (scopeId: string, toIndex: number) => {
+    const fromIndex = findScopeIndex(sortedScopes, scopeId);
+    const scope = sortedScopes[fromIndex];
+    if (!scope) { return; }
+
+    const updatedScopes = moveArrayItem<Scope | null>(sortedScopes, fromIndex, toIndex);
+    setSortedScopes(updatedScopes);
+  };
+
   useEffect(() => {
     if (!hasError && error) {
       setHasError(true);
@@ -101,6 +113,7 @@ export default function ProjectContainer() {
       onErrorToastDismiss={() => setHasError(false)}
       hillChartEditEnabled={enableProgressEdit}
       loading={loading}
+      moveScope={moveScope}
     />
   );
 }

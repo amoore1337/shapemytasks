@@ -1,6 +1,8 @@
 import { JSXElementConstructor, ReactElement } from 'react';
 
-import { ConnectDragPreview, useDrag, useDrop } from 'react-dnd';
+import {
+  ConnectDragPreview, ConnectDragSource, ConnectDropTarget, useDrag, useDrop,
+} from 'react-dnd';
 
 import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
 
@@ -12,14 +14,14 @@ type DragItem = {
   originalIndex: number;
 }
 
-type DragRef<E> = ((node: E) => ReactElement<any, string | JSXElementConstructor<any>> | null);
+type Return = [dragRef: ConnectDragSource, dropRef: ConnectDropTarget, preview: ConnectDragPreview, isDragging: boolean];
 
-export default function useScopeDnd<E extends Element>(
+export default function useScopeDnd(
   scope: Scope,
   moveScope: MoveFn,
   findScopeIndex: FindFn,
   dragEnabled?: boolean,
-): [ref: DragRef<E>, preview: ConnectDragPreview, isDragging: boolean] {
+): Return {
   const originalIndex = findScopeIndex(scope.id);
   const [{ isDragging }, drag, preview] = useDrag(
     () => ({
@@ -42,7 +44,7 @@ export default function useScopeDnd<E extends Element>(
   const [, drop] = useDrop(
     () => ({
       accept: 'Scope',
-      canDrop: () => false,
+      canDrop: () => true,
       hover({ scope: draggedScope }: DragItem) {
         if (draggedScope.id !== scope.id) {
           const overIndex = findScopeIndex(scope.id);
@@ -54,7 +56,9 @@ export default function useScopeDnd<E extends Element>(
   );
 
   return [
-    (node: E) => drag(drop(node)),
+    // (node: E) => drag(drop(node)),
+    drag,
+    drop,
     preview,
     isDragging,
   ];
