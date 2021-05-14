@@ -1,5 +1,6 @@
 const { Scope, Project } = require('../models');
 const userService = require('./user.service');
+const { midString } = require('./position.service');
 
 async function createScope(params, createdBy) {
   if (!params.projectId) { return null; }
@@ -61,15 +62,50 @@ async function updateScopeProgresses(updatesMap, user) {
     return new Error('All scopes must belong to the same project');
   }
 
-  scopes.forEach((s) => {
+  const results = [];
+  for (const s of scopes) {
     const update = updatesMap.find(({ id }) => id === s.id.toString());
     if (update) {
       s.progress = update.progress;
-      s.save();
+      results.push(s.save());
     }
-  });
+  }
+
+  await Promise.all(results);
 
   return scopes;
+}
+
+// TODO: 3 db reads + 1 write. This can be optimized better but we'll
+// wait and see if that's needed.
+async function updateScopePosition(scopeId, targetIndex, user) {
+  const scope = await Scope.findByPk(scopeId);
+  if (!scope) { return new Error('Scope not found'); }
+
+  const project = await scope.getProject();
+  if (!project || !userService.canEditProject(user, project)) {
+    return new Error('User cannot access project');
+  }
+
+  const scopes = await project.getScopes({ order: [['position', 'ASC']] });
+
+  const fromIndex = scopes.findIndex(({ dataValues }) => dataValues.id === parseInt(scopeId, 10));
+  const scopeAtIndex = scopes[targetIndex];
+  if (!scopeAtIndex) { return new Error('Invalid target index'); }
+
+  let abovePos; let belowPos;
+  if (fromIndex < targetIndex) {
+    abovePos = scopeAtIndex.position;
+    belowPos = scopes[targetIndex + 1] ? scopes[targetIndex + 1].position : '';
+  } else {
+    abovePos = scopes[targetIndex - 1] ? scopes[targetIndex - 1].position : '';
+    belowPos = scopeAtIndex.position;
+  }
+
+  scope.position = midString(abovePos, belowPos);
+  await scope.save();
+
+  return scope;
 }
 
 module.exports = {
@@ -77,4 +113,5 @@ module.exports = {
   deleteScope,
   updateScope,
   updateScopeProgresses,
+  updateScopePosition,
 };

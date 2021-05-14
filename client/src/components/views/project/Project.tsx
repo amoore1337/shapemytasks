@@ -26,7 +26,7 @@ type Props = {
   onErrorToastDismiss: () => void;
   hillChartEditEnabled: boolean
   loading: boolean;
-  moveScope: (scopeId: string, toIndex: number) => void;
+  moveScope: (scopeId: string, toIndex: number, moveComplete: boolean) => void;
 }
 
 export default function Project(props: Props) {

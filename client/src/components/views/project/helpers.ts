@@ -56,11 +56,17 @@ export const SCOPE_SORT_OPTIONS: SortOption[] = [
 ];
 
 function sortScopesByPosition(scopes: Scopes) {
-  return [...scopes].sort();
+  return [...scopes].sort((a, b) => {
+    let result = compareStringAlphabetically(a?.position, b?.position);
+    if (result === 0) {
+      result = compareStringNumerically(a?.id, b?.id);
+    }
+    return result;
+  });
 }
 
 function sortScopesById(scopes: Scopes) {
-  return [...scopes].sort((a, b) => (parseInt(a!.id, 10) || 0) - (parseInt(b!.id, 10) || 0));
+  return [...scopes].sort((a, b) => compareStringNumerically(a?.id, b?.id));
 }
 
 function sortScopesByProgressAsc(scopes: Scopes) {
@@ -92,4 +98,10 @@ function compareStringAlphabetically(a?: string | null, b?: string | null) {
   if (safeA < safeB) { return -1; }
   if (safeA > safeB) { return 1; }
   return 0;
+}
+
+function compareStringNumerically(a?: string | null, b?: string | null) {
+  const safeA = a || '0';
+  const safeB = b || '0';
+  return (parseInt(safeA, 10) || 0) - (parseInt(safeB, 10) || 0);
 }

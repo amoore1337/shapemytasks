@@ -24,7 +24,7 @@ import useScopeDnd from './useScopeDnD';
 type Props = {
   scope: Scope;
   findScopeIndex: (scopeId: string) => number;
-  moveScope: (scopeId: string, toIndex: number) => void;
+  moveScope: (scopeId: string, toIndex: number, moveComplete: boolean) => void;
   dragEnabled?: boolean;
 }
 
@@ -48,7 +48,7 @@ export default function ScopeItem({
     removeCacheItem<DeleteScope, DeleteScopeVariables>('scopes', 'deleteScopeById', `Project:${scope.projectId}`),
   );
 
-  const [dragRef, dropRef, preview] = useScopeDnd(scope, moveScope, findScopeIndex);
+  const [dragRef, dropRef, preview] = useScopeDnd(scope, moveScope, findScopeIndex, !!dragEnabled);
 
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setMenuAnchor(event.currentTarget);
@@ -85,8 +85,8 @@ export default function ScopeItem({
   return (
     <div ref={(node) => dropRef(preview(node))} className="p-2 flex justify-between">
       <div className="flex items-center flex-grow">
-        <button ref={dragRef} type="button">
-          <DragIcon className={dragEnabled ? 'text-gray-600 cursor-move' : 'text-gray-100'} />
+        <button ref={dragRef} type="button" disabled={!dragEnabled} className="disabled:cursor-not-allowed">
+          <DragIcon className={dragEnabled ? 'text-gray-400 cursor-move' : 'text-gray-100'} />
         </button>
         <ScopeDot color={scope.color} />
         <Typography className={`ml-2 ${inProgress ? 'font-bold' : ''} ${completed ? 'line-through' : ''}`} style={{ maxWidth: '70%' }}>

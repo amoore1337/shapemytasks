@@ -14,7 +14,7 @@ type Props = {
   projectId: string;
   scopes: (Scope | null)[];
   dragEnabled?: boolean;
-  moveScope: (scopeId: string, toIndex: number) => void;
+  moveScope: (scopeId: string, toIndex: number, moveComplete: boolean) => void;
 }
 
 const ContentContainer = styled.div`

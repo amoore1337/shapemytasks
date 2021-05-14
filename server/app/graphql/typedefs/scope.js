@@ -20,5 +20,6 @@ module.exports = gql`
     updateScope(id: ID!, title: String, description: String, color: String, progress: Float): Scope
     deleteScopeById(id: ID!): Scope
     batchUpdateScopeProgress(inputs: [BatchUpdateScopeProgressMap!]!): [Scope]
+    updateScopePosition(id:ID!, targetIndex: Int!): Scope
   }
 `;
