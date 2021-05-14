@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ProjectPage
+// GraphQL mutation operation: UpdateScopePosition
 // ====================================================
 
-export interface ProjectPage_project_scopes {
+export interface UpdateScopePosition_updateScopePosition {
   __typename: "Scope";
   id: string;
   title: string | null;
@@ -17,18 +17,11 @@ export interface ProjectPage_project_scopes {
   position: string | null;
 }
 
-export interface ProjectPage_project {
-  __typename: "Project";
-  id: string;
-  title: string | null;
-  description: string | null;
-  scopes: (ProjectPage_project_scopes | null)[] | null;
+export interface UpdateScopePosition {
+  updateScopePosition: UpdateScopePosition_updateScopePosition | null;
 }
 
-export interface ProjectPage {
-  project: ProjectPage_project | null;
-}
-
-export interface ProjectPageVariables {
+export interface UpdateScopePositionVariables {
   id: string;
+  targetIndex: number;
 }

@@ -23,6 +23,12 @@ module.exports = {
       return scopeService.updateScopeProgresses(inputs, user);
     },
 
+    updateScopePosition(_, { id, targetIndex }, { user }) {
+      rejectUnauthenticated(user);
+
+      return scopeService.updateScopePosition(id, targetIndex, user);
+    },
+
     deleteScopeById(_, { id }, { user }) {
       rejectUnauthenticated(user);
 

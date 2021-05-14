@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     createdById: DataTypes.INTEGER,
     projectId: DataTypes.INTEGER,
+    position: DataTypes.STRING,
     color: {
       type: DataTypes.STRING,
       allowNull: false,

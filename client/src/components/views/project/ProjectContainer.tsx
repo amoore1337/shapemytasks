@@ -7,8 +7,12 @@ import { UpdatedItemsMap } from '@/components/hillChart/HillChart';
 import routes from '@/routes';
 
 import Project from './Project';
-import { Scopes, SCOPE_SORT_OPTIONS, SortOption } from './helpers';
-import { ProjectPage } from './types/ProjectPage';
+import {
+  findScopeIndex,
+  moveArrayItem, Scopes, SCOPE_SORT_OPTIONS, SortOption,
+} from './helpers';
+import { ProjectPage, ProjectPage_project_scopes as Scope } from './types/ProjectPage';
+import { UpdateScopePosition, UpdateScopePositionVariables } from './types/UpdateScopePosition';
 import { UpdateScopeProgresses, UpdateScopeProgressesVariables } from './types/UpdateScopeProgresses';
 
 const PROJECT_DETAILS = gql`
@@ -23,6 +27,7 @@ const PROJECT_DETAILS = gql`
         progress
         color
         projectId
+        position
       }
     }
   }
@@ -36,6 +41,20 @@ const UPDATE_SCOPE_PROGRESSES = gql`
       progress
       color
       projectId
+      position
+    }
+  }
+`;
+
+const UPDATE_SCOPE_POSITION = gql`
+  mutation UpdateScopePosition($id: ID!, $targetIndex: Int!) {
+    updateScopePosition(id: $id, targetIndex: $targetIndex) {
+      id
+      title
+      progress
+      color
+      projectId
+      position
     }
   }
 `;
@@ -44,8 +63,11 @@ export default function ProjectContainer() {
   const [enableProgressEdit, setEnableProgressEdit] = useState(false);
   const { id } = useParams<{ id: string }>();
   const { data, loading, error } = useQuery<ProjectPage>(PROJECT_DETAILS, { variables: { id }, skip: !id });
-  const [updateProject] = useMutation<UpdateScopeProgresses, UpdateScopeProgressesVariables>(
+  const [updateScopeProgress] = useMutation<UpdateScopeProgresses, UpdateScopeProgressesVariables>(
     UPDATE_SCOPE_PROGRESSES,
+  );
+  const [updateScopePosition] = useMutation<UpdateScopePosition, UpdateScopePositionVariables>(
+    UPDATE_SCOPE_POSITION,
   );
   const [hasError, setHasError] = useState(false);
   const [sortOption, setSortOption] = useState<SortOption>(SCOPE_SORT_OPTIONS[0]);
@@ -59,9 +81,30 @@ export default function ProjectContainer() {
       updates.push({ id: itemId, progress: updatedItems[itemId] });
     });
     try {
-      await updateProject({ variables: { inputs: updates } });
+      await updateScopeProgress({ variables: { inputs: updates } });
     } catch (err) {
       setHasError(true);
+    }
+  };
+
+  const handleScopePositionUpdate = async (scopeId: string, targetIndex: number) => {
+    try {
+      await updateScopePosition({ variables: { id: scopeId, targetIndex } });
+    } catch (err) {
+      setHasError(true);
+    }
+  };
+
+  const moveScope = (scopeId: string, toIndex: number, moveComplete: boolean) => {
+    const fromIndex = findScopeIndex(sortedScopes, scopeId);
+    const scope = sortedScopes[fromIndex];
+    if (!scope) { return; }
+
+    const updatedScopes = moveArrayItem<Scope | null>(sortedScopes, fromIndex, toIndex);
+    setSortedScopes(updatedScopes);
+
+    if (moveComplete) {
+      handleScopePositionUpdate(scopeId, toIndex);
     }
   };
 
@@ -100,6 +143,7 @@ export default function ProjectContainer() {
       onErrorToastDismiss={() => setHasError(false)}
       hillChartEditEnabled={enableProgressEdit}
       loading={loading}
+      moveScope={moveScope}
     />
   );
 }
