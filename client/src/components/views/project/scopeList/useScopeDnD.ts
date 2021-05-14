@@ -58,7 +58,6 @@ export default function useScopeDnd(
   );
 
   return [
-    // (node: E) => drag(drop(node)),
     drag,
     drop,
     preview,
