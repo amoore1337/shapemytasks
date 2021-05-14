@@ -5,10 +5,19 @@ const { midString } = require('./position.service');
 async function createScope(params, createdBy) {
   if (!params.projectId) { return null; }
 
-  const project = Project.findByPk(params.projectId);
+  const project = await Project.findByPk(params.projectId);
   if (project && userService.canEditProject(createdBy, project)) {
+    const lastScope = await Scope.findOne({
+      where: {
+        projectId: project.id,
+      },
+      order: [['position', 'DESC']],
+    });
+
+    const lastPosition = lastScope && lastScope.position;
     return Scope.create({
       ...params,
+      position: midString(lastPosition || '', ''),
       createdById: createdBy.id,
     });
   }
