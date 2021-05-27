@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 
 import tw, { styled } from 'twin.macro';
 
@@ -10,10 +10,10 @@ const StyledDot = styled.div`
 
 type Props = {
   color: string;
-};
+} & HTMLAttributes<HTMLDivElement>;
 
-export default function ScopeDot({ color }: Props) {
+export default function ScopeDot({ color, style, ...props }: Props) {
   return (
-    <StyledDot style={{ backgroundColor: color }} />
+    <StyledDot {...props} style={{ ...style, backgroundColor: color }} />
   );
 }

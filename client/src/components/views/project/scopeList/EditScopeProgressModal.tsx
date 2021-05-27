@@ -16,6 +16,8 @@ const UPDATE_SCOPE_PROGRESS = gql`
       title
       description
       progress
+      createdAt
+      updatedAt
     }
   }
 `;

@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: UpdateScopePosition
+// GraphQL fragment: ScopeFragment
 // ====================================================
 
-export interface UpdateScopePosition_updateScopePosition {
+export interface ScopeFragment {
   __typename: "Scope";
   id: string;
   title: string | null;
@@ -17,13 +17,4 @@ export interface UpdateScopePosition_updateScopePosition {
   position: string | null;
   createdAt: any;
   updatedAt: any;
-}
-
-export interface UpdateScopePosition {
-  updateScopePosition: UpdateScopePosition_updateScopePosition | null;
-}
-
-export interface UpdateScopePositionVariables {
-  id: string;
-  targetIndex: number;
 }

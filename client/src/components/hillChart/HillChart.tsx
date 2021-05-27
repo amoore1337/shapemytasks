@@ -21,6 +21,7 @@ type Props = {
   height?: string | number;
   data?: (ChartItem | null)[];
   allowEdit?: boolean;
+  printMode?: boolean;
   onSave?: (updatedItems: UpdatedItemsMap) => void;
   onCancel?: () => void;
 }
@@ -53,7 +54,7 @@ const DOT_DIAMETER = 10;
 const DOT_RADIUS = DOT_DIAMETER / 2;
 
 export default function HillChart({
-  width, height, allowEdit, onSave, onCancel, data = [],
+  width, height, allowEdit, printMode, onSave, onCancel, data = [],
 }: Props) {
   const chartId = useRef<number>(Math.floor(Math.random() * Math.floor(101)));
   const updatedItems = useRef<UpdatedItemsMap>({});
@@ -145,7 +146,7 @@ export default function HillChart({
     <div ref={container} id={`chart-container-${chartId.current}`} className="relative" style={{ width, height }}>
       {plottedItems.map((itemId) => {
         const point = findChartPoint(currentChartPoints(hillChartSvg.current), itemId);
-        return point && <ChartPointLabel key={itemId} point={point} dragEnabled={allowEdit} />;
+        return point && <ChartPointLabel key={itemId} point={point} dragEnabled={allowEdit} printMode={printMode} />;
       })}
       {allowEdit && (
         <div className="absolute top-2 right-2 flex">

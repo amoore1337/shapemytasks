@@ -1,6 +1,7 @@
-import { ProjectPage_project_scopes as ProjectScopes } from './types/ProjectPage';
+import { ProjectPage_project_scopes as ProjectPageProjectScopes } from './types/ProjectPage';
 
-export type Scopes = (ProjectScopes | null)[];
+export type ProjectScope = ProjectPageProjectScopes;
+export type Scopes = (ProjectScope | null)[];
 
 export type SortOption = {
   label: string;
@@ -55,7 +56,7 @@ export const SCOPE_SORT_OPTIONS: SortOption[] = [
   },
 ];
 
-function sortScopesByPosition(scopes: Scopes) {
+export function sortScopesByPosition(scopes: Scopes) {
   return [...scopes].sort((a, b) => {
     let result = compareStringAlphabetically(a?.position, b?.position);
     if (result === 0) {
@@ -65,11 +66,15 @@ function sortScopesByPosition(scopes: Scopes) {
   });
 }
 
-function sortScopesById(scopes: Scopes) {
+export function sortScopesById(scopes: Scopes) {
   return [...scopes].sort((a, b) => compareStringNumerically(a?.id, b?.id));
 }
 
-function sortScopesByProgressAsc(scopes: Scopes) {
+export function sortScopesByUpdatedAt(scopes: Scopes) {
+  return [...scopes].sort((a, b) => (b?.updatedAt || 0) - (a?.updatedAt || 0));
+}
+
+export function sortScopesByProgressAsc(scopes: Scopes) {
   return [...scopes].sort((a, b) => {
     const aProgress = a?.progress || 0;
     const bProgress = b?.progress || 0;
@@ -78,7 +83,8 @@ function sortScopesByProgressAsc(scopes: Scopes) {
     return compareStringAlphabetically(a?.title, b?.title);
   });
 }
-function sortScopesByProgressDesc(scopes: Scopes) {
+
+export function sortScopesByProgressDesc(scopes: Scopes) {
   return [...scopes].sort((a, b) => {
     const aProgress = a?.progress || 0;
     const bProgress = b?.progress || 0;
@@ -88,7 +94,7 @@ function sortScopesByProgressDesc(scopes: Scopes) {
   });
 }
 
-function sortScopesByTitle(scopes: Scopes) {
+export function sortScopesByTitle(scopes: Scopes) {
   return [...scopes].sort((a, b) => compareStringAlphabetically(a?.title, b?.title));
 }
 

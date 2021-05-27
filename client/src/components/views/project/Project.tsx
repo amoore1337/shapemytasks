@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
-  Button, Paper, Typography, useMediaQuery, useTheme,
+  Button, IconButton, Paper, Typography, useMediaQuery, useTheme,
 } from '@material-ui/core';
+import PrintIcon from '@material-ui/icons/Print';
 import useDimensions from 'react-cool-dimensions';
 
 import ErrorToast from '@/components/ErrorToast';
@@ -11,6 +12,7 @@ import HillChart, { UpdatedItemsMap, VIEW_BOX } from '@/components/hillChart/Hil
 
 import ScopeSortDropdown from './ScopeSortDropdown';
 import { Scopes, SortOption } from './helpers';
+import PrintPreviewModal from './print/PrintPreviewModal';
 import ScopeList from './scopeList/ScopeList';
 import { ProjectPage_project as ProjectDetails } from './types/ProjectPage';
 
@@ -30,6 +32,7 @@ type Props = {
 }
 
 export default function Project(props: Props) {
+  const [showPrintPreview, setShowPrintPreview] = useState(false);
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('sm'));
   const { observe: chartContainerRef, width } = useDimensions<HTMLDivElement | null>();
@@ -56,16 +59,27 @@ export default function Project(props: Props) {
         <div
           className={`flex justify-center w-full pb-4 relative ${isMobile ? 'items-center h-full' : ''}`}
         >
-          {!hillChartEditEnabled && scopes.length > 0 && (
-            <Button
-              className="text-white absolute top-8 left-8 z-10"
-              variant="contained"
-              color="secondary"
-              onClick={onHillChartEditClick}
-            >
-              Update Progress
-            </Button>
-          )}
+          <div className="absolute top-8 left-8 z-10">
+            {!hillChartEditEnabled && scopes.length > 0 && (
+              <Button
+                className="text-white"
+                variant="contained"
+                color="secondary"
+                onClick={onHillChartEditClick}
+              >
+                Update Progress
+              </Button>
+            )}
+            {!hillChartEditEnabled && (
+              <IconButton
+                className="ml-2 border border-solid border-gray-100 shadow-md"
+                aria-label="print"
+                onClick={() => setShowPrintPreview(true)}
+              >
+                <PrintIcon className="text-secondary" />
+              </IconButton>
+            )}
+          </div>
           <div ref={chartContainerRef} style={{ width: isMobile ? '100%' : '80%', height: chartHeight }}>
             <HillChart
               width="100%"
@@ -90,6 +104,9 @@ export default function Project(props: Props) {
         )}
       </Paper>
       <ErrorToast open={showError} onClose={onErrorToastDismiss} />
+      {showPrintPreview && (
+        <PrintPreviewModal open={showPrintPreview} onClose={() => setShowPrintPreview(false)} scopes={scopes} />
+      )}
     </div>
   );
 }
