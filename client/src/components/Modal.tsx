@@ -25,7 +25,7 @@ export default function StyledModal({
       disableBackdropClick
     >
       <Fade in={open}>
-        <div className="bg-white p-4 shadow text-gray-800 relative" style={style}>
+        <div className="bg-white rounded p-4 shadow text-gray-800 relative" style={style}>
           {!noCloseButton && (
             <IconButton onClick={() => onClose && onClose({}, 'backdropClick')} className="p-1 -mt-2 absolute right-1 top-3">
               <CancelIcon color="secondary" className="text-4xl" />

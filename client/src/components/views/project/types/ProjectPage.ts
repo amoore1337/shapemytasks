@@ -15,6 +15,8 @@ export interface ProjectPage_project_scopes {
   color: string;
   projectId: string | null;
   position: string | null;
+  createdAt: any;
+  updatedAt: any;
 }
 
 export interface ProjectPage_project {

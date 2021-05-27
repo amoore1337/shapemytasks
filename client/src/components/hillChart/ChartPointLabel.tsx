@@ -6,18 +6,25 @@ import {
   Circle, CircleElement, getProgressFromPosition, ViewBox,
 } from './helpers';
 
+const LABEL_HEIGHT = 24;
+
 const StyledLabel = styled.div`
   max-width: 400px;
+  height: ${LABEL_HEIGHT}px;
   ${tw`overflow-hidden overflow-ellipsis whitespace-nowrap px-1`}
   
+  ${({ $printMode }: { $printMode?: boolean }) => $printMode && (tw`whitespace-normal overflow-auto rounded bg-white z-10 shadow`)}
+
   &:hover {
     ${tw`whitespace-normal overflow-auto rounded bg-white z-10 shadow`}
   }
 `;
 
+type Props = { point: CircleElement, dragEnabled?: boolean, printMode?: boolean };
+
 type EventListener = (event: Event) => void;
 type Position = { top: number, left: number, bottom: number, right: number, progress: number };
-export default function ChartPointLabel({ point, dragEnabled }: { point: CircleElement, dragEnabled?: boolean }) {
+export default function ChartPointLabel({ point, dragEnabled, printMode }: Props) {
   const startPos = point.node.getBoundingClientRect();
   const [pos, setPos] = useState<Position>(getStartPosition(startPos, point));
   const [labelStyle, setLabelStyle] = useState<React.CSSProperties>({
@@ -55,12 +62,13 @@ export default function ChartPointLabel({ point, dragEnabled }: { point: CircleE
   }, [labelEl, dragEnabled]);
 
   useEffect(() => {
-    const style: React.CSSProperties = {
-      top: pos.top - 5,
-    };
+    const pointDiameter = Math.abs(pos.right - pos.left);
+    const midHeight = pos.bottom - (pointDiameter / 2);
+    const top = midHeight - (LABEL_HEIGHT / 2);
+    const style: React.CSSProperties = { top };
 
     if (pos.progress < 51) {
-      style.left = pos.left + 20;
+      style.left = pos.right + 5;
     } else {
       style.left = pos.left - (labelEl.current?.clientWidth || 0) - 5;
     }
@@ -75,6 +83,7 @@ export default function ChartPointLabel({ point, dragEnabled }: { point: CircleE
       id={`${point.chart}.item.${point.chartItem.id}.label`}
       className={`fixed ${dragEnabled ? 'cursor-move' : ''} ${inProgress ? 'text-gray-800' : 'text-gray-300'}`}
       style={labelStyle}
+      $printMode={printMode}
     >
       {point.chartItem.title}
     </StyledLabel>
@@ -103,6 +112,9 @@ export function updatePointLabelPos(point: Circle | CircleElement, viewbox: View
 }
 
 function getStartPosition(startPos: DOMRect, point: CircleElement) {
+  // document.elementsFromPoint(x, y).map((e) => e.id).filter(/* *.item.*.label */)
+  // ^ check for 3 points: top edge, bottom edge, middle
+  // if any elements already exist, dodge somehow
   return {
     top: startPos.top,
     left: startPos.left,

@@ -17,6 +17,8 @@ export interface UpdateScopeProgresses_batchUpdateScopeProgress {
   color: string;
   projectId: string | null;
   position: string | null;
+  createdAt: any;
+  updatedAt: any;
 }
 
 export interface UpdateScopeProgresses {

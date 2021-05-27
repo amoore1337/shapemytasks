@@ -15,6 +15,19 @@ import { ProjectPage, ProjectPage_project_scopes as Scope } from './types/Projec
 import { UpdateScopePosition, UpdateScopePositionVariables } from './types/UpdateScopePosition';
 import { UpdateScopeProgresses, UpdateScopeProgressesVariables } from './types/UpdateScopeProgresses';
 
+const SCOPE_FRAGMENT = gql`
+  fragment ScopeFragment on Scope {
+    id
+    title
+    progress
+    color
+    projectId
+    position
+    createdAt
+    updatedAt
+  }
+`;
+
 const PROJECT_DETAILS = gql`
   query ProjectPage($id: ID!) {
     project(id: $id) {
@@ -22,41 +35,29 @@ const PROJECT_DETAILS = gql`
       title
       description
       scopes {
-        id
-        title
-        progress
-        color
-        projectId
-        position
+        ...ScopeFragment
       }
     }
   }
+  ${SCOPE_FRAGMENT}
 `;
 
 const UPDATE_SCOPE_PROGRESSES = gql`
   mutation UpdateScopeProgresses($inputs: [BatchUpdateScopeProgressMap!]!) {
     batchUpdateScopeProgress(inputs: $inputs) {
-      id
-      title
-      progress
-      color
-      projectId
-      position
+      ...ScopeFragment
     }
   }
+  ${SCOPE_FRAGMENT}
 `;
 
 const UPDATE_SCOPE_POSITION = gql`
   mutation UpdateScopePosition($id: ID!, $targetIndex: Int!) {
     updateScopePosition(id: $id, targetIndex: $targetIndex) {
-      id
-      title
-      progress
-      color
-      projectId
-      position
+      ...ScopeFragment
     }
   }
+  ${SCOPE_FRAGMENT}
 `;
 
 export default function ProjectContainer() {
