@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {
   Button, IconButton, Paper, Typography, useMediaQuery, useTheme,
 } from '@material-ui/core';
-import PrintIcon from '@material-ui/icons/Print';
+import PhotoIcon from '@material-ui/icons/PhotoCamera';
 import useDimensions from 'react-cool-dimensions';
 
 import ErrorToast from '@/components/ErrorToast';
@@ -76,7 +76,7 @@ export default function Project(props: Props) {
                 aria-label="print"
                 onClick={() => setShowPrintPreview(true)}
               >
-                <PrintIcon className="text-secondary" />
+                <PhotoIcon className="text-secondary" />
               </IconButton>
             )}
           </div>
