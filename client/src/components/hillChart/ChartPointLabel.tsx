@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import tw, { styled } from 'twin.macro';
+import tw, { styled, css } from 'twin.macro';
 
 import {
   Circle, CircleElement, getProgressFromPosition, ViewBox,
@@ -13,10 +13,14 @@ const StyledLabel = styled.div`
   height: ${LABEL_HEIGHT}px;
   ${tw`overflow-hidden overflow-ellipsis whitespace-nowrap px-1`}
   
-  ${({ $printMode }: { $printMode?: boolean }) => $printMode && (tw`whitespace-normal overflow-auto rounded bg-white z-10 shadow`)}
+  ${({ $printMode }: { $printMode?: boolean }) => $printMode && css`
+    ${tw`whitespace-normal overflow-auto rounded bg-white z-10 shadow`}
+    height: auto;
+  `}
 
   &:hover {
     ${tw`whitespace-normal overflow-auto rounded bg-white z-10 shadow`}
+    height: auto;
   }
 `;
 

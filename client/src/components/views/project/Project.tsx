@@ -104,9 +104,12 @@ export default function Project(props: Props) {
         )}
       </Paper>
       <ErrorToast open={showError} onClose={onErrorToastDismiss} />
-      {showPrintPreview && (
-        <PrintPreviewModal open={showPrintPreview} onClose={() => setShowPrintPreview(false)} scopes={scopes} />
-      )}
+      <PrintPreviewModal
+        open={showPrintPreview}
+        onClose={() => setShowPrintPreview(false)}
+        projectName={project?.title || ''}
+        scopes={scopes}
+      />
     </div>
   );
 }
