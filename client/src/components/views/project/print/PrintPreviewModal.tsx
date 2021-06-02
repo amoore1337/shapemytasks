@@ -61,7 +61,7 @@ export default function PrintPreviewModal({
             className="text-white mr-4"
             startIcon={<DownloadIcon className="text-white" />}
             href={imageSrc}
-            download="test.png"
+            download={`${projectName}.png`}
           >
             Download PNG
           </Button>
@@ -88,9 +88,9 @@ function ModalContent({ id, projectName, scopes }: ContentProps) {
   const finishedScopes = sortScopesByUpdatedAt(scopeBuckets.completed);
 
   return (
-    <div id={id} className="flex flex-col h-full w-full p-4 relative">
-      <h1 className="absolute left-8 font-semibold text-lg">{projectName}</h1>
-      <div ref={chartContainerRef} className="w-full mb-4" style={{ height: chartHeight }}>
+    <div id={id} className="flex flex-col h-full w-full p-4 relative bg-white">
+      <h1 className="absolute left-8 font-semibold text-lg mt-4">{projectName}</h1>
+      <div ref={chartContainerRef} className="w-full my-4" style={{ height: chartHeight }}>
         <HillChart
           width="100%"
           height="100%"
