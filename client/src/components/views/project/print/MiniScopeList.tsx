@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import tw, { styled } from 'twin.macro';
 
@@ -11,7 +11,7 @@ const ListContainer = styled.div`
 `;
 
 type Props = {
-  title: string;
+  title: ReactNode;
   scopes: Scopes;
   className?: string;
 }

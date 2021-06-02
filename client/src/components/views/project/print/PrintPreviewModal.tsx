@@ -12,9 +12,13 @@ import useDimensions from 'react-cool-dimensions';
 import Modal from '@/components/Modal';
 import HillChart, { VIEW_BOX } from '@/components/hillChart/HillChart';
 
-import { Scopes, sortScopesByPosition, sortScopesByUpdatedAt } from '../helpers';
+import {
+  Scopes, sortScopesByPosition, sortScopesByProgressAsc, sortScopesByUpdatedAt,
+} from '../helpers';
 
 import MiniScopeList from './MiniScopeList';
+
+const TRUNCATED_LIST_LENGTH = 3;
 
 type Props = {
   open: boolean;
@@ -84,6 +88,7 @@ function ModalContent({ id, projectName, scopes }: ContentProps) {
   const chartHeight = (VIEW_BOX.y / VIEW_BOX.x) * width;
   const scopeBuckets = sortedScopes(scopes);
 
+  const inProgressScopes = sortScopesByProgressAsc(scopeBuckets.inProgress);
   const nextUpScopes = sortScopesByPosition(scopeBuckets.notStarted);
   const finishedScopes = sortScopesByUpdatedAt(scopeBuckets.completed);
 
@@ -101,15 +106,31 @@ function ModalContent({ id, projectName, scopes }: ContentProps) {
       <div className="flex-1 relative">
         <div className="flex h-full px-4">
           <MiniScopeList
-            title="Next Up"
-            className="flex-1 px-6"
-            scopes={[...nextUpScopes].slice(0, 3)}
+            title="In Progress"
+            className="flex-1"
+            scopes={inProgressScopes}
           />
-          <MiniScopeList
-            title="Recently Finished"
-            className="flex-1 px-6"
-            scopes={[...finishedScopes].slice(0, 3)}
-          />
+          <div className="flex-1">
+            <MiniScopeList
+              title={(
+                <>
+                  Next Up
+                  <span className="ml-1 text-sm italic text-gray-600">(next 3 scopes)</span>
+                </>
+            )}
+              scopes={[...nextUpScopes].slice(0, TRUNCATED_LIST_LENGTH)}
+            />
+            <MiniScopeList
+              title={(
+                <>
+                  Recently Finished
+                  <span className="ml-1 text-sm italic text-gray-600">(last 3 scopes completed)</span>
+                </>
+            )}
+              className="mt-6"
+              scopes={[...finishedScopes].slice(0, TRUNCATED_LIST_LENGTH)}
+            />
+          </div>
         </div>
       </div>
     </div>
