@@ -1,11 +1,12 @@
 import React, {
-  CSSProperties, ForwardedRef, forwardRef, useRef,
-  Ref,
+  CSSProperties,
+  useState,
+  useEffect,
 } from 'react';
 
 import { Button } from '@material-ui/core';
 import DownloadIcon from '@material-ui/icons/GetApp';
-import { exportComponentAsPNG } from 'react-component-export-image';
+import { toPng } from 'html-to-image';
 import useDimensions from 'react-cool-dimensions';
 
 import Modal from '@/components/Modal';
@@ -18,37 +19,49 @@ import MiniScopeList from './MiniScopeList';
 type Props = {
   open: boolean;
   onClose: () => void;
+  projectName: string;
   scopes: Scopes;
   style?: CSSProperties;
 }
 
-const PrintableContent = forwardRef<HTMLDivElement, ContentProps>((props, ref) => (
-  <ModalContent {...props} forwardedRef={ref} />
-));
-
 export default function PrintPreviewModal({
-  open, onClose, scopes, style,
+  open, onClose, projectName, scopes, style,
 }: Props) {
-  const printableContentRef = useRef<HTMLDivElement>() as React.RefObject<HTMLDivElement>;
+  const [imageSrc, setImageSrc] = useState('');
+
+  const handlePrint = async () => {
+    const content = document.getElementById('print-content');
+    if (!content) { return; }
+    const dataUrl = await toPng(content);
+    setImageSrc(dataUrl);
+  };
+
+  useEffect(() => {
+    handlePrint();
+  }, [scopes]);
 
   return (
     <Modal
       open={open}
       onClose={onClose}
-      style={{ width: '95%', height: '95%', ...style }}
+      style={{ width: '100%', height: '100%', ...style }}
+      className="rounded-none p-0"
+      afterOpen={handlePrint}
       noCloseButton
     >
       <div className="flex flex-col h-full">
         <div className="flex-1 relative overflow-y-auto">
-          <PrintableContent scopes={scopes} ref={printableContentRef as Ref<HTMLDivElement>} />
+          <ModalContent id="print-content" projectName={projectName} scopes={scopes} />
         </div>
-        <div className="pt-6 flex justify-center items-center">
+        <div className="pt-6 pb-4 flex justify-center items-center">
           <Button
+            component="a"
             variant="contained"
             color="secondary"
             className="text-white mr-4"
             startIcon={<DownloadIcon className="text-white" />}
-            onClick={() => exportComponentAsPNG(printableContentRef)}
+            href={imageSrc}
+            download="test.png"
           >
             Download PNG
           </Button>
@@ -60,11 +73,12 @@ export default function PrintPreviewModal({
 }
 
 type ContentProps = {
+  id: string;
+  projectName: string;
   scopes: Scopes;
-  forwardedRef?: ForwardedRef<HTMLDivElement>;
 };
 
-function ModalContent({ scopes, forwardedRef }: ContentProps) {
+function ModalContent({ id, projectName, scopes }: ContentProps) {
   const { observe: chartContainerRef, width } = useDimensions<HTMLDivElement | null>();
 
   const chartHeight = (VIEW_BOX.y / VIEW_BOX.x) * width;
@@ -74,7 +88,8 @@ function ModalContent({ scopes, forwardedRef }: ContentProps) {
   const finishedScopes = sortScopesByUpdatedAt(scopeBuckets.completed);
 
   return (
-    <div ref={forwardedRef} className="flex flex-col h-full w-full">
+    <div id={id} className="flex flex-col h-full w-full p-4 relative">
+      <h1 className="absolute left-8 font-semibold text-lg">{projectName}</h1>
       <div ref={chartContainerRef} className="w-full mb-4" style={{ height: chartHeight }}>
         <HillChart
           width="100%"

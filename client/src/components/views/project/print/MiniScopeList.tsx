@@ -22,7 +22,7 @@ export default function MiniScopeList({ title, scopes, className = '' }: Props) 
       <h3 className="px-2 font-bold">{title}</h3>
       <ol className="border border-solid border-secondary rounded-md box-border">
         {scopes.length < 1 && (
-          <div className="px-2 py-4 italic font-semibold">No scopes...</div>
+          <div className="px-2 py-2 italic font-semibold">No scopes...</div>
         )}
         {scopes.length > 0 && scopes.map((scope) => (
           !!scope && (
