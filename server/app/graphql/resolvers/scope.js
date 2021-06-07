@@ -2,6 +2,7 @@ const scopeService = require('../../services/scope.service');
 const { basicQueryAllResolver, basicFindByIdResolver } = require('../helpers');
 const { rejectUnauthenticated } = require('../helpers');
 const { Scope } = require('../../models');
+const pubSub = require('../pubSub');
 
 module.exports = {
   Mutation: {
@@ -33,6 +34,14 @@ module.exports = {
       rejectUnauthenticated(user);
 
       return scopeService.deleteScope(id, user);
+    },
+  },
+
+  Subscription: {
+    scopeCreated: {
+      subscribe() {
+        return pubSub.asyncIterator(['SCOPE_CREATED']);
+      },
     },
   },
 

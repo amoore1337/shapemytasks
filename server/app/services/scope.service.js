@@ -1,6 +1,7 @@
 const { Scope, Project } = require('../models');
 const userService = require('./user.service');
 const { midString } = require('./position.service');
+const pubSub = require('../graphql/pubSub');
 
 async function createScope(params, createdBy) {
   if (!params.projectId) { return null; }
@@ -15,11 +16,15 @@ async function createScope(params, createdBy) {
     });
 
     const lastPosition = lastScope && lastScope.position;
-    return Scope.create({
+    const scope = await Scope.create({
       ...params,
       position: midString(lastPosition || '', ''),
       createdById: createdBy.id,
     });
+
+    pubSub.publish('SCOPE_CREATED', { scopeCreated: scope });
+
+    return scope;
   }
   return null;
 }

@@ -1,6 +1,6 @@
-export function debounced(delay: number, fn: (...args: any) => any) {
+export function debounced<A extends Array<any>>(delay: number, fn: (...args: A) => void) {
   let timerId: number | null;
-  return (...args: any) => {
+  return (...args: A) => {
     if (timerId) {
       clearTimeout(timerId);
     }
@@ -11,7 +11,7 @@ export function debounced(delay: number, fn: (...args: any) => any) {
   };
 }
 
-export function throttled(delay: number, fn: (...args: any) => any) {
+export function throttled<A extends Array<any>, R>(delay: number, fn: (...args: A) => R) {
   let lastCall = 0;
   return (...args: any) => {
     const now = (new Date()).getTime();

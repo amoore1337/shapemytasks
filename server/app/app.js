@@ -25,6 +25,9 @@ module.exports = async (callback) => {
     ...schema,
     playground: config.get('NODE_ENV') === 'dev',
   });
+
+  await apollo.start();
+
   apollo.applyMiddleware({ app, path: '/api/graphql' });
 
   require('./routes/index')(app);
@@ -45,27 +48,15 @@ module.exports = async (callback) => {
 
   await sequelize.sync();
 
-  server(app).listen(SERVER_PORT, SERVER_HOST, () => {
-    console.log(`Server running in ${config.get('NODE_ENV')} mode on port ${SERVER_PORT} - GraphQL: ${apollo.graphqlPath}`);
+  const httpServer = require('http').createServer(app);
+
+  apollo.installSubscriptionHandlers(httpServer);
+
+  httpServer.listen(SERVER_PORT, SERVER_HOST, () => {
+    console.log(`Server running in ${config.get('NODE_ENV')} mode on port ${SERVER_PORT} - GraphQL: ${apollo.graphqlPath} - Subscriptions: ${apollo.subscriptionsPath}`);
     if (callback) { callback(); }
   });
 };
-
-function server(app) {
-  // 'Dev' mode needs to use https throughout for simplicity
-  // with proxies to dev servers.
-  if (config.get('NODE_ENV') !== 'dev') {
-    return app;
-  }
-
-  const { readFileSync } = require('fs');
-  const creds = {
-    key: readFileSync(config.get('SSL_KEY_FILE')),
-    cert: readFileSync(config.get('SSL_CRT_FILE')),
-  };
-
-  return require('https').createServer(creds, app);
-}
 
 async function waitForDb(sequelize) {
   const dbReady = (wait) => new Promise((resolve) => {

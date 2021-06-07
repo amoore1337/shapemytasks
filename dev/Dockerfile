@@ -1,5 +1,6 @@
 FROM nginx:1.19-alpine
 
+COPY ./nginx/nginx.conf.ssl.template /etc/nginx/conf.d/nginx.conf.ssl.template
 COPY ./nginx/nginx.conf.template /etc/nginx/conf.d/nginx.conf.template
 COPY ./nginx/includes/ /etc/nginx/includes/
 
