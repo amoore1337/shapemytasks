@@ -1,3 +1,4 @@
+const { withFilter } = require('apollo-server-express');
 const scopeService = require('../../services/scope.service');
 const { basicQueryAllResolver, basicFindByIdResolver } = require('../helpers');
 const { rejectUnauthenticated } = require('../helpers');
@@ -39,9 +40,12 @@ module.exports = {
 
   Subscription: {
     scopeCreated: {
-      subscribe() {
-        return pubSub.asyncIterator(['SCOPE_CREATED']);
-      },
+      subscribe: withFilter(
+        () => pubSub.asyncIterator(['SCOPE_CREATED']),
+        ({ scopeCreated }, { projectId }) => (
+          scopeCreated.dataValues.projectId.toString() === projectId.toString()
+        ),
+      ),
     },
   },
 

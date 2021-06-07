@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { gql, useMutation, useQuery } from '@apollo/client';
+import {
+  gql, useMutation, useQuery, useSubscription,
+} from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { UpdatedItemsMap } from '@/components/hillChart/HillChart';
@@ -60,6 +62,15 @@ const UPDATE_SCOPE_POSITION = gql`
   ${SCOPE_FRAGMENT}
 `;
 
+const NEW_SCOPE_SUBSCRIPTION = gql`
+  subscription ProjectScopeSubscription {
+    scopeCreated(projectId:"1") {
+      ...ScopeFragment
+    }
+  }
+  ${SCOPE_FRAGMENT}
+`;
+
 export default function ProjectContainer() {
   const [enableProgressEdit, setEnableProgressEdit] = useState(false);
   const { id } = useParams<{ id: string }>();
@@ -70,6 +81,9 @@ export default function ProjectContainer() {
   const [updateScopePosition] = useMutation<UpdateScopePosition, UpdateScopePositionVariables>(
     UPDATE_SCOPE_POSITION,
   );
+
+  // useSubscription(NEW_SCOPE_SUBSCRIPTION);
+
   const [hasError, setHasError] = useState(false);
   const [sortOption, setSortOption] = useState<SortOption>(SCOPE_SORT_OPTIONS[0]);
   const [sortedScopes, setSortedScopes] = useState<Scopes>([]);
