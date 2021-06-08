@@ -22,4 +22,9 @@ module.exports = gql`
     batchUpdateScopeProgress(inputs: [BatchUpdateScopeProgressMap!]!): [Scope]
     updateScopePosition(id:ID!, targetIndex: Int!): Scope
   }
+
+  extend type Subscription {
+    scopeCreated(projectId:ID!): Scope
+    scopeUpdated(projectId:ID!): Scope
+  }
 `;

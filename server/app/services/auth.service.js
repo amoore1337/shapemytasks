@@ -3,7 +3,7 @@ const config = require('nconf');
 const { User } = require('../models');
 
 function generateJWT(userId) {
-  return jwt.sign({ userId }, config.get('JWT_SECRET'), { expiresIn: '2d' });
+  return jwt.sign({ userId }, config.get('JWT_SECRET'), { expiresIn: '7d' });
 }
 
 function verifyJWT(token) {

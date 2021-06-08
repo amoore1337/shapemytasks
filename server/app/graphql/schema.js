@@ -4,6 +4,7 @@ const requireDir = require('require-dir');
 
 const { User } = require('../models');
 const { verifyJWT } = require('../services/auth.service');
+const { getCookie } = require('../services/util.service');
 
 const appTypeDefs = requireDir('./typedefs');
 const appResolvers = requireDir('./resolvers');
@@ -22,6 +23,10 @@ const typeDefs = gql`
   }
 
   type Mutation {
+    root: String
+  }
+
+  type Subscription {
     root: String
   }
 `;
@@ -58,22 +63,45 @@ const resolvers = {
 
 // ============================================================================================
 
-async function getUserForRequest(req) {
+async function getUserForToken(token) {
   let user;
-  if (req.cookies && req.cookies.t_id) {
+  if (token) {
     try {
-      const { userId } = verifyJWT(req.cookies.t_id);
+      const { userId } = verifyJWT(token);
       user = await User.findByPk(userId);
     } catch (error) {
-      return null;
+      // Just don't return a user for now?
     }
   }
   return user;
 }
 
-const context = async ({ req }) => ({
-  user: await getUserForRequest(req),
+async function getUserForConnection(connection) {
+  if (connection.upgradeReq && connection.upgradeReq.headers) {
+    const token = getCookie(connection.upgradeReq.headers.cookie);
+    return getUserForToken(token);
+  }
+  return null;
+}
+
+async function getUserForRequest(req) {
+  if (req.cookies && req.cookies.t_id) {
+    return getUserForToken(req.cookies.t_id);
+  }
+  return null;
+}
+
+const context = async ({ req, connection }) => ({
+  user: connection ? await getUserForConnection(connection) : await getUserForRequest(req),
 });
+
+// ============================================================================================
+
+const subscriptions = {
+  path: '/api/subscriptions',
+  // onConnect: () => {},
+  // onDisconnect: () => {},
+};
 
 // ============================================================================================
 
@@ -87,6 +115,7 @@ module.exports = {
     ...Object.values(appResolvers),
   ],
   context,
+  subscriptions,
   playground: {
     settings: {
       'request.credentials': 'include',

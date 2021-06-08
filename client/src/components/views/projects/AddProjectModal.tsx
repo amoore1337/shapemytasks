@@ -27,7 +27,7 @@ type Props ={
 export default function AddProjectModal({ onClose, ...props }: Props) {
   const [createProject, { loading, called }] = useMutation<CreateProject, CreateProjectVariables>(
     CREATE_PROJECT,
-    addCacheItem<CreateProject, CreateProjectVariables>('projects', 'createProject'),
+    { update: (cache, { data: result }) => addCacheItem<CreateProject>(cache, result, 'projects', 'createProject') },
   );
 
   const handleSubmit = (values: FormValues) => createProject({ variables: values });

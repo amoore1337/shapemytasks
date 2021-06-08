@@ -31,7 +31,7 @@ export default function AddScope({ projectId }: Props) {
   const [showError, setShowError] = useState(false);
   const [createScope] = useMutation<CreateScope, CreateScopeVariables>(
     CREATE_SCOPE,
-    addCacheItem<CreateScope, CreateScopeVariables>('scopes', 'createScope', `Project:${projectId}`),
+    { update: (cache, { data: result }) => addCacheItem<CreateScope>(cache, result, 'scopes', 'createScope', `Project:${projectId}`) },
   );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

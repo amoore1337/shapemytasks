@@ -13,6 +13,8 @@ export interface UpdateScopeProgress_updateScope {
   title: string | null;
   description: string | null;
   progress: number;
+  createdAt: any;
+  updatedAt: any;
 }
 
 export interface UpdateScopeProgress {

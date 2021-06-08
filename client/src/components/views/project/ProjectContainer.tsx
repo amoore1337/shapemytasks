@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { gql, useMutation, useQuery } from '@apollo/client';
+import {
+  gql, useMutation, useQuery,
+} from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { UpdatedItemsMap } from '@/components/hillChart/HillChart';
@@ -9,24 +11,12 @@ import routes from '@/routes';
 import Project from './Project';
 import {
   findScopeIndex,
-  moveArrayItem, Scopes, SCOPE_SORT_OPTIONS, SortOption,
+  moveArrayItem, Scopes, SCOPE_FRAGMENT, SCOPE_SORT_OPTIONS, SortOption,
 } from './helpers';
 import { ProjectPage, ProjectPage_project_scopes as Scope } from './types/ProjectPage';
 import { UpdateScopePosition, UpdateScopePositionVariables } from './types/UpdateScopePosition';
 import { UpdateScopeProgresses, UpdateScopeProgressesVariables } from './types/UpdateScopeProgresses';
-
-const SCOPE_FRAGMENT = gql`
-  fragment ScopeFragment on Scope {
-    id
-    title
-    progress
-    color
-    projectId
-    position
-    createdAt
-    updatedAt
-  }
-`;
+import useRegisterProjectSubscriptions from './useRegisterProjectSubscriptions';
 
 const PROJECT_DETAILS = gql`
   query ProjectPage($id: ID!) {
@@ -63,13 +53,19 @@ const UPDATE_SCOPE_POSITION = gql`
 export default function ProjectContainer() {
   const [enableProgressEdit, setEnableProgressEdit] = useState(false);
   const { id } = useParams<{ id: string }>();
-  const { data, loading, error } = useQuery<ProjectPage>(PROJECT_DETAILS, { variables: { id }, skip: !id });
+  const { data, loading, error } = useQuery<ProjectPage>(
+    PROJECT_DETAILS,
+    { variables: { id }, skip: !id },
+  );
   const [updateScopeProgress] = useMutation<UpdateScopeProgresses, UpdateScopeProgressesVariables>(
     UPDATE_SCOPE_PROGRESSES,
   );
   const [updateScopePosition] = useMutation<UpdateScopePosition, UpdateScopePositionVariables>(
     UPDATE_SCOPE_POSITION,
   );
+
+  useRegisterProjectSubscriptions(data?.project);
+
   const [hasError, setHasError] = useState(false);
   const [sortOption, setSortOption] = useState<SortOption>(SCOPE_SORT_OPTIONS[0]);
   const [sortedScopes, setSortedScopes] = useState<Scopes>([]);

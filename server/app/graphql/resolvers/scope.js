@@ -1,7 +1,9 @@
+const { withFilter } = require('apollo-server-express');
 const scopeService = require('../../services/scope.service');
 const { basicQueryAllResolver, basicFindByIdResolver } = require('../helpers');
 const { rejectUnauthenticated } = require('../helpers');
 const { Scope } = require('../../models');
+const pubSub = require('../pubSub');
 
 module.exports = {
   Mutation: {
@@ -33,6 +35,25 @@ module.exports = {
       rejectUnauthenticated(user);
 
       return scopeService.deleteScope(id, user);
+    },
+  },
+
+  Subscription: {
+    scopeCreated: {
+      subscribe: withFilter(
+        () => pubSub.asyncIterator(['SCOPE_CREATED']),
+        ({ scopeCreated }, { projectId }) => (
+          scopeCreated.dataValues.projectId.toString() === projectId.toString()
+        ),
+      ),
+    },
+    scopeUpdated: {
+      subscribe: withFilter(
+        () => pubSub.asyncIterator(['SCOPE_UPDATED']),
+        ({ scopeUpdated }, { projectId }) => (
+          scopeUpdated.dataValues.projectId.toString() === projectId.toString()
+        ),
+      ),
     },
   },
 
