@@ -48,7 +48,11 @@ async function updateScope(scopeId, user, updateValues) {
   const project = await scope.getProject();
   if (project && updateValues && userService.canEditProject(user, project)) {
     Object.keys(updateValues).forEach((field) => { scope[field] = updateValues[field]; });
-    return scope.save();
+
+    await scope.save();
+    pubSub.publish('SCOPE_UPDATED', { scopeUpdated: scope });
+
+    return scope;
   }
   return null;
 }
@@ -81,6 +85,7 @@ async function updateScopeProgresses(updatesMap, user) {
     const update = updatesMap.find(({ id }) => id === s.id.toString());
     if (update) {
       s.progress = update.progress;
+      pubSub.publish('SCOPE_UPDATED', { scopeUpdated: s });
       results.push(s.save());
     }
   }
@@ -118,6 +123,7 @@ async function updateScopePosition(scopeId, targetIndex, user) {
 
   scope.position = midString(abovePos, belowPos);
   await scope.save();
+  pubSub.publish('SCOPE_UPDATED', { scopeUpdated: scope });
 
   return scope;
 }

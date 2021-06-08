@@ -25,5 +25,6 @@ module.exports = gql`
 
   extend type Subscription {
     scopeCreated(projectId:ID!): Scope
+    scopeUpdated(projectId:ID!): Scope
   }
 `;

@@ -47,6 +47,14 @@ module.exports = {
         ),
       ),
     },
+    scopeUpdated: {
+      subscribe: withFilter(
+        () => pubSub.asyncIterator(['SCOPE_UPDATED']),
+        ({ scopeUpdated }, { projectId }) => (
+          scopeUpdated.dataValues.projectId.toString() === projectId.toString()
+        ),
+      ),
+    },
   },
 
   Query: {
