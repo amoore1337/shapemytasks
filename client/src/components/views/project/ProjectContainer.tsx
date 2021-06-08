@@ -76,7 +76,10 @@ const NEW_SCOPE_SUBSCRIPTION = gql`
 export default function ProjectContainer() {
   const [enableProgressEdit, setEnableProgressEdit] = useState(false);
   const { id } = useParams<{ id: string }>();
-  const { data, loading, error } = useQuery<ProjectPage>(PROJECT_DETAILS, { variables: { id }, skip: !id });
+  const { data, loading, error } = useQuery<ProjectPage>(
+    PROJECT_DETAILS,
+    { variables: { id }, skip: !id, fetchPolicy: 'cache-and-network' },
+  );
   const [updateScopeProgress] = useMutation<UpdateScopeProgresses, UpdateScopeProgressesVariables>(
     UPDATE_SCOPE_PROGRESSES,
   );

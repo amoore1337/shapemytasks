@@ -25,7 +25,7 @@ services:
     environment:
       - LOCAL_PORT=3030
       - REMOTE_PORT=3030
-      - USE_SSL=true
+      - LOCAL_SCHEME=https
   
   server:
     build: ./dev
@@ -38,7 +38,7 @@ services:
     environment:
       - LOCAL_PORT=3000
       - REMOTE_PORT=3000
-      - USE_SSL=false
+      - LOCAL_SCHEME=http
 
   db:
     image: postgres
