@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-  gql, useMutation, useQuery, useSubscription,
+  gql, Reference, StoreObject, useMutation, useQuery, useSubscription,
 } from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
 
@@ -14,6 +14,7 @@ import {
   moveArrayItem, Scopes, SCOPE_SORT_OPTIONS, SortOption,
 } from './helpers';
 import { ProjectPage, ProjectPage_project_scopes as Scope } from './types/ProjectPage';
+import { ProjectScopeSubscription, ProjectScopeSubscriptionVariables } from './types/ProjectScopeSubscription';
 import { UpdateScopePosition, UpdateScopePositionVariables } from './types/UpdateScopePosition';
 import { UpdateScopeProgresses, UpdateScopeProgressesVariables } from './types/UpdateScopeProgresses';
 
@@ -63,8 +64,8 @@ const UPDATE_SCOPE_POSITION = gql`
 `;
 
 const NEW_SCOPE_SUBSCRIPTION = gql`
-  subscription ProjectScopeSubscription {
-    scopeCreated(projectId:"1") {
+  subscription ProjectScopeSubscription($projectId: ID!) {
+    scopeCreated(projectId: $projectId) {
       ...ScopeFragment
     }
   }
@@ -82,7 +83,35 @@ export default function ProjectContainer() {
     UPDATE_SCOPE_POSITION,
   );
 
-  // useSubscription(NEW_SCOPE_SUBSCRIPTION);
+  useSubscription<ProjectScopeSubscription, ProjectScopeSubscriptionVariables>(NEW_SCOPE_SUBSCRIPTION, {
+    variables: { projectId: id },
+    skip: !id,
+    onSubscriptionData: ({ client, subscriptionData }) => {
+      if (!data?.project) { return; }
+      const { cache } = client;
+      const { project } = data;
+
+      cache.modify({
+        id: cache.identify(project as unknown as StoreObject),
+        fields: {
+          scopes(existingRefs: Reference[] = [], { readField }) {
+            const newRef = cache.writeFragment({
+              data: subscriptionData.data?.scopeCreated,
+              fragment: SCOPE_FRAGMENT,
+            });
+
+            if (existingRefs.some(
+              (ref) => readField('id', ref) === subscriptionData.data?.scopeCreated?.id,
+            )) {
+              return existingRefs;
+            }
+
+            return [...existingRefs, newRef];
+          },
+        },
+      });
+    },
+  });
 
   const [hasError, setHasError] = useState(false);
   const [sortOption, setSortOption] = useState<SortOption>(SCOPE_SORT_OPTIONS[0]);
