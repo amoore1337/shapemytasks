@@ -99,8 +99,8 @@ const context = async ({ req, connection }) => ({
 
 const subscriptions = {
   path: '/api/subscriptions',
-  // onConnect: async (_, webSocket) => {
-  // },
+  // onConnect: () => {},
+  // onDisconnect: () => {},
 };
 
 // ============================================================================================

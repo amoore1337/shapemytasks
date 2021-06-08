@@ -7,6 +7,7 @@ import { useHistory, useParams } from 'react-router-dom';
 
 import { UpdatedItemsMap } from '@/components/hillChart/HillChart';
 import routes from '@/routes';
+import { addCacheItem } from '@/utils/cache';
 
 import Project from './Project';
 import {
@@ -91,25 +92,14 @@ export default function ProjectContainer() {
       const { cache } = client;
       const { project } = data;
 
-      cache.modify({
-        id: cache.identify(project as unknown as StoreObject),
-        fields: {
-          scopes(existingRefs: Reference[] = [], { readField }) {
-            const newRef = cache.writeFragment({
-              data: subscriptionData.data?.scopeCreated,
-              fragment: SCOPE_FRAGMENT,
-            });
-
-            if (existingRefs.some(
-              (ref) => readField('id', ref) === subscriptionData.data?.scopeCreated?.id,
-            )) {
-              return existingRefs;
-            }
-
-            return [...existingRefs, newRef];
-          },
-        },
-      });
+      addCacheItem<ProjectScopeSubscription>(
+        cache,
+        subscriptionData.data,
+        'scopes',
+        'scopeCreated',
+        project as unknown as StoreObject,
+        SCOPE_FRAGMENT,
+      );
     },
   });
 
