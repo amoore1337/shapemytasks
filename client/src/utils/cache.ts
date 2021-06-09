@@ -42,6 +42,7 @@ export function removeCacheItem<T extends GeneralKeyVal>(...args: RemoveCacheIte
 
   cache.modify(cacheAction);
 }
+
 type Fragment = DocumentNode | TypedDocumentNode<any, any>;
 
 type AddCacheItemArgs<T extends GeneralKeyVal> = [
