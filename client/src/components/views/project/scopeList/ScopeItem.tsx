@@ -45,7 +45,11 @@ export default function ScopeItem({
   const [showUpdateProgressModal, setShowUpdateProgressModal] = useState(false);
   const [destroyScope] = useMutation<DeleteScope, DeleteScopeVariables>(
     DELETE_SCOPE,
-    removeCacheItem<DeleteScope, DeleteScopeVariables>('scopes', 'deleteScopeById', `Project:${scope.projectId}`),
+    {
+      update: (cache, { data: result }) => (
+        removeCacheItem<DeleteScope>(cache, result, 'scopes', 'deleteScopeById', `Project:${scope.projectId}`)
+      ),
+    },
   );
 
   const [dragRef, dropRef, preview] = useScopeDnd(scope, moveScope, findScopeIndex, !!dragEnabled);
