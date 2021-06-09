@@ -47,11 +47,21 @@ module.exports = {
         ),
       ),
     },
+
     scopeUpdated: {
       subscribe: withFilter(
         () => pubSub.asyncIterator(['SCOPE_UPDATED']),
         ({ scopeUpdated }, { projectId }) => (
           scopeUpdated.dataValues.projectId.toString() === projectId.toString()
+        ),
+      ),
+    },
+
+    scopeDeleted: {
+      subscribe: withFilter(
+        () => pubSub.asyncIterator(['SCOPE_DELETED']),
+        ({ scopeDeleted }, { projectId }) => (
+          scopeDeleted.dataValues.projectId.toString() === projectId.toString()
         ),
       ),
     },

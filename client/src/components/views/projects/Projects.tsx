@@ -41,7 +41,11 @@ export default function Projects() {
   const { data, loading } = useQuery<AllProjects>(ALL_PROJECTS);
   const [destroyProject] = useMutation<DeleteProject, DeleteProjectVariables>(
     DELETE_PROJECT,
-    removeCacheItem<DeleteProject, DeleteProjectVariables>('projects', 'deleteProjectById'),
+    {
+      update: (cache, { data: result }) => (
+        removeCacheItem<DeleteProject>(cache, result, 'projects', 'deleteProjectById')
+      ),
+    },
   );
 
   const handleProjectEdit = (project: null | Project) => {

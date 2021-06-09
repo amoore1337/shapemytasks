@@ -1,14 +1,15 @@
 import { gql, useSubscription, StoreObject } from '@apollo/client';
 
-import { addCacheItem } from '@/utils/cache';
+import { addCacheItem, removeCacheItem } from '@/utils/cache';
 
 import { SCOPE_FRAGMENT } from './helpers';
 import { ProjectPage_project as Project } from './types/ProjectPage';
-import { ProjectScopeSubscription, ProjectScopeSubscriptionVariables } from './types/ProjectScopeSubscription';
+import { ProjectScopeCreatedSubscription, ProjectScopeCreatedSubscriptionVariables } from './types/ProjectScopeCreatedSubscription';
+import { ProjectScopeDeletedSubscription, ProjectScopeDeletedSubscriptionVariables } from './types/ProjectScopeDeletedSubscription';
 import { ProjectScopeUpdatedSubscription, ProjectScopeUpdatedSubscriptionVariables } from './types/ProjectScopeUpdatedSubscription';
 
 const NEW_SCOPE_SUBSCRIPTION = gql`
-  subscription ProjectScopeSubscription($projectId: ID!) {
+  subscription ProjectScopeCreatedSubscription($projectId: ID!) {
     scopeCreated(projectId: $projectId) {
       ...ScopeFragment
     }
@@ -25,15 +26,24 @@ const SCOPE_UPDATED_SUBSCRIPTION = gql`
   ${SCOPE_FRAGMENT}
 `;
 
+const SCOPE_DELETED_SUBSCRIPTION = gql`
+  subscription ProjectScopeDeletedSubscription($projectId: ID!) {
+    scopeDeleted(projectId: $projectId) {
+      ...ScopeFragment
+    }
+  }
+  ${SCOPE_FRAGMENT}
+`;
+
 export default function useRegisterProjectSubscriptions(project: Project | null | undefined) {
-  useSubscription<ProjectScopeSubscription, ProjectScopeSubscriptionVariables>(NEW_SCOPE_SUBSCRIPTION, {
+  useSubscription<ProjectScopeCreatedSubscription, ProjectScopeCreatedSubscriptionVariables>(NEW_SCOPE_SUBSCRIPTION, {
     variables: { projectId: project?.id! },
     skip: !project?.id,
     onSubscriptionData: ({ client, subscriptionData }) => {
       if (!project) { return; }
       const { cache } = client;
 
-      addCacheItem<ProjectScopeSubscription>(
+      addCacheItem<ProjectScopeCreatedSubscription>(
         cache,
         subscriptionData.data,
         'scopes',
@@ -47,5 +57,22 @@ export default function useRegisterProjectSubscriptions(project: Project | null 
   useSubscription<ProjectScopeUpdatedSubscription, ProjectScopeUpdatedSubscriptionVariables>(SCOPE_UPDATED_SUBSCRIPTION, {
     variables: { projectId: project?.id! },
     skip: !project?.id,
+  });
+
+  useSubscription<ProjectScopeDeletedSubscription, ProjectScopeDeletedSubscriptionVariables>(SCOPE_DELETED_SUBSCRIPTION, {
+    variables: { projectId: project?.id! },
+    skip: !project?.id,
+    onSubscriptionData: ({ client, subscriptionData }) => {
+      if (!project) { return; }
+      const { cache } = client;
+
+      removeCacheItem<ProjectScopeDeletedSubscription>(
+        cache,
+        subscriptionData.data,
+        'scopes',
+        'scopeDeleted',
+        project as unknown as StoreObject,
+      );
+    },
   });
 }

@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL subscription operation: ProjectScopeSubscription
+// GraphQL subscription operation: ProjectScopeDeletedSubscription
 // ====================================================
 
-export interface ProjectScopeSubscription_scopeCreated {
+export interface ProjectScopeDeletedSubscription_scopeDeleted {
   __typename: "Scope";
   id: string;
   title: string | null;
@@ -19,10 +19,10 @@ export interface ProjectScopeSubscription_scopeCreated {
   updatedAt: any;
 }
 
-export interface ProjectScopeSubscription {
-  scopeCreated: ProjectScopeSubscription_scopeCreated | null;
+export interface ProjectScopeDeletedSubscription {
+  scopeDeleted: ProjectScopeDeletedSubscription_scopeDeleted | null;
 }
 
-export interface ProjectScopeSubscriptionVariables {
+export interface ProjectScopeDeletedSubscriptionVariables {
   projectId: string;
 }

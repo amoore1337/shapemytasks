@@ -1,39 +1,48 @@
 /* eslint-disable no-underscore-dangle */
 import {
-  BaseMutationOptions, gql, Reference, Cache, ApolloCache, DocumentNode, TypedDocumentNode, StoreObject,
+  gql, Reference, Cache, ApolloCache, DocumentNode, TypedDocumentNode, StoreObject,
 } from '@apollo/client';
 
-export function removeCacheItem<T extends { [key: string]: any }, V>(field: string, action: string, cacheItem?: any): BaseMutationOptions<T, V> {
-  return {
-    update(cache, { data: result }) {
-      if (!result) { return; }
-      const cacheAction: Cache.ModifyOptions = {
-        fields: {
-          [field]: (existingRefs: Reference[] = [], { readField }) => {
-            const item = result[action];
-            if (!item) { return existingRefs; }
+type GeneralKeyVal = { [key: string]: any };
 
-            return existingRefs.filter((ref) => item.id !== readField('id', ref));
-          },
-        },
-      };
+type RemoveCacheItemArgs<T extends GeneralKeyVal> = [
+  cache: ApolloCache<object>,
+  result: T | null | undefined,
+  field: string,
+  action: string,
+  existingCacheReference?: string | StoreObject,
+];
 
-      let id = cacheItem;
-      if (cacheItem && typeof cacheItem !== 'string') {
-        id = cache.identify(cacheItem);
-      }
+export function removeCacheItem<T extends GeneralKeyVal>(...args: RemoveCacheItemArgs<T>) {
+  const [
+    cache,
+    result,
+    field,
+    action,
+    existingCacheReference,
+  ] = args;
 
-      if (id) {
-        cacheAction.id = id;
-      }
-      cache.modify(cacheAction);
+  if (!result) { return; }
+  const cacheAction: Cache.ModifyOptions = {
+    fields: {
+      [field]: (existingRefs: Reference[] = [], { readField }) => {
+        const item = result[action];
+        if (!item) { return existingRefs; }
+
+        return existingRefs.filter((ref) => item.id !== readField('id', ref));
+      },
     },
   };
+
+  if (existingCacheReference && typeof existingCacheReference === 'string') {
+    cacheAction.id = existingCacheReference;
+  } else if (existingCacheReference) {
+    cacheAction.id = cache.identify(existingCacheReference as StoreObject);
+  }
+
+  cache.modify(cacheAction);
 }
-
 type Fragment = DocumentNode | TypedDocumentNode<any, any>;
-
-type GeneralKeyVal = { [key: string]: any };
 
 type AddCacheItemArgs<T extends GeneralKeyVal> = [
   cache: ApolloCache<object>,

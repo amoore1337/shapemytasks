@@ -45,7 +45,7 @@ $ docker-compose -f docker-compose.prod-sim.yml up -d --build
 $ docker-compose exec db psql -U postgres smt
 ```
 
-## Notes:
+## Notes
 * TODO: Container networking hasn't been tested for MacOS development, might need some tweaks.
 * On Windows, if localhost can't be reached, run `wsl --shutdown` which will also restart docker. See [this issue](https://github.com/microsoft/WSL/issues/4204).
 * Bocked dependency updates:

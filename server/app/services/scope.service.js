@@ -36,6 +36,7 @@ async function deleteScope(scopeId, user) {
   const project = await scope.getProject();
   if (project && userService.canEditProject(user, project)) {
     await Scope.destroy({ where: { id: scopeId } });
+    pubSub.publish('SCOPE_DELETED', { scopeDeleted: scope });
     return scope;
   }
   return null;
