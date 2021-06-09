@@ -13,6 +13,17 @@ module.exports = (router) => {
   router.get('/google/callback', passport.authenticate('google'), wrapAsync(async (req, res) => {
     const token = await loginFromGoogle(req.user);
     res.cookie('t_id', token, { httpOnly: true });
-    res.redirect('/projects');
+
+    // Close the tab or popup that the google auth page was opened in:
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+      <body>
+      
+      <script>window.close();</script>
+      
+      </body>
+      </html>
+    `);
   }));
 };
