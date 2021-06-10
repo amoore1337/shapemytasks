@@ -16,21 +16,28 @@ export const CurrentUserContext = createContext<CurrentUserCtx>({
   refresh: () => Promise.resolve(),
 });
 
+export const CURRENT_USER_FRAGMENT = gql`
+  fragment CurrentUserFragment on CurrentUser {
+    id
+    email
+    name
+    avatarUrl
+
+    team {
+      id
+      name
+      joinCode
+    }
+  }
+`;
+
 const CURRENT_USER = gql`
   query CurrentUser {
     currentUser {
-      id
-      email
-      name
-      avatarUrl
-
-      team {
-        id
-        name
-        joinCode
-      }
+      ...CurrentUserFragment
     }
   }
+  ${CURRENT_USER_FRAGMENT}
 `;
 
 export function CurrentUserProvider({ children }: { children: React.ReactNode }) {
