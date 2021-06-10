@@ -1,8 +1,11 @@
 import React, { useContext, useState } from 'react';
 
-import { Popover, Button, Typography } from '@material-ui/core';
+import {
+  Popover, Button, Typography,
+} from '@material-ui/core';
+import DefaultAvatar from '@material-ui/icons/AccountCircle';
 import GroupIcon from '@material-ui/icons/Group';
-import { useHistory } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
 import routes from '@/routes';
@@ -16,24 +19,70 @@ const MenuContent = styled.div`
   min-width: 200px;
 `;
 
+const Avatar = styled.button`
+  padding: 2px;
+  ${tw`bg-white rounded-full shadow-lg`}
+  img {
+    background-size: 38px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+  }
+`;
+
 type Props = {
   open: boolean;
   anchorEl?: Element;
   onClose?: () => void;
 }
 
-export default function UserMenu(props: Props) {
+export default function UserMenu() {
+  const { currentUser } = useContext(CurrentUserContext);
+  const [userMenuOpened, setUserMenuOpened] = useState(false);
+  const [userMenu, setUserMenu] = useState<HTMLButtonElement>();
+
+  const handleAvatarClick = (event: MouseEvent) => {
+    setUserMenu(event.currentTarget as HTMLButtonElement);
+    setUserMenuOpened((isOpened) => !isOpened);
+  };
+
+  const loginButton = (
+    <Button variant="outlined" component={RouterLink} to={routes.login}>
+      Login
+    </Button>
+  );
+
+  return (
+    <>
+      {currentUser ? (
+        <Avatar onClick={handleAvatarClick}>
+          {currentUser.avatarUrl ? (
+            <img src={currentUser.avatarUrl} alt="avatar" />
+          ) : (
+            <DefaultAvatar color="secondary" fontSize="large" />
+          )}
+        </Avatar>
+      ) : loginButton}
+      <Menu
+        open={userMenuOpened}
+        anchorEl={userMenu}
+        onClose={() => setUserMenuOpened(false)}
+      />
+    </>
+  );
+}
+
+function Menu(props: Props) {
   const [openTeamsModal, setOpenTeamsModal] = useState(false);
   const { currentUser, logout } = useContext(CurrentUserContext);
   const history = useHistory();
 
   const handleLogout = async () => {
-    logout();
     if (props.onClose) {
       props.onClose();
     }
-
-    history.push(routes.home);
+    await logout();
+    history.push(routes.login);
   };
 
   return (

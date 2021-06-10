@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react';
 
-import { Typography } from '@material-ui/core';
 import tw, { styled } from 'twin.macro';
 
 const CONTENT_WIDTH = 1000;

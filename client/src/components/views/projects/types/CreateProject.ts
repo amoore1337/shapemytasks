@@ -21,4 +21,5 @@ export interface CreateProject {
 export interface CreateProjectVariables {
   title: string;
   description?: string | null;
+  visibility?: string | null;
 }
