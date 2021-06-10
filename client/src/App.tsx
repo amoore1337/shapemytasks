@@ -13,6 +13,7 @@ import apolloClient from './apolloClient';
 import PrivateRoute from './components/PrivateRoute';
 import Nav from './components/nav/Nav';
 import Login from './components/views/Login';
+import PrivacyPolicy from './components/views/PrivacyPolicy';
 import Dashboard from './components/views/dashboard/Dashboard';
 import Home from './components/views/home/Home';
 import ProjectContainer from './components/views/project/ProjectContainer';
@@ -31,6 +32,7 @@ function App() {
     <Switch>
       <Route path={routes.login} component={Login} />
       <Route path={routes.home} component={Home} />
+      <Route path={routes.privacy} component={PrivacyPolicy} />
       <PrivateRoute path={routes.dashboard} component={Dashboard} />
       <PrivateRoute path={routes.project} component={ProjectContainer} />
       <PrivateRoute path={routes.projects} component={Projects} />

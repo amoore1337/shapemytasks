@@ -3,6 +3,7 @@ import { createBrowserHistory } from 'history';
 export default {
   login: '/login',
   home: '/home',
+  privacy: '/privacy',
 
   dashboard: '/dashboard',
   projects: '/projects',
