@@ -37,16 +37,22 @@ type Props = RouteComponentProps<{}, any, { from?: string }>;
 
 export default function Login({ history, location }: Props) {
   const [loggingIn, setLoggingIn] = useState(false);
-  const { stopPolling } = useQuery<LoggingInUser>(
+  const { data, stopPolling } = useQuery<LoggingInUser>(
     LOGGING_IN_USER_QUERY,
     { skip: !loggingIn, pollInterval: 1000, fetchPolicy: 'network-only' },
   );
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser, refresh } = useContext(CurrentUserContext);
+
+  useEffect(() => {
+    if (data?.currentUser) {
+      setLoggingIn(false);
+      stopPolling();
+      refresh();
+    }
+  }, [data]);
 
   useEffect(() => {
     if (currentUser) {
-      setLoggingIn(false);
-      stopPolling();
       history.replace(toLocation(location.state?.from));
     }
   }, [currentUser]);
