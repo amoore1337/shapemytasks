@@ -187,7 +187,7 @@ function createSvg(parent: HTMLDivElement): HillSvg {
     'text-anchor': 'middle',
     class: 'text-xs',
   };
-  const axisLabels = canvas.group().attr({ transform: `translate(0, ${VIEW_BOX.y})` });
+  const axisLabels = canvas.group().attr({ transform: `translate(0, ${VIEW_BOX.y + 15})` });
   axisLabels.text('Figuring things out').attr({ ...labelAttrs, x: VIEW_BOX.x / 4, y: 0 });
   axisLabels.text('Making it happen').attr({ ...labelAttrs, x: VIEW_BOX.x * (3 / 4), y: 0 });
 

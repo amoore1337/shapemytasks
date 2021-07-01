@@ -10,6 +10,7 @@ export const SCOPE_FRAGMENT = gql`
     color
     projectId
     position
+    closedAt
     createdAt
     updatedAt
   }
