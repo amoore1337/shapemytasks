@@ -50,6 +50,12 @@ async function updateScope(scopeId, user, updateValues) {
   if (project && updateValues && userService.canEditProject(user, project)) {
     Object.keys(updateValues).forEach((field) => { scope[field] = updateValues[field]; });
 
+    if (updateValues.progress > 99) {
+      scope.closedAt = new Date();
+    } else if (scope.closedAt) {
+      scope.closedAt = null;
+    }
+
     await scope.save();
     pubSub.publish('SCOPE_UPDATED', { scopeUpdated: scope });
 
@@ -86,6 +92,11 @@ async function updateScopeProgresses(updatesMap, user) {
     const update = updatesMap.find(({ id }) => id === s.id.toString());
     if (update) {
       s.progress = update.progress;
+      if (update.progress > 99) {
+        s.closedAt = new Date();
+      } else if (s.closedAt) {
+        s.closedAt = null;
+      }
       pubSub.publish('SCOPE_UPDATED', { scopeUpdated: s });
       results.push(s.save());
     }

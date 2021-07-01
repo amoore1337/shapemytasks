@@ -13,7 +13,7 @@ import Modal from '@/components/Modal';
 import HillChart, { VIEW_BOX } from '@/components/hillChart/HillChart';
 
 import {
-  Scopes, sortScopesByPosition, sortScopesByProgressAsc, sortScopesByUpdatedAt,
+  Scopes, sortScopesByClosedAt, sortScopesByPosition, sortScopesByProgressAsc,
 } from '../helpers';
 
 import MiniScopeList from './MiniScopeList';
@@ -90,7 +90,7 @@ function ModalContent({ id, projectName, scopes }: ContentProps) {
 
   const inProgressScopes = sortScopesByProgressAsc(scopeBuckets.inProgress);
   const nextUpScopes = sortScopesByPosition(scopeBuckets.notStarted);
-  const finishedScopes = sortScopesByUpdatedAt(scopeBuckets.completed);
+  const finishedScopes = sortScopesByClosedAt(scopeBuckets.completed);
 
   return (
     <div id={id} className="flex flex-col h-full w-full p-4 relative bg-white">
