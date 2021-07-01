@@ -11,9 +11,13 @@ export interface CreateScope_createScope {
   __typename: "Scope";
   id: string;
   title: string | null;
-  description: string | null;
-  color: string;
   progress: number;
+  color: string;
+  projectId: string | null;
+  position: string | null;
+  closedAt: any | null;
+  createdAt: any;
+  updatedAt: any;
 }
 
 export interface CreateScope {

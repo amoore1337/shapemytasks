@@ -6,19 +6,18 @@ import { Color } from '@svgdotjs/svg.js';
 
 import { addCacheItem } from '@/utils/cache';
 
+import { SCOPE_FRAGMENT } from '../helpers';
+
 import ScopeDot from './ScopeDot';
 import { CreateScope, CreateScopeVariables } from './types/CreateScope';
 
 const CREATE_SCOPE = gql`
   mutation CreateScope($title: String!, $description: String, $color: String, $projectId: ID!) {
     createScope(title: $title, description: $description, color: $color, projectId: $projectId) {
-      id
-      title
-      description
-      color
-      progress
+      ...ScopeFragment
     }
   }
+  ${SCOPE_FRAGMENT}
 `;
 
 type Props = {
@@ -69,7 +68,7 @@ export default function AddScope({ projectId }: Props) {
           helperText={showError && 'Please provide a title for the scope.'}
         />
       </div>
-      <div>
+      <div className="flex items-center">
         <Button
           type="submit"
           variant="contained"

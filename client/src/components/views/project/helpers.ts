@@ -10,6 +10,7 @@ export const SCOPE_FRAGMENT = gql`
     color
     projectId
     position
+    closedAt
     createdAt
     updatedAt
   }
@@ -87,6 +88,10 @@ export function sortScopesById(scopes: Scopes) {
 
 export function sortScopesByUpdatedAt(scopes: Scopes) {
   return [...scopes].sort((a, b) => (b?.updatedAt || 0) - (a?.updatedAt || 0));
+}
+
+export function sortScopesByClosedAt(scopes: Scopes) {
+  return [...scopes].sort((a, b) => (b?.closedAt || 0) - (a?.closedAt || 0));
 }
 
 export function sortScopesByProgressAsc(scopes: Scopes) {
