@@ -13,7 +13,7 @@ import Modal from '@/components/Modal';
 import HillChart, { VIEW_BOX } from '@/components/hillChart/HillChart';
 
 import {
-  Scopes, sortScopesByClosedAt, sortScopesByPosition, sortScopesByProgressAsc,
+  Scopes, sortScopesByClosedAt, sortScopesByPosition, sortScopesByProgressDesc,
 } from '../helpers';
 
 import MiniScopeList from './MiniScopeList';
@@ -88,7 +88,7 @@ function ModalContent({ id, projectName, scopes }: ContentProps) {
   const chartHeight = (VIEW_BOX.y / VIEW_BOX.x) * width;
   const scopeBuckets = sortedScopes(scopes);
 
-  const inProgressScopes = sortScopesByProgressAsc(scopeBuckets.inProgress);
+  const inProgressScopes = sortScopesByProgressDesc(scopeBuckets.inProgress);
   const nextUpScopes = sortScopesByPosition(scopeBuckets.notStarted);
   const finishedScopes = sortScopesByClosedAt(scopeBuckets.completed);
 

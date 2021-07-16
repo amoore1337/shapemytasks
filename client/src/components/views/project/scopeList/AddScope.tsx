@@ -54,7 +54,7 @@ export default function AddScope({ projectId }: Props) {
   return (
     <form noValidate autoComplete="off" className="flex justify-between" onSubmit={handleSubmit}>
       <div className="flex items-center w-2/3 pl-6">
-        <ScopeDot color={color} />
+        <ScopeDot color={color} className="flex-shrink-0" />
         <TextField
           name="title"
           className="ml-2 w-full"
