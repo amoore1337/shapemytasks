@@ -78,7 +78,7 @@ async function getUserForToken(token) {
 
 async function getUserForConnection(connection) {
   if (connection.upgradeReq && connection.upgradeReq.headers) {
-    const token = getCookie(connection.upgradeReq.headers.cookie);
+    const token = getCookie(connection.upgradeReq.headers.cookie, 't_id');
     return getUserForToken(token);
   }
   return null;
