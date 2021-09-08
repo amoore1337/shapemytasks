@@ -83,14 +83,6 @@ const context = async ({ req, connection }) => ({
 
 // ============================================================================================
 
-const subscriptions = {
-  path: '/api/subscriptions',
-  // onConnect: () => {},
-  // onDisconnect: () => {},
-};
-
-// ============================================================================================
-
 module.exports = {
   typeDefs: [
     typeDefs,
@@ -101,7 +93,6 @@ module.exports = {
     ...Object.values(appResolvers),
   ],
   context,
-  subscriptions,
   playground: {
     settings: {
       'request.credentials': 'include',

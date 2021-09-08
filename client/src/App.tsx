@@ -20,6 +20,7 @@ import ProjectContainer from './components/views/project/ProjectContainer';
 import Projects from './components/views/projects/Projects';
 import materialTheme from './materialTheme';
 import routes, { history } from './routes';
+import useHeartbeat from './useHeartbeat';
 
 const ContentContainer = styled.div`
   ${tw`flex-grow overflow-hidden`}
@@ -27,7 +28,23 @@ const ContentContainer = styled.div`
 `;
 
 function App() {
+  return (
+    <ApolloProvider client={apolloClient}>
+      <Router history={history}>
+        <ThemeProvider theme={materialTheme}>
+          <CurrentUserProvider>
+            <AppContent />
+          </CurrentUserProvider>
+        </ThemeProvider>
+      </Router>
+    </ApolloProvider>
+  );
+}
+
+function AppContent() {
+  useHeartbeat();
   const { observe, width, height } = useDimensions<HTMLDivElement>();
+
   const appRoutes = (
     <Switch>
       <Route path={routes.login} component={Login} />
@@ -40,28 +57,15 @@ function App() {
     </Switch>
   );
 
-  const appContent = (
+  return (
     <div className="flex flex-col min-h-full">
       <Nav />
-
       <ContentContainer ref={observe}>
         <div className="bg-gray-50 overflow-auto" style={{ width, height }}>
           {appRoutes}
         </div>
       </ContentContainer>
     </div>
-  );
-
-  return (
-    <ApolloProvider client={apolloClient}>
-      <Router history={history}>
-        <ThemeProvider theme={materialTheme}>
-          <CurrentUserProvider>
-            {appContent}
-          </CurrentUserProvider>
-        </ThemeProvider>
-      </Router>
-    </ApolloProvider>
   );
 }
 

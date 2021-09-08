@@ -12,6 +12,7 @@ const typeMap = {
   FLOAT: 'Float',
   STRING: 'String',
   DATE: 'Date',
+  BOOLEAN: 'Boolean',
 };
 
 function typeDefForModel(Model, modelName) {
