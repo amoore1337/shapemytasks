@@ -2,8 +2,7 @@ const { gql } = require('apollo-server-express');
 const { GraphQLScalarType, Kind } = require('graphql');
 const requireDir = require('require-dir');
 
-const { User } = require('../models');
-const { verifyJWT } = require('../services/auth.service');
+const { getUserForJWT } = require('../services/auth.service');
 const { getCookie } = require('../services/util.service');
 
 const appTypeDefs = requireDir('./typedefs');
@@ -63,30 +62,17 @@ const resolvers = {
 
 // ============================================================================================
 
-async function getUserForToken(token) {
-  let user;
-  if (token) {
-    try {
-      const { userId } = verifyJWT(token);
-      user = await User.findByPk(userId);
-    } catch (error) {
-      // Just don't return a user for now?
-    }
-  }
-  return user;
-}
-
 async function getUserForConnection(connection) {
   if (connection.upgradeReq && connection.upgradeReq.headers) {
     const token = getCookie(connection.upgradeReq.headers.cookie, 't_id');
-    return getUserForToken(token);
+    return getUserForJWT(token);
   }
   return null;
 }
 
 async function getUserForRequest(req) {
   if (req.cookies && req.cookies.t_id) {
-    return getUserForToken(req.cookies.t_id);
+    return getUserForJWT(req.cookies.t_id);
   }
   return null;
 }
