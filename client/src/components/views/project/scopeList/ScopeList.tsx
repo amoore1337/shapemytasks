@@ -41,26 +41,29 @@ export default function ScopeList({
   return (
     <ContentContainer ref={observe}>
       <DndProvider backend={HTML5Backend}>
-        <div style={{ width, height }}>
-          <div className="border border-solid border-secondary rounded-md relative box-border">
-            <ul className="overflow-y-auto" style={{ maxHeight: maxListHeight }}>
-              {scopes.map((scope) => scope && (
-              <li
-                key={scope.id}
-                className="border-b border-solid border-blue-200 last:border-b-0"
+        {/* Wait until dimensions have been calculated before rendering content: */}
+        {width + height > 0 && (
+          <div style={{ width, height }}>
+            <div className="border border-solid border-secondary rounded-md relative box-border w-full">
+              <ul className="overflow-y-auto" style={{ maxHeight: maxListHeight }}>
+                {scopes.map((scope) => scope && (
+                <li
+                  key={scope.id}
+                  className="border-b border-solid border-blue-200 last:border-b-0"
+                >
+                  <ScopeItem scope={scope} dragEnabled={dragEnabled} findScopeIndex={findScopeIndex} moveScope={moveScope} />
+                </li>
+                ))}
+              </ul>
+              <div
+                className={`p-2 ${scopes.length ? 'border-t' : ''} border-solid border-blue-200 box-border`}
+                style={{ height: SCOPE_INPUT_HEIGHT }}
               >
-                <ScopeItem scope={scope} dragEnabled={dragEnabled} findScopeIndex={findScopeIndex} moveScope={moveScope} />
-              </li>
-              ))}
-            </ul>
-            <div
-              className={`p-2 ${scopes.length ? 'border-t' : ''} border-solid border-blue-200 box-border`}
-              style={{ height: SCOPE_INPUT_HEIGHT }}
-            >
-              <AddScope projectId={projectId} />
+                <AddScope projectId={projectId} />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </DndProvider>
     </ContentContainer>
   );

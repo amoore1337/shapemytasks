@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 import DefaultAvatar from '@material-ui/icons/AccountCircle';
 import GroupIcon from '@material-ui/icons/Group';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
 import routes from '@/routes';
@@ -37,7 +37,7 @@ type Props = {
 }
 
 export default function UserMenu() {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser, loading } = useContext(CurrentUserContext);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const [userMenu, setUserMenu] = useState<HTMLButtonElement>();
 
@@ -54,15 +54,17 @@ export default function UserMenu() {
 
   return (
     <>
-      {currentUser ? (
-        <Avatar onClick={handleAvatarClick}>
-          {currentUser.avatarUrl ? (
-            <img src={currentUser.avatarUrl} alt="avatar" />
-          ) : (
-            <DefaultAvatar color="secondary" fontSize="large" />
-          )}
-        </Avatar>
-      ) : loginButton}
+      {!loading && (
+        currentUser ? (
+          <Avatar onClick={handleAvatarClick}>
+            {currentUser.avatarUrl ? (
+              <img src={currentUser.avatarUrl} alt="avatar" />
+            ) : (
+              <DefaultAvatar color="secondary" fontSize="large" />
+            )}
+          </Avatar>
+        ) : loginButton
+      )}
       <Menu
         open={userMenuOpened}
         anchorEl={userMenu}
@@ -75,14 +77,12 @@ export default function UserMenu() {
 function Menu(props: Props) {
   const [openTeamsModal, setOpenTeamsModal] = useState(false);
   const { currentUser, logout } = useContext(CurrentUserContext);
-  const history = useHistory();
 
   const handleLogout = async () => {
     if (props.onClose) {
       props.onClose();
     }
     await logout();
-    history.push(routes.login);
   };
 
   return (

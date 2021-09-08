@@ -1,8 +1,8 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 import { colors, typography, breakpoints } from './constants';
 
-export default createMuiTheme({
+export default createTheme({
   typography: {
     htmlFontSize: typography.htmlFontSize,
   },

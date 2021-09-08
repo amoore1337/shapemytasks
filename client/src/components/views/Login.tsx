@@ -5,12 +5,12 @@ import { Button, Paper, Typography } from '@material-ui/core';
 import { RouteComponentProps } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
-import { CurrentUserContext, CURRENT_USER_FRAGMENT } from '@/CurrentUserContext';
+import { CurrentUserContext } from '@/CurrentUserContext';
+import LoadingIndicator from '@/components/LoadingIndicator';
 import { ReactComponent as GoogleIcon } from '@/icons/google.svg';
 import routes from '@/routes';
+import { CURRENT_USER_FRAGMENT } from '@/useCurrentUserQuery';
 import { openPopup } from '@/utils/window';
-
-import LoadingIndicator from '../LoadingIndicator';
 
 import { LoggingInUser } from './types/LoggingInUser';
 
