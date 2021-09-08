@@ -4,8 +4,10 @@ import {
   Redirect, Route, RouteProps, useHistory,
 } from 'react-router-dom';
 
-import { CurrentUserContext } from '../CurrentUserContext';
-import routes from '../routes';
+import { CurrentUserContext } from '@/CurrentUserContext';
+import routes from '@/routes';
+
+import LoadingIndicator from './LoadingIndicator';
 
 export default function PrivateRoute({ children, component: Component, ...rest }: RouteProps) {
   const { currentUser, loading } = useContext(CurrentUserContext);
@@ -22,5 +24,5 @@ export default function PrivateRoute({ children, component: Component, ...rest }
     );
   }
 
-  return <Route {...rest} render={(props) => (Component ? <Component {...props} /> : children)} />;
+  return loading ? <LoadingIndicator /> : <Route {...rest} render={(props) => (Component ? <Component {...props} /> : children)} />;
 }
