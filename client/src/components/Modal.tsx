@@ -36,18 +36,22 @@ export default function StyledModal({
     };
   }, [open]);
 
+  const handleClose: ((event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void) = (event, reason) => {
+    if (reason === 'backdropClick') { return; }
+    if (onClose) { onClose(event, reason); }
+  };
+
   return (
     <Modal
       className="flex items-center justify-center"
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       {...props}
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: FADE_IN_TIMEOUT,
       }}
-      disableBackdropClick
     >
       <Fade in={open} timeout={FADE_IN_TIMEOUT}>
         <ModalContentContainer className={`shadow text-gray-800 ${className}`} style={style}>

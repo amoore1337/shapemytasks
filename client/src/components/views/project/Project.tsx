@@ -56,43 +56,44 @@ export default function Project(props: Props) {
   return (
     <div className="h-full p-4 flex justify-center">
       <Paper className="h-full w-full p-4 flex flex-col items-center" style={{ maxWidth: 1600 }}>
-        <div
-          className={`flex justify-center w-full pb-4 relative ${isMobile ? 'items-center h-full' : ''}`}
-        >
-          <div className="absolute top-8 left-8 z-10">
-            {!hillChartEditEnabled && scopes.length > 0 && (
-              <Button
-                className="text-white"
-                variant="contained"
-                color="secondary"
-                onClick={onHillChartEditClick}
-              >
-                Update Progress
-              </Button>
-            )}
-            {!hillChartEditEnabled && (
-              <IconButton
-                className="ml-2 border border-solid border-gray-100 shadow-md"
-                aria-label="print"
-                onClick={() => setShowPrintPreview(true)}
-              >
-                <PhotoIcon className="text-secondary" />
-              </IconButton>
-            )}
-          </div>
-          <div ref={chartContainerRef} style={{ width: isMobile ? '100%' : '80%', height: chartHeight }}>
-            <HillChart
-              width="100%"
-              height="100%"
-              data={scopes}
-              allowEdit={hillChartEditEnabled}
-              onSave={onHillChartSave}
-              onCancel={onHillChartEditCancel}
-            />
-          </div>
-        </div>
         {!project || loading ? <LoadingIndicator /> : (
-          !isMobile && (
+          <>
+            <div
+              className={`flex justify-center w-full pb-4 relative ${isMobile ? 'items-center h-full' : ''}`}
+            >
+              <div className="absolute top-8 left-8 z-10">
+                {!hillChartEditEnabled && scopes.length > 0 && (
+                <Button
+                  className="text-white"
+                  variant="contained"
+                  color="secondary"
+                  onClick={onHillChartEditClick}
+                >
+                  Update Progress
+                </Button>
+                )}
+                {!hillChartEditEnabled && (
+                <IconButton
+                  className="ml-2 border border-solid border-gray-100 shadow-md"
+                  aria-label="print"
+                  onClick={() => setShowPrintPreview(true)}
+                >
+                  <PhotoIcon className="text-secondary" />
+                </IconButton>
+                )}
+              </div>
+              <div ref={chartContainerRef} style={{ width: isMobile ? '100%' : '80%', height: chartHeight }}>
+                <HillChart
+                  width="100%"
+                  height="100%"
+                  data={scopes}
+                  allowEdit={hillChartEditEnabled}
+                  onSave={onHillChartSave}
+                  onCancel={onHillChartEditCancel}
+                />
+              </div>
+            </div>
+            {!isMobile && (
             <>
               <div className="w-full px-4 flex justify-between" style={{ maxWidth: 1200 }}>
                 <Typography className="flex-grow self-end" variant="h6" component="h2">{project.title}</Typography>
@@ -100,7 +101,8 @@ export default function Project(props: Props) {
               </div>
               <ScopeList scopes={scopes} projectId={project.id} dragEnabled={scopeSortOption.allowDrag} moveScope={moveScope} />
             </>
-          )
+            )}
+          </>
         )}
       </Paper>
       <ErrorToast open={showError} onClose={onErrorToastDismiss} />

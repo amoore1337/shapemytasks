@@ -1,4 +1,4 @@
-const { withFilter } = require('apollo-server-express');
+const { withFilter } = require('graphql-subscriptions');
 const scopeService = require('../../services/scope.service');
 const { basicQueryAllResolver, basicFindByIdResolver } = require('../helpers');
 const { rejectUnauthenticated } = require('../helpers');

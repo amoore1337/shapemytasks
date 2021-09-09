@@ -5,12 +5,12 @@ import { Button, Paper, Typography } from '@material-ui/core';
 import { RouteComponentProps } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
-import { CurrentUserContext, CURRENT_USER_FRAGMENT } from '@/CurrentUserContext';
+import { CurrentUserContext } from '@/CurrentUserContext';
+import LoadingIndicator from '@/components/LoadingIndicator';
 import { ReactComponent as GoogleIcon } from '@/icons/google.svg';
 import routes from '@/routes';
+import { CURRENT_USER_FRAGMENT } from '@/useCurrentUserQuery';
 import { openPopup } from '@/utils/window';
-
-import LoadingIndicator from '../LoadingIndicator';
 
 import { LoggingInUser } from './types/LoggingInUser';
 
@@ -41,7 +41,7 @@ export default function Login({ history, location }: Props) {
     LOGGING_IN_USER_QUERY,
     { skip: !loggingIn, pollInterval: 1000, fetchPolicy: 'network-only' },
   );
-  const { currentUser, refresh } = useContext(CurrentUserContext);
+  const { currentUser, loading, refresh } = useContext(CurrentUserContext);
 
   useEffect(() => {
     if (data?.currentUser) {
@@ -52,10 +52,10 @@ export default function Login({ history, location }: Props) {
   }, [data]);
 
   useEffect(() => {
-    if (currentUser) {
+    if (!loading && currentUser) {
       history.replace(toLocation(location.state?.from));
     }
-  }, [currentUser]);
+  }, [currentUser, loading]);
 
   const handleLoginStart = () => {
     openPopup(LOGIN_URL, 'Google Login');

@@ -80,7 +80,7 @@ export default function Projects() {
 
   return (
     <div className="text-center p-8">
-      <Grid container spacing={2} justify="center">
+      <Grid container spacing={2} justifyContent="center">
         {data?.projects?.map((project) => (
           <Grid item key={project?.id}>
             <ProjectCard

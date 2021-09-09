@@ -23,8 +23,22 @@ async function loginFromGoogle(data) {
   return generateJWT(user.id);
 }
 
+async function getUserForJWT(token) {
+  let user;
+  if (token) {
+    try {
+      const { userId } = verifyJWT(token);
+      user = await User.findByPk(userId);
+    } catch (error) {
+      // Just don't return a user for now?
+    }
+  }
+  return user;
+}
+
 module.exports = {
   generateJWT,
   verifyJWT,
+  getUserForJWT,
   loginFromGoogle,
 };

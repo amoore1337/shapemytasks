@@ -41,7 +41,7 @@ module.exports = {
       ],
       pathGroupsExcludedImportTypes: [],
     }],
-    '@typescript-eslint/no-unused-vars': ['warn'],
+    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     'react/no-array-index-key': 'warn',
   },
   settings: {
