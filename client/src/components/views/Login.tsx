@@ -41,7 +41,7 @@ export default function Login({ history, location }: Props) {
     LOGGING_IN_USER_QUERY,
     { skip: !loggingIn, pollInterval: 1000, fetchPolicy: 'network-only' },
   );
-  const { currentUser, refresh } = useContext(CurrentUserContext);
+  const { currentUser, loading, refresh } = useContext(CurrentUserContext);
 
   useEffect(() => {
     if (data?.currentUser) {
@@ -52,10 +52,10 @@ export default function Login({ history, location }: Props) {
   }, [data]);
 
   useEffect(() => {
-    if (currentUser) {
+    if (!loading && currentUser) {
       history.replace(toLocation(location.state?.from));
     }
-  }, [currentUser]);
+  }, [currentUser, loading]);
 
   const handleLoginStart = () => {
     openPopup(LOGIN_URL, 'Google Login');

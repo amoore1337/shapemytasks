@@ -43,6 +43,13 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     loadUser();
+    // Outside React contexts, like Apollo, need to be able to trigger logout as well.
+    const logout = (e: Event) => {
+      e.stopPropagation();
+      handleLogout();
+    };
+    document.addEventListener('logout', logout);
+    return () => document.removeEventListener('logout', logout);
   }, []);
 
   const handleLogout = useCallback(async () => {
