@@ -26,6 +26,13 @@ export type SortOption = {
   allowDrag: boolean;
 }
 
+export type FilterOption = {
+  label: string;
+  value: string;
+  filter: (scopes: Scopes) => Scopes;
+  allowDrag: boolean;
+}
+
 export function findScopeIndex(scopes: Scopes, scopeId: string) {
   return scopes.findIndex((s) => s?.id === scopeId);
 }
@@ -131,3 +138,36 @@ function compareStringNumerically(a?: string | null, b?: string | null) {
   const safeB = b || '0';
   return (parseInt(safeA, 10) || 0) - (parseInt(safeB, 10) || 0);
 }
+
+export const SCOPE_FILTER_OPTIONS: FilterOption[] = [
+  {
+    label: 'None',
+    value: 'none',
+    filter: (scopes) => scopes,
+    allowDrag: true,
+  },
+  {
+    label: 'Not Started',
+    value: 'not_started',
+    filter: (scopes) => scopes.filter((s) => (s?.progress || 0) < 1),
+    allowDrag: false,
+  },
+  {
+    label: 'In Progress',
+    value: 'in_progress',
+    filter: (scopes) => scopes.filter((s) => (s?.progress || 0) > 1 && (s?.progress || 0) < 100),
+    allowDrag: false,
+  },
+  {
+    label: 'Completed',
+    value: 'completed',
+    filter: (scopes) => scopes.filter((s) => (s?.progress || 0) > 99),
+    allowDrag: false,
+  },
+  {
+    label: 'Incomplete',
+    value: 'incomplete',
+    filter: (scopes) => scopes.filter((s) => (s?.progress || 0) < 99),
+    allowDrag: false,
+  },
+];

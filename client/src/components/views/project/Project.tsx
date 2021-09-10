@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import {
   Button, IconButton, Paper, Typography, useMediaQuery, useTheme,
 } from '@material-ui/core';
+import FilterIcon from '@material-ui/icons/FilterList';
 import PhotoIcon from '@material-ui/icons/PhotoCamera';
 import useDimensions from 'react-cool-dimensions';
 
@@ -10,8 +11,9 @@ import ErrorToast from '@/components/ErrorToast';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import HillChart, { UpdatedItemsMap, VIEW_BOX } from '@/components/hillChart/HillChart';
 
+import ScopeFilterDropdown from './ScopeFilterDropdown';
 import ScopeSortDropdown from './ScopeSortDropdown';
-import { Scopes, SortOption } from './helpers';
+import { FilterOption, Scopes, SortOption } from './helpers';
 import PrintPreviewModal from './print/PrintPreviewModal';
 import ScopeList from './scopeList/ScopeList';
 import { ProjectPage_project as ProjectDetails } from './types/ProjectPage';
@@ -21,6 +23,8 @@ type Props = {
   scopes: Scopes;
   scopeSortOption: SortOption;
   onScopeSortChange: (value: string) => void;
+  scopeFilterOption: FilterOption;
+  onScopeFilterChange: (value: string) => void;
   onHillChartSave: (items: UpdatedItemsMap) => void;
   onHillChartEditClick: () => void;
   onHillChartEditCancel: () => void;
@@ -33,6 +37,7 @@ type Props = {
 
 export default function Project(props: Props) {
   const [showPrintPreview, setShowPrintPreview] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('sm'));
   const { observe: chartContainerRef, width } = useDimensions<HTMLDivElement | null>();
@@ -43,6 +48,8 @@ export default function Project(props: Props) {
     scopes,
     scopeSortOption,
     onScopeSortChange,
+    scopeFilterOption,
+    onScopeFilterChange,
     onHillChartSave,
     onHillChartEditClick,
     onHillChartEditCancel,
@@ -52,6 +59,17 @@ export default function Project(props: Props) {
     loading,
     moveScope,
   } = props;
+
+  const drawerContent = (
+    <div className="h-full p-4 flex items-center flex-col">
+      <section className="flex flex-col">
+        <ScopeSortDropdown sortOption={scopeSortOption} onChange={onScopeSortChange} />
+        <ScopeFilterDropdown className="mt-2" filterOption={scopeFilterOption} onChange={onScopeFilterChange} />
+      </section>
+    </div>
+  );
+
+  const filterActive = scopeFilterOption.value !== 'none';
 
   return (
     <div className="h-full p-4 flex justify-center">
@@ -63,23 +81,23 @@ export default function Project(props: Props) {
             >
               <div className="absolute top-8 left-8 z-10">
                 {!hillChartEditEnabled && scopes.length > 0 && (
-                <Button
-                  className="text-white"
-                  variant="contained"
-                  color="secondary"
-                  onClick={onHillChartEditClick}
-                >
-                  Update Progress
-                </Button>
+                  <Button
+                    className="text-white"
+                    variant="contained"
+                    color="secondary"
+                    onClick={onHillChartEditClick}
+                  >
+                    Update Progress
+                  </Button>
                 )}
-                {!hillChartEditEnabled && (
-                <IconButton
-                  className="ml-2 border border-solid border-gray-100 shadow-md"
-                  aria-label="print"
-                  onClick={() => setShowPrintPreview(true)}
-                >
-                  <PhotoIcon className="text-secondary" />
-                </IconButton>
+                {!isMobile && !hillChartEditEnabled && (
+                  <IconButton
+                    className="ml-2 border border-solid border-gray-100 shadow-md"
+                    aria-label="print"
+                    onClick={() => setShowPrintPreview(true)}
+                  >
+                    <PhotoIcon className="text-secondary" />
+                  </IconButton>
                 )}
               </div>
               <div ref={chartContainerRef} style={{ width: isMobile ? '100%' : '80%', height: chartHeight }}>
@@ -97,9 +115,25 @@ export default function Project(props: Props) {
             <>
               <div className="w-full px-4 flex justify-between" style={{ maxWidth: 1200 }}>
                 <Typography className="flex-grow self-end" variant="h6" component="h2">{project.title}</Typography>
-                <ScopeSortDropdown sortOption={scopeSortOption} onChange={onScopeSortChange} />
+                <IconButton
+                  className={`border border-solid shadow-md mb-1 ${filterActive ? 'border-secondary bg-secondary' : 'border-gray-100'}`}
+                  aria-label="sort and filter"
+                  onClick={() => setOpenDrawer((v) => !v)}
+                  size="small"
+                  style={{ width: 32, height: 32 }}
+                >
+                  <FilterIcon className={`text-lg ${filterActive ? 'text-white' : 'text-secondary'}`} />
+                </IconButton>
               </div>
-              <ScopeList scopes={scopes} projectId={project.id} dragEnabled={scopeSortOption.allowDrag} moveScope={moveScope} />
+              <ScopeList
+                scopes={scopes}
+                projectId={project.id}
+                dragEnabled={scopeSortOption.allowDrag && scopeFilterOption.allowDrag}
+                moveScope={moveScope}
+                openDrawer={openDrawer}
+                drawerContent={drawerContent}
+                drawerEnabled={!isMobile}
+              />
             </>
             )}
           </>
