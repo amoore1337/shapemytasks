@@ -60,6 +60,8 @@ export default function Project(props: Props) {
     moveScope,
   } = props;
 
+  // TODO: Pass through _all_ scopes so that "print mode" still shows everything it's supposed to
+
   const drawerContent = (
     <div className="h-full p-4 flex items-center flex-col">
       <section className="flex flex-col">

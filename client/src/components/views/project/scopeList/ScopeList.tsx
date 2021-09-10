@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 
-import { useMediaQuery, useTheme } from '@material-ui/core';
 import useDimensions from 'react-cool-dimensions';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
