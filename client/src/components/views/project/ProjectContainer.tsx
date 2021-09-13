@@ -107,6 +107,12 @@ export default function ProjectContainer() {
     }
   };
 
+  // Reset sort/filter when toggling between projects:
+  useEffect(() => {
+    setSortOption(SCOPE_SORT_OPTIONS[0]);
+    setFilterOption(SCOPE_FILTER_OPTIONS[0]);
+  }, [id]);
+
   useEffect(() => {
     if (!hasError && error) {
       setHasError(true);
@@ -139,6 +145,7 @@ export default function ProjectContainer() {
   return (
     <Project
       project={data?.project}
+      allScopes={data?.project?.scopes || []}
       scopes={sortedScopes}
       scopeSortOption={sortOption}
       onScopeSortChange={handleSortChange}

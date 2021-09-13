@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import {
   Button, IconButton, Paper, Typography, useMediaQuery, useTheme,
 } from '@material-ui/core';
-import FilterIcon from '@material-ui/icons/FilterList';
 import PhotoIcon from '@material-ui/icons/PhotoCamera';
 import useDimensions from 'react-cool-dimensions';
 
@@ -13,13 +12,17 @@ import HillChart, { UpdatedItemsMap, VIEW_BOX } from '@/components/hillChart/Hil
 
 import ScopeFilterDropdown from './ScopeFilterDropdown';
 import ScopeSortDropdown from './ScopeSortDropdown';
-import { FilterOption, Scopes, SortOption } from './helpers';
+import SortComboButton from './SortComboButton';
+import {
+  FilterOption, Scopes, SCOPE_FILTER_OPTIONS, SCOPE_SORT_OPTIONS, SortOption,
+} from './helpers';
 import PrintPreviewModal from './print/PrintPreviewModal';
 import ScopeList from './scopeList/ScopeList';
 import { ProjectPage_project as ProjectDetails } from './types/ProjectPage';
 
 type Props = {
   project?: ProjectDetails | null;
+  allScopes: Scopes;
   scopes: Scopes;
   scopeSortOption: SortOption;
   onScopeSortChange: (value: string) => void;
@@ -45,6 +48,7 @@ export default function Project(props: Props) {
   const chartHeight = (VIEW_BOX.y / VIEW_BOX.x) * width;
   const {
     project,
+    allScopes,
     scopes,
     scopeSortOption,
     onScopeSortChange,
@@ -62,6 +66,12 @@ export default function Project(props: Props) {
 
   // TODO: Pass through _all_ scopes so that "print mode" still shows everything it's supposed to
 
+  const resetFilterAndSort = () => {
+    onScopeSortChange(SCOPE_SORT_OPTIONS[0].value);
+    onScopeFilterChange(SCOPE_FILTER_OPTIONS[0].value);
+    setOpenDrawer(false);
+  };
+
   const drawerContent = (
     <div className="h-full p-4 flex items-center flex-col">
       <section className="flex flex-col">
@@ -71,7 +81,8 @@ export default function Project(props: Props) {
     </div>
   );
 
-  const filterActive = scopeFilterOption.value !== 'none';
+  const filterActive = scopeFilterOption.value !== SCOPE_FILTER_OPTIONS[0].value;
+  const sortActive = scopeSortOption.value !== SCOPE_SORT_OPTIONS[0].value;
 
   return (
     <div className="h-full p-4 flex justify-center">
@@ -117,15 +128,13 @@ export default function Project(props: Props) {
             <>
               <div className="w-full px-4 flex justify-between" style={{ maxWidth: 1200 }}>
                 <Typography className="flex-grow self-end" variant="h6" component="h2">{project.title}</Typography>
-                <IconButton
-                  className={`border border-solid shadow-md mb-1 ${filterActive ? 'border-secondary bg-secondary' : 'border-gray-100'}`}
-                  aria-label="sort and filter"
+                <SortComboButton
+                  activeSort={scopeSortOption.label}
+                  activeFilter={scopeFilterOption.label}
                   onClick={() => setOpenDrawer((v) => !v)}
-                  size="small"
-                  style={{ width: 32, height: 32 }}
-                >
-                  <FilterIcon className={`text-lg ${filterActive ? 'text-white' : 'text-secondary'}`} />
-                </IconButton>
+                  onClear={resetFilterAndSort}
+                  isActive={sortActive || filterActive}
+                />
               </div>
               <ScopeList
                 scopes={scopes}
@@ -146,7 +155,7 @@ export default function Project(props: Props) {
         open={showPrintPreview}
         onClose={() => setShowPrintPreview(false)}
         projectName={project?.title || ''}
-        scopes={scopes}
+        scopes={allScopes}
       />
     </div>
   );

@@ -64,8 +64,6 @@ export default function AddScope({ projectId }: Props) {
           color="secondary"
           label="Scope Title"
           variant="outlined"
-          error={showError}
-          helperText={showError && 'Please provide a title for the scope.'}
         />
       </div>
       <div className="flex items-center">
@@ -74,7 +72,7 @@ export default function AddScope({ projectId }: Props) {
           variant="contained"
           color="secondary"
           className="text-white"
-          disabled={false}
+          disabled={!title}
         >
           Save
         </Button>
