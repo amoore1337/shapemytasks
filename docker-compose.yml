@@ -26,6 +26,8 @@ services:
       - LOCAL_PORT=3030
       - REMOTE_PORT=3030
       - LOCAL_SCHEME=https
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   
   server:
     build: ./dev
@@ -39,6 +41,8 @@ services:
       - LOCAL_PORT=3000
       - REMOTE_PORT=3000
       - LOCAL_SCHEME=http
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   db:
     image: postgres
