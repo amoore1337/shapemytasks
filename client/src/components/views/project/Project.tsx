@@ -64,8 +64,6 @@ export default function Project(props: Props) {
     moveScope,
   } = props;
 
-  // TODO: Pass through _all_ scopes so that "print mode" still shows everything it's supposed to
-
   const resetFilterAndSort = () => {
     onScopeSortChange(SCOPE_SORT_OPTIONS[0].value);
     onScopeFilterChange(SCOPE_FILTER_OPTIONS[0].value);

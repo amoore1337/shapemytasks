@@ -103,7 +103,6 @@ export default function UserSettingsModal({ open, onClose }: Props) {
     submitTeam();
   };
 
-  // TODO: Bleh, refactor all of this and maybe use formik
   const showCodeError = formError && !teamName && !teamCode;
   const showNameError = showCodeError;
   const showDomainError = formError && enforceDomainRestriction && !emailDomain;

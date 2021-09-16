@@ -127,7 +127,7 @@ export default function ProjectContainer() {
   }, [sortOption, filterOption, data]);
 
   useEffect(() => {
-    if (!loading && !data) {
+    if (!loading && !data?.project) {
       history.replace(routes.projects);
     }
   }, [loading, data]);
