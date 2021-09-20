@@ -7,7 +7,7 @@ services:
       - "80:80"
       - "443:443"
     volumes: 
-      - ./ssl:/etc/ssl/certs/nginx/:ro
+      - ./localhost-ssl:/etc/ssl/certs/nginx/:ro
     networks: 
       - frontend
       - backend
