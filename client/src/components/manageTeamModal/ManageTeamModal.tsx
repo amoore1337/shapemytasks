@@ -173,7 +173,7 @@ export default function UserSettingsModal({ open, onClose }: Props) {
                       onChange={handleChange}
                     />
                 )}
-                  label="Enforce by email domain"
+                  label="Restrict by email domain"
                 />
                 {enforceDomainRestriction && (
                 <div className="flex items-center">

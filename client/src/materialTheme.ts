@@ -5,6 +5,7 @@ import { colors, typography, breakpoints } from './constants';
 export default createTheme({
   typography: {
     htmlFontSize: typography.htmlFontSize,
+    fontFamily: ['Poppins'].join(','),
   },
   breakpoints: breakpoints as Partial<{}>,
   palette: {

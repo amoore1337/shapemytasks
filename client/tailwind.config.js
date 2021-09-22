@@ -11,6 +11,9 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    fontFamily: {
+      poppins: ['Poppins'],
+    },
     screens: formattedBreakpoints,
     extend: {
       colors: constants.colors,
