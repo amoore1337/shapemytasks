@@ -13,6 +13,15 @@ export const SCOPE_FRAGMENT = gql`
     closedAt
     createdAt
     updatedAt
+    flag {
+      id
+      message
+      createdBy {
+        id
+        name
+        email
+      }
+    }
   }
 `;
 

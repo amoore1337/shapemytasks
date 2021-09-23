@@ -7,6 +7,20 @@
 // GraphQL subscription operation: ProjectScopeCreatedSubscription
 // ====================================================
 
+export interface ProjectScopeCreatedSubscription_scopeCreated_flag_createdBy {
+  __typename: "User";
+  id: string;
+  name: string | null;
+  email: string;
+}
+
+export interface ProjectScopeCreatedSubscription_scopeCreated_flag {
+  __typename: "Flag";
+  id: string;
+  message: string | null;
+  createdBy: ProjectScopeCreatedSubscription_scopeCreated_flag_createdBy | null;
+}
+
 export interface ProjectScopeCreatedSubscription_scopeCreated {
   __typename: "Scope";
   id: string;
@@ -18,6 +32,7 @@ export interface ProjectScopeCreatedSubscription_scopeCreated {
   closedAt: any | null;
   createdAt: any;
   updatedAt: any;
+  flag: ProjectScopeCreatedSubscription_scopeCreated_flag | null;
 }
 
 export interface ProjectScopeCreatedSubscription {

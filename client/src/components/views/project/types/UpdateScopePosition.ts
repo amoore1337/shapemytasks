@@ -7,6 +7,20 @@
 // GraphQL mutation operation: UpdateScopePosition
 // ====================================================
 
+export interface UpdateScopePosition_updateScopePosition_flag_createdBy {
+  __typename: "User";
+  id: string;
+  name: string | null;
+  email: string;
+}
+
+export interface UpdateScopePosition_updateScopePosition_flag {
+  __typename: "Flag";
+  id: string;
+  message: string | null;
+  createdBy: UpdateScopePosition_updateScopePosition_flag_createdBy | null;
+}
+
 export interface UpdateScopePosition_updateScopePosition {
   __typename: "Scope";
   id: string;
@@ -18,6 +32,7 @@ export interface UpdateScopePosition_updateScopePosition {
   closedAt: any | null;
   createdAt: any;
   updatedAt: any;
+  flag: UpdateScopePosition_updateScopePosition_flag | null;
 }
 
 export interface UpdateScopePosition {

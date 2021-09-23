@@ -4,19 +4,18 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: QueryEditScope
+// GraphQL mutation operation: DeleteFlag
 // ====================================================
 
-export interface QueryEditScope_scope {
-  __typename: "Scope";
+export interface DeleteFlag_deleteFlagById {
+  __typename: "Flag";
   id: string;
-  title: string | null;
 }
 
-export interface QueryEditScope {
-  scope: QueryEditScope_scope | null;
+export interface DeleteFlag {
+  deleteFlagById: DeleteFlag_deleteFlagById | null;
 }
 
-export interface QueryEditScopeVariables {
+export interface DeleteFlagVariables {
   id: string;
 }

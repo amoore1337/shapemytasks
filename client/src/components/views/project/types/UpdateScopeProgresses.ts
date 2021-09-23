@@ -9,6 +9,20 @@ import { BatchUpdateScopeProgressMap } from "./../../../../../types/globalTypes"
 // GraphQL mutation operation: UpdateScopeProgresses
 // ====================================================
 
+export interface UpdateScopeProgresses_batchUpdateScopeProgress_flag_createdBy {
+  __typename: "User";
+  id: string;
+  name: string | null;
+  email: string;
+}
+
+export interface UpdateScopeProgresses_batchUpdateScopeProgress_flag {
+  __typename: "Flag";
+  id: string;
+  message: string | null;
+  createdBy: UpdateScopeProgresses_batchUpdateScopeProgress_flag_createdBy | null;
+}
+
 export interface UpdateScopeProgresses_batchUpdateScopeProgress {
   __typename: "Scope";
   id: string;
@@ -20,6 +34,7 @@ export interface UpdateScopeProgresses_batchUpdateScopeProgress {
   closedAt: any | null;
   createdAt: any;
   updatedAt: any;
+  flag: UpdateScopeProgresses_batchUpdateScopeProgress_flag | null;
 }
 
 export interface UpdateScopeProgresses {

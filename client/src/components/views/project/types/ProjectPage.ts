@@ -7,6 +7,20 @@
 // GraphQL query operation: ProjectPage
 // ====================================================
 
+export interface ProjectPage_project_scopes_flag_createdBy {
+  __typename: "User";
+  id: string;
+  name: string | null;
+  email: string;
+}
+
+export interface ProjectPage_project_scopes_flag {
+  __typename: "Flag";
+  id: string;
+  message: string | null;
+  createdBy: ProjectPage_project_scopes_flag_createdBy | null;
+}
+
 export interface ProjectPage_project_scopes {
   __typename: "Scope";
   id: string;
@@ -18,6 +32,7 @@ export interface ProjectPage_project_scopes {
   closedAt: any | null;
   createdAt: any;
   updatedAt: any;
+  flag: ProjectPage_project_scopes_flag | null;
 }
 
 export interface ProjectPage_project {

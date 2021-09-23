@@ -19,16 +19,19 @@ const ModalContentContainer = styled.div`
 type Props = ModalProps & {
   noCloseButton?: boolean;
   afterOpen?: () => void;
+  afterClose?: () => void;
 }
 
 let timeout: number;
 
 export default function StyledModal({
-  open, onClose, afterOpen, children, style, noCloseButton, className = '', ...props
+  open, onClose, afterOpen, afterClose, children, style, noCloseButton, className = '', ...props
 }: Props) {
   useEffect(() => {
     if (open && afterOpen) {
       timeout = window.setTimeout(afterOpen, FADE_IN_TIMEOUT);
+    } else if (!open && afterClose) {
+      timeout = window.setTimeout(afterClose, FADE_IN_TIMEOUT);
     }
 
     return () => {

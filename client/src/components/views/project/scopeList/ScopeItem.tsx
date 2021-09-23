@@ -3,11 +3,12 @@ import React, { useState, MouseEvent } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import {
   Button,
-  IconButton, Menu, MenuItem, Typography,
+  IconButton, Menu, MenuItem, Tooltip, Typography,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DragIcon from '@material-ui/icons/DragIndicator';
 import EditIcon from '@material-ui/icons/Edit';
+import FlagIcon from '@material-ui/icons/Flag';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
 import DeleteConfirmationModal from '@/components/ConfirmationModal';
@@ -15,9 +16,11 @@ import { removeCacheItem } from '@/utils/cache';
 
 import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
 
+import AddFlagModal from './AddFlagModal';
 import EditScopeModal from './EditScopeModal';
 import EditScopeProgressModal from './EditScopeProgressModal';
 import ScopeDot from './ScopeDot';
+import { DeleteFlag, DeleteFlagVariables } from './types/DeleteFlag';
 import { DeleteScope, DeleteScopeVariables } from './types/DeleteScope';
 import useScopeDnd from './useScopeDnD';
 
@@ -36,13 +39,23 @@ const DELETE_SCOPE = gql`
   }
 `;
 
+const DELETE_FLAG = gql`
+  mutation DeleteFlag($id: ID!) {
+    deleteFlagById(id: $id) {
+      id
+    }
+  }
+`;
+
 export default function ScopeItem({
   scope, dragEnabled, findScopeIndex, moveScope,
 }: Props) {
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLButtonElement>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showFlagModal, setShowFlagModal] = useState(false);
   const [showUpdateProgressModal, setShowUpdateProgressModal] = useState(false);
+  const [removeFlag] = useMutation<DeleteFlag, DeleteFlagVariables>(DELETE_FLAG);
   const [destroyScope] = useMutation<DeleteScope, DeleteScopeVariables>(
     DELETE_SCOPE,
     {
@@ -54,6 +67,8 @@ export default function ScopeItem({
 
   const [dragRef, dropRef, preview] = useScopeDnd(scope, moveScope, findScopeIndex, !!dragEnabled);
 
+  const isFlagged = !!scope.flag;
+
   const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setMenuAnchor(event.currentTarget);
   };
@@ -61,6 +76,15 @@ export default function ScopeItem({
   const handleEdit = () => {
     setMenuAnchor(null);
     setShowEditModal(true);
+  };
+
+  const handleFlag = () => {
+    setMenuAnchor(null);
+    if (isFlagged) {
+      removeFlag({ variables: { id: scope.flag!.id } });
+    } else {
+      setShowFlagModal(true);
+    }
   };
 
   const handleDelete = () => {
@@ -75,6 +99,7 @@ export default function ScopeItem({
   const handleCancelAction = () => {
     setShowDeleteConfirmation(false);
     setShowEditModal(false);
+    setShowFlagModal(false);
     setShowUpdateProgressModal(false);
   };
 
@@ -93,6 +118,24 @@ export default function ScopeItem({
           <DragIcon className={dragEnabled ? 'text-gray-400 cursor-move' : 'text-gray-100'} />
         </button>
         <ScopeDot color={scope.color} />
+        {isFlagged && (
+          <Tooltip
+            title={(
+              <div className="text-xs">
+                <p>{scope.flag!.message}</p>
+                <div className="mt-1 text-right">
+                  -
+                  {' '}
+                  {scope.flag!.createdBy!.name || scope.flag!.createdBy!.email}
+                </div>
+              </div>
+            )}
+            placement="top"
+            classes={{ tooltip: 'bg-white text-gray-800 border border-solid border-secondary' }}
+          >
+            <FlagIcon className="text-danger ml-2" />
+          </Tooltip>
+        )}
         <Typography className={`ml-2 ${inProgress ? 'font-bold' : ''} ${completed ? 'line-through' : ''}`} style={{ maxWidth: '70%' }}>
           {scope.title}
         </Typography>
@@ -113,6 +156,10 @@ export default function ScopeItem({
           <EditIcon fontSize="small" className="mr-3" />
           Edit
         </MenuItem>
+        <MenuItem onClick={handleFlag}>
+          <FlagIcon fontSize="small" className="mr-3 text-danger" />
+          {isFlagged ? 'Remove Flag' : 'Flag for discussion'}
+        </MenuItem>
         <MenuItem onClick={handleDelete}>
           <DeleteIcon fontSize="small" className="mr-3" />
           Delete
@@ -127,13 +174,16 @@ export default function ScopeItem({
         confirmText="Delete"
         confirmButtonClassName="text-white bg-danger"
       />
-      {showEditModal && (
-        <EditScopeModal
-          scopeId={scope.id}
-          open={showEditModal}
-          onClose={handleCancelAction}
-        />
-      )}
+      <EditScopeModal
+        scope={scope}
+        open={showEditModal}
+        onClose={handleCancelAction}
+      />
+      <AddFlagModal
+        scope={scope}
+        open={showFlagModal}
+        onClose={handleCancelAction}
+      />
       {showUpdateProgressModal && (
         <EditScopeProgressModal
           scope={scope}

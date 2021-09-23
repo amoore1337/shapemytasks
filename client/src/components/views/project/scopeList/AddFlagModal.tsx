@@ -7,14 +7,14 @@ import Modal from '@/components/Modal';
 
 import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
 
-import { UpdateScope, UpdateScopeVariables } from './types/UpdateScope';
+import { CreateFlag, CreateFlagVariables } from './types/CreateFlag';
 
-const UPDATE_SCOPE = gql`
-  mutation UpdateScope($id: ID!, $title: String, $description: String) {
-    updateScope(id: $id, title: $title, description: $description) {
+const CREATE_FLAG = gql`
+  mutation CreateFlag($scopeId: ID!, $message: String) {
+    createFlag(scopeId: $scopeId, message: $message) {
       id
-      title
-      description
+      message
+      scopeId
     }
   }
 `;
@@ -25,28 +25,20 @@ type Props ={
   onClose?: () => void;
 }
 
-export default function EditScopeModal({ onClose, scope, ...props }: Props) {
-  const [title, setTitle] = useState(scope.title);
-  const [showError, setShowError] = useState(false);
-  const [updateScope, { loading, called }] = useMutation<UpdateScope, UpdateScopeVariables>(
-    UPDATE_SCOPE,
+export default function AddFlagModal({ onClose, scope, ...props }: Props) {
+  const [message, setMessage] = useState('');
+  const [createFlag, { loading, called }] = useMutation<CreateFlag, CreateFlagVariables>(
+    CREATE_FLAG,
   );
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!title) {
-      setShowError(true);
-      return;
-    }
 
-    updateScope({ variables: { id: scope.id, title } });
+    createFlag({ variables: { scopeId: scope.id, message } });
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-    if (showError && event.target.value) {
-      setShowError(false);
-    }
+    setMessage(event.target.value);
   };
 
   useEffect(() => {
@@ -59,23 +51,28 @@ export default function EditScopeModal({ onClose, scope, ...props }: Props) {
     <Modal
       {...props}
       onClose={onClose}
+      afterClose={() => setMessage('')}
       style={{
         width: '60%', height: '80%', maxWidth: 400, maxHeight: 500,
       }}
     >
       <div className="flex flex-col h-full">
-        <Typography variant="h4" className="text-2xl">Edit Scope</Typography>
+        <Typography variant="h4" className="text-2xl">
+          Add Flag to
+          {' '}
+          <span className="italic">{scope.title}</span>
+        </Typography>
         <form noValidate autoComplete="off" className="pt-8 flex-1 flex flex-col justify-between" onSubmit={handleSubmit}>
           <TextField
             size="small"
             color="secondary"
-            label="Title"
+            label="Message"
             variant="outlined"
-            name="title"
-            value={title}
+            multiline
+            rowsMax={4}
+            name="message"
+            value={message}
             onChange={handleChange}
-            error={showError}
-            helperText={showError && 'Please provide a title.'}
           />
           <Button
             type="submit"
