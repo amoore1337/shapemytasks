@@ -56,7 +56,7 @@ export default function ProjectModalForm({ onSubmit, disabled, initialValues }: 
           name="description"
           multiline
           rows={3}
-          rowsMax={4}
+          maxRows={4}
           value={formik.values.description}
           onChange={formik.handleChange}
         />

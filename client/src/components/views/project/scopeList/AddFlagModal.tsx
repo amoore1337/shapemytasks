@@ -69,7 +69,7 @@ export default function AddFlagModal({ onClose, scope, ...props }: Props) {
             label="Message"
             variant="outlined"
             multiline
-            rowsMax={4}
+            maxRows={4}
             name="message"
             value={message}
             onChange={handleChange}

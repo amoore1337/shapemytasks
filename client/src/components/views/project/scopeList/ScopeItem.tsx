@@ -111,6 +111,8 @@ export default function ScopeItem({
   const inProgress = scope.progress > 0 && scope.progress < 100;
   const completed = scope.progress === 100;
 
+  const flagger = scope.flag?.createdBy?.name || scope.flag?.createdBy?.email;
+
   return (
     <div ref={(node) => dropRef(preview(node))} className="p-2 flex justify-between">
       <div className="flex items-center flex-grow">
@@ -122,12 +124,22 @@ export default function ScopeItem({
           <Tooltip
             title={(
               <div className="text-xs">
-                <p>{scope.flag!.message}</p>
-                <div className="mt-1 text-right">
-                  -
-                  {' '}
-                  {scope.flag!.createdBy!.name || scope.flag!.createdBy!.email}
-                </div>
+                {scope.flag!.message ? (
+                  <>
+                    <p>{scope.flag!.message}</p>
+                    <div className="mt-1 text-right">
+                      -
+                      {' '}
+                      {flagger}
+                    </div>
+                  </>
+                ) : (
+                  <div className="italic">
+                    Flagged by
+                    {' '}
+                    {flagger}
+                  </div>
+                )}
               </div>
             )}
             placement="top"
