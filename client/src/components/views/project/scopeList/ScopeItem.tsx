@@ -10,6 +10,8 @@ import DragIcon from '@material-ui/icons/DragIndicator';
 import EditIcon from '@material-ui/icons/Edit';
 import FlagIcon from '@material-ui/icons/Flag';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import BoltIcon from '@material-ui/icons/OfflineBolt';
+import StarIcon from '@material-ui/icons/StarBorder';
 
 import DeleteConfirmationModal from '@/components/ConfirmationModal';
 import { removeCacheItem } from '@/utils/cache';
@@ -23,6 +25,7 @@ import ScopeDot from './ScopeDot';
 import { DeleteFlag, DeleteFlagVariables } from './types/DeleteFlag';
 import { DeleteScope, DeleteScopeVariables } from './types/DeleteScope';
 import useScopeDnd from './useScopeDnD';
+import useUpdateScope from './useUpdateScope';
 
 type Props = {
   scope: Scope;
@@ -56,6 +59,7 @@ export default function ScopeItem({
   const [showFlagModal, setShowFlagModal] = useState(false);
   const [showUpdateProgressModal, setShowUpdateProgressModal] = useState(false);
   const [removeFlag] = useMutation<DeleteFlag, DeleteFlagVariables>(DELETE_FLAG);
+  const [updateScope] = useUpdateScope();
   const [destroyScope] = useMutation<DeleteScope, DeleteScopeVariables>(
     DELETE_SCOPE,
     {
@@ -85,6 +89,11 @@ export default function ScopeItem({
     } else {
       setShowFlagModal(true);
     }
+  };
+
+  const toggleNiceToHave = () => {
+    setMenuAnchor(null);
+    updateScope({ variables: { id: scope.id, niceToHave: !scope.niceToHave } });
   };
 
   const handleDelete = () => {
@@ -167,6 +176,14 @@ export default function ScopeItem({
         <MenuItem onClick={handleEdit}>
           <EditIcon fontSize="small" className="mr-3" />
           Edit
+        </MenuItem>
+        <MenuItem onClick={toggleNiceToHave}>
+          {scope.niceToHave ? (
+            <BoltIcon fontSize="small" className="mr-3 text-secondary" />
+          ) : (
+            <StarIcon fontSize="small" className="mr-3 text-secondary" />
+          )}
+          {scope.niceToHave ? 'Mark as required' : 'Mark as nice to have'}
         </MenuItem>
         <MenuItem onClick={handleFlag}>
           <FlagIcon fontSize="small" className="mr-3 text-danger" />

@@ -11,6 +11,7 @@ export const SCOPE_FRAGMENT = gql`
     projectId
     position
     closedAt
+    niceToHave
     createdAt
     updatedAt
     flag {

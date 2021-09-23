@@ -30,6 +30,7 @@ export interface ScopeFragment {
   projectId: string | null;
   position: string | null;
   closedAt: any | null;
+  niceToHave: boolean | null;
   createdAt: any;
   updatedAt: any;
   flag: ScopeFragment_flag | null;

@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     projectId: DataTypes.INTEGER,
     position: DataTypes.STRING,
     closedAt: DataTypes.DATE,
+    niceToHave: DataTypes.BOOLEAN,
     color: {
       type: DataTypes.STRING,
       allowNull: false,

@@ -17,7 +17,7 @@ module.exports = gql`
 
   extend type Mutation {
     createScope(title: String!, description: String, color: String, progress: Float, projectId:ID!): Scope
-    updateScope(id: ID!, title: String, description: String, color: String, progress: Float): Scope
+    updateScope(id: ID!, title: String, description: String, color: String, progress: Float, niceToHave: Boolean): Scope
     deleteScopeById(id: ID!): Scope
     batchUpdateScopeProgress(inputs: [BatchUpdateScopeProgressMap!]!): [Scope]
     updateScopePosition(id:ID!, targetIndex: Int!): Scope

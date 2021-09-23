@@ -1,23 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { gql, useMutation } from '@apollo/client';
 import { Button, TextField, Typography } from '@material-ui/core';
 
 import Modal from '@/components/Modal';
 
 import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
 
-import { UpdateScope, UpdateScopeVariables } from './types/UpdateScope';
-
-const UPDATE_SCOPE = gql`
-  mutation UpdateScope($id: ID!, $title: String, $description: String) {
-    updateScope(id: $id, title: $title, description: $description) {
-      id
-      title
-      description
-    }
-  }
-`;
+import useUpdateScope from './useUpdateScope';
 
 type Props ={
   scope: Scope;
@@ -28,9 +17,7 @@ type Props ={
 export default function EditScopeModal({ onClose, scope, ...props }: Props) {
   const [title, setTitle] = useState(scope.title);
   const [showError, setShowError] = useState(false);
-  const [updateScope, { loading, called }] = useMutation<UpdateScope, UpdateScopeVariables>(
-    UPDATE_SCOPE,
-  );
+  const [updateScope, { loading, called }] = useUpdateScope();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

@@ -30,6 +30,7 @@ export interface ProjectPage_project_scopes {
   projectId: string | null;
   position: string | null;
   closedAt: any | null;
+  niceToHave: boolean | null;
   createdAt: any;
   updatedAt: any;
   flag: ProjectPage_project_scopes_flag | null;

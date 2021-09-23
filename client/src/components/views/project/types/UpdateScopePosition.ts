@@ -30,6 +30,7 @@ export interface UpdateScopePosition_updateScopePosition {
   projectId: string | null;
   position: string | null;
   closedAt: any | null;
+  niceToHave: boolean | null;
   createdAt: any;
   updatedAt: any;
   flag: UpdateScopePosition_updateScopePosition_flag | null;

@@ -30,6 +30,7 @@ export interface CreateScope_createScope {
   projectId: string | null;
   position: string | null;
   closedAt: any | null;
+  niceToHave: boolean | null;
   createdAt: any;
   updatedAt: any;
   flag: CreateScope_createScope_flag | null;

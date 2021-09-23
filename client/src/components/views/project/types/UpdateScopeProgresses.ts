@@ -32,6 +32,7 @@ export interface UpdateScopeProgresses_batchUpdateScopeProgress {
   projectId: string | null;
   position: string | null;
   closedAt: any | null;
+  niceToHave: boolean | null;
   createdAt: any;
   updatedAt: any;
   flag: UpdateScopeProgresses_batchUpdateScopeProgress_flag | null;

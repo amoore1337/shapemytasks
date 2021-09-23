@@ -30,6 +30,7 @@ export interface ProjectScopeDeletedSubscription_scopeDeleted {
   projectId: string | null;
   position: string | null;
   closedAt: any | null;
+  niceToHave: boolean | null;
   createdAt: any;
   updatedAt: any;
   flag: ProjectScopeDeletedSubscription_scopeDeleted_flag | null;

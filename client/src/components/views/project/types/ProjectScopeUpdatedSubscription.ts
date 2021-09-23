@@ -30,6 +30,7 @@ export interface ProjectScopeUpdatedSubscription_scopeUpdated {
   projectId: string | null;
   position: string | null;
   closedAt: any | null;
+  niceToHave: boolean | null;
   createdAt: any;
   updatedAt: any;
   flag: ProjectScopeUpdatedSubscription_scopeUpdated_flag | null;
