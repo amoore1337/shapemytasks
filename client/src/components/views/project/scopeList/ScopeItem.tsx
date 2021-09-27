@@ -21,6 +21,7 @@ import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
 import AddFlagModal from './AddFlagModal';
 import EditScopeModal from './EditScopeModal';
 import EditScopeProgressModal from './EditScopeProgressModal';
+import NiceToHaveChip from './NiceToHaveChip';
 import ScopeDot from './ScopeDot';
 import { DeleteFlag, DeleteFlagVariables } from './types/DeleteFlag';
 import { DeleteScope, DeleteScopeVariables } from './types/DeleteScope';
@@ -158,6 +159,7 @@ export default function ScopeItem({
           </Tooltip>
         )}
         <Typography className={`ml-2 ${inProgress ? 'font-bold' : ''} ${completed ? 'line-through' : ''}`} style={{ maxWidth: '70%' }}>
+          {scope.niceToHave && <NiceToHaveChip className="mr-1" />}
           {scope.title}
         </Typography>
         <Typography className={`ml-3 text-sm text-gray-600 ${inProgress ? 'font-bold' : ''}`}>

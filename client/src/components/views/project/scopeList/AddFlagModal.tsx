@@ -53,7 +53,7 @@ export default function AddFlagModal({ onClose, scope, ...props }: Props) {
       onClose={onClose}
       afterClose={() => setMessage('')}
       style={{
-        width: '60%', height: '80%', maxWidth: 400, maxHeight: 500,
+        width: '60%', maxWidth: 400, maxHeight: 500,
       }}
     >
       <div className="flex flex-col h-full">
@@ -78,9 +78,9 @@ export default function AddFlagModal({ onClose, scope, ...props }: Props) {
             type="submit"
             variant="contained"
             color="secondary"
-            className="text-white"
+            className="text-white mt-4"
           >
-            Save
+            Add Flag
           </Button>
         </form>
       </div>
