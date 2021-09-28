@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-  gql, useMutation, useQuery,
+  gql, useMutation,
 } from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
 
+import useQueryProject from '@/api/queries/useQueryProject';
 import { UpdatedItemsMap } from '@/components/hillChart/HillChart';
 import routes from '@/routes';
 
@@ -14,24 +15,10 @@ import {
   findScopeIndex,
   moveArrayItem, Scopes, SCOPE_FILTER_OPTIONS, SCOPE_FRAGMENT, SCOPE_SORT_OPTIONS, SortOption,
 } from './helpers';
-import { ProjectPage, ProjectPage_project_scopes as Scope } from './types/ProjectPage';
+import { ProjectPage_project_scopes as Scope } from './types/ProjectPage';
 import { UpdateScopePosition, UpdateScopePositionVariables } from './types/UpdateScopePosition';
 import { UpdateScopeProgresses, UpdateScopeProgressesVariables } from './types/UpdateScopeProgresses';
 import useRegisterProjectSubscriptions from './useRegisterProjectSubscriptions';
-
-const PROJECT_DETAILS = gql`
-  query ProjectPage($id: ID!) {
-    project(id: $id) {
-      id
-      title
-      description
-      scopes {
-        ...ScopeFragment
-      }
-    }
-  }
-  ${SCOPE_FRAGMENT}
-`;
 
 const UPDATE_SCOPE_PROGRESSES = gql`
   mutation UpdateScopeProgresses($inputs: [BatchUpdateScopeProgressMap!]!) {
@@ -54,10 +41,7 @@ const UPDATE_SCOPE_POSITION = gql`
 export default function ProjectContainer() {
   const [enableProgressEdit, setEnableProgressEdit] = useState(false);
   const { id } = useParams<{ id: string }>();
-  const { data, loading, error } = useQuery<ProjectPage>(
-    PROJECT_DETAILS,
-    { variables: { id }, skip: !id },
-  );
+  const { data, loading, error } = useQueryProject(id, { skip: !id });
   const [updateScopeProgress] = useMutation<UpdateScopeProgresses, UpdateScopeProgressesVariables>(
     UPDATE_SCOPE_PROGRESSES,
   );

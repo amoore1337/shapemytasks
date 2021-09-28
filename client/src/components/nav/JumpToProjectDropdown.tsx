@@ -1,25 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { gql, useQuery } from '@apollo/client';
 import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
+import { Projects_projects as Project } from '@/api/queries/types/Projects';
+import useQueryProjects from '@/api/queries/useQueryProjects';
 
 import LoadingIndicator from '../LoadingIndicator';
-
-import { JumpToProjectOptions, JumpToProjectOptions_projects as Project } from './types/JumpToProjectOptions';
-
-const PROJECT_OPTIONS = gql`
-  query JumpToProjectOptions {
-    projects {
-      id
-      title
-      description
-      visibility
-    }
-  }
-`;
 
 type Props = {
   selectedProjectId?: string;
@@ -28,7 +16,7 @@ type Props = {
 
 export default function JumpToProjectDropdown({ selectedProjectId, onChange }: Props) {
   const { currentUser } = useContext(CurrentUserContext);
-  const { data, loading } = useQuery<JumpToProjectOptions>(PROJECT_OPTIONS, { skip: !currentUser });
+  const { data, loading } = useQueryProjects({ skip: !currentUser });
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const projects = data?.projects || [];

@@ -1,9 +1,9 @@
 import { gql, useSubscription, StoreObject } from '@apollo/client';
 
+import { Project_project as Project } from '@/api/queries/types/Project';
 import { addCacheItem, removeCacheItem } from '@/utils/cache';
 
 import { SCOPE_FRAGMENT } from './helpers';
-import { ProjectPage_project as Project } from './types/ProjectPage';
 import { ProjectScopeCreatedSubscription, ProjectScopeCreatedSubscriptionVariables } from './types/ProjectScopeCreatedSubscription';
 import { ProjectScopeDeletedSubscription, ProjectScopeDeletedSubscriptionVariables } from './types/ProjectScopeDeletedSubscription';
 import { ProjectScopeUpdatedSubscription, ProjectScopeUpdatedSubscriptionVariables } from './types/ProjectScopeUpdatedSubscription';
