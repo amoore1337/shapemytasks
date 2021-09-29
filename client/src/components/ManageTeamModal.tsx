@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { gql, useMutation } from '@apollo/client';
 import {
   Typography, IconButton, TextField, Button, FormControlLabel, Checkbox, Accordion, AccordionSummary, AccordionDetails,
 } from '@material-ui/core';
@@ -8,32 +7,10 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
+import useCreateOrJoinTeam from '@/api/mutations/useCreateOrJoinTeam';
 
-import ErrorToast from '../ErrorToast';
-import Modal from '../Modal';
-
-import { JoinTeamVariables, JoinTeam_joinTeam as JoinResponse } from './types/JoinTeam';
-
-const JOIN_TEAM = gql`
-  mutation JoinTeam($name: String!, $joinCode: String!, $joinTeam: Boolean!, $restrictEmailDomain: String) {
-    createTeam(name: $name, restrictEmailDomain: $restrictEmailDomain) @skip(if: $joinTeam) {
-      ...TeamInfo
-    }
-
-    joinTeam(joinCode: $joinCode) @include(if: $joinTeam) {
-      ...TeamInfo
-    }
-  }
-
-  fragment TeamInfo on CurrentUser {
-    id
-    team {
-      id
-      name
-      joinCode
-    }
-  }
-`;
+import ErrorToast from './ErrorToast';
+import Modal from './Modal';
 
 type Props ={
   open: boolean;
@@ -49,8 +26,7 @@ export default function UserSettingsModal({ open, onClose }: Props) {
   const [formError, setFormError] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
 
-  const [joinTeam, { loading, called, error }] = useMutation<JoinResponse, JoinTeamVariables>(
-    JOIN_TEAM,
+  const [joinTeam, { loading, called, error }] = useCreateOrJoinTeam(
     { onError: () => setShowErrorToast(true) },
   );
 

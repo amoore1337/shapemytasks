@@ -8,11 +8,10 @@ import GroupIcon from '@material-ui/icons/Group';
 import { Link as RouterLink } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
+import { CurrentUserContext } from '@/CurrentUserContext';
+import ManageTeamModal from '@/components/ManageTeamModal';
+import TeamCodeCopyButton from '@/components/TeamCodeCopyButton';
 import routes from '@/routes';
-
-import { CurrentUserContext } from '../../CurrentUserContext';
-import TeamCodeCopyButton from '../TeamCodeCopyButton';
-import ManageTeamModal from '../manageTeamModal/ManageTeamModal';
 
 const MenuContent = styled.div`
   ${tw`flex flex-col py-2 text-gray-800`}

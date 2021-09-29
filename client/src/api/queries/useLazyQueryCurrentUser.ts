@@ -1,4 +1,4 @@
-import { useLazyQuery, gql } from '@apollo/client';
+import { useLazyQuery, gql, LazyQueryHookOptions } from '@apollo/client';
 
 import { CurrentUser_currentUser as ICurrentUser, CurrentUser as Response } from './types/CurrentUser';
 
@@ -28,6 +28,6 @@ const CURRENT_USER = gql`
   ${CURRENT_USER_FRAGMENT}
 `;
 
-export default function useCurrentUserQuery() {
-  return useLazyQuery<Response>(CURRENT_USER, { nextFetchPolicy: 'network-only' });
+export default function useCurrentUserQuery(options?: LazyQueryHookOptions<Response>) {
+  return useLazyQuery<Response>(CURRENT_USER, options);
 }

@@ -1,26 +1,12 @@
 import React from 'react';
 
-import { gql, useQuery } from '@apollo/client';
 import { Typography } from '@material-ui/core';
 
+import useQueryMetrics from '@/api/queries/useQueryMetrics';
 import LoadingIndicator from '@/components/LoadingIndicator';
 
-import { DashboardMetrics } from './types/DashboardMetrics';
-
-const FETCH_METRICS = gql`
-  query DashboardMetrics {
-    metrics {
-      openProjects
-      totalTasks
-      inProgressTasks
-      notStartedTasks
-      closedTasks
-    }
-  }
-`;
-
 export default function MetricsCard() {
-  const { loading, data } = useQuery<DashboardMetrics>(FETCH_METRICS, { fetchPolicy: 'cache-and-network' });
+  const { loading, data } = useQueryMetrics({ fetchPolicy: 'cache-and-network' });
 
   const metrics = data?.metrics;
 

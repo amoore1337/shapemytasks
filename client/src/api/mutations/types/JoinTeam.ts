@@ -17,6 +17,9 @@ export interface JoinTeam_createTeam_team {
 export interface JoinTeam_createTeam {
   __typename: "CurrentUser";
   id: string;
+  email: string;
+  name: string | null;
+  avatarUrl: string | null;
   team: JoinTeam_createTeam_team | null;
 }
 
@@ -30,6 +33,9 @@ export interface JoinTeam_joinTeam_team {
 export interface JoinTeam_joinTeam {
   __typename: "CurrentUser";
   id: string;
+  email: string;
+  name: string | null;
+  avatarUrl: string | null;
   team: JoinTeam_joinTeam_team | null;
 }
 
