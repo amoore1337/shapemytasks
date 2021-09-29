@@ -1,35 +1,21 @@
 import React, { useEffect, useState } from 'react';
 
-import { gql, useMutation } from '@apollo/client';
 import { Button, TextField, Typography } from '@material-ui/core';
 
+import useCreateFlag from '@/api/mutations/useCreateFlag';
 import Modal from '@/components/Modal';
 
-import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
-
-import { CreateFlag, CreateFlagVariables } from './types/CreateFlag';
-
-const CREATE_FLAG = gql`
-  mutation CreateFlag($scopeId: ID!, $message: String) {
-    createFlag(scopeId: $scopeId, message: $message) {
-      id
-      message
-      scopeId
-    }
-  }
-`;
+import { ProjectScope } from '../helpers';
 
 type Props ={
-  scope: Scope;
+  scope: ProjectScope;
   open: boolean;
   onClose?: () => void;
 }
 
 export default function AddFlagModal({ onClose, scope, ...props }: Props) {
   const [message, setMessage] = useState('');
-  const [createFlag, { loading, called }] = useMutation<CreateFlag, CreateFlagVariables>(
-    CREATE_FLAG,
-  );
+  const [createFlag, { loading, called }] = useCreateFlag();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

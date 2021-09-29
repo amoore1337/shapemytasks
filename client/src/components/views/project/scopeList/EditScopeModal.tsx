@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 import { Button, TextField, Typography } from '@material-ui/core';
 
+import useUpdateScope from '@/api/mutations/useUpdateScope';
 import Modal from '@/components/Modal';
 
-import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
-
-import useUpdateScope from './useUpdateScope';
+import { ProjectScope } from '../helpers';
 
 type Props ={
-  scope: Scope;
+  scope: ProjectScope;
   open: boolean;
   onClose?: () => void;
 }

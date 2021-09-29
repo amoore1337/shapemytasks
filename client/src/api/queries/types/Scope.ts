@@ -4,24 +4,24 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ProjectPage
+// GraphQL query operation: Scope
 // ====================================================
 
-export interface ProjectPage_project_scopes_flag_createdBy {
+export interface Scope_scope_flag_createdBy {
   __typename: "User";
   id: string;
   name: string | null;
   email: string;
 }
 
-export interface ProjectPage_project_scopes_flag {
+export interface Scope_scope_flag {
   __typename: "Flag";
   id: string;
   message: string | null;
-  createdBy: ProjectPage_project_scopes_flag_createdBy | null;
+  createdBy: Scope_scope_flag_createdBy | null;
 }
 
-export interface ProjectPage_project_scopes {
+export interface Scope_scope {
   __typename: "Scope";
   id: string;
   title: string | null;
@@ -33,21 +33,13 @@ export interface ProjectPage_project_scopes {
   niceToHave: boolean | null;
   createdAt: any;
   updatedAt: any;
-  flag: ProjectPage_project_scopes_flag | null;
+  flag: Scope_scope_flag | null;
 }
 
-export interface ProjectPage_project {
-  __typename: "Project";
-  id: string;
-  title: string | null;
-  description: string | null;
-  scopes: (ProjectPage_project_scopes | null)[] | null;
+export interface Scope {
+  scope: Scope_scope | null;
 }
 
-export interface ProjectPage {
-  project: ProjectPage_project | null;
-}
-
-export interface ProjectPageVariables {
+export interface ScopeVariables {
   id: string;
 }

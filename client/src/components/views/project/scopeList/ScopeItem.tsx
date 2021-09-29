@@ -1,6 +1,5 @@
 import React, { useState, MouseEvent } from 'react';
 
-import { gql, useMutation } from '@apollo/client';
 import {
   Button,
   IconButton, Menu, MenuItem, Tooltip, Typography,
@@ -13,43 +12,26 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import BoltIcon from '@material-ui/icons/OfflineBolt';
 import StarIcon from '@material-ui/icons/StarBorder';
 
+import useDeleteFlag from '@/api/mutations/useDeleteFlag';
+import useDeleteScope from '@/api/mutations/useDeleteScope';
+import useUpdateScope from '@/api/mutations/useUpdateScope';
 import DeleteConfirmationModal from '@/components/ConfirmationModal';
-import { removeCacheItem } from '@/utils/cache';
 
-import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
+import { ProjectScope } from '../helpers';
 
 import AddFlagModal from './AddFlagModal';
 import EditScopeModal from './EditScopeModal';
 import EditScopeProgressModal from './EditScopeProgressModal';
 import NiceToHaveChip from './NiceToHaveChip';
 import ScopeDot from './ScopeDot';
-import { DeleteFlag, DeleteFlagVariables } from './types/DeleteFlag';
-import { DeleteScope, DeleteScopeVariables } from './types/DeleteScope';
 import useScopeDnd from './useScopeDnD';
-import useUpdateScope from './useUpdateScope';
 
 type Props = {
-  scope: Scope;
+  scope: ProjectScope;
   findScopeIndex: (scopeId: string) => number;
   moveScope: (scopeId: string, toIndex: number, moveComplete: boolean) => void;
   dragEnabled?: boolean;
 }
-
-const DELETE_SCOPE = gql`
-  mutation DeleteScope($id: ID!) {
-    deleteScopeById(id: $id) {
-      id
-    }
-  }
-`;
-
-const DELETE_FLAG = gql`
-  mutation DeleteFlag($id: ID!) {
-    deleteFlagById(id: $id) {
-      id
-    }
-  }
-`;
 
 export default function ScopeItem({
   scope, dragEnabled, findScopeIndex, moveScope,
@@ -59,16 +41,9 @@ export default function ScopeItem({
   const [showEditModal, setShowEditModal] = useState(false);
   const [showFlagModal, setShowFlagModal] = useState(false);
   const [showUpdateProgressModal, setShowUpdateProgressModal] = useState(false);
-  const [removeFlag] = useMutation<DeleteFlag, DeleteFlagVariables>(DELETE_FLAG);
+  const [removeFlag] = useDeleteFlag();
   const [updateScope] = useUpdateScope();
-  const [destroyScope] = useMutation<DeleteScope, DeleteScopeVariables>(
-    DELETE_SCOPE,
-    {
-      update: (cache, { data: result }) => (
-        removeCacheItem<DeleteScope>(cache, result, 'scopes', 'deleteScopeById', `Project:${scope.projectId}`)
-      ),
-    },
-  );
+  const [destroyScope] = useDeleteScope(scope.projectId);
 
   const [dragRef, dropRef, preview] = useScopeDnd(scope, moveScope, findScopeIndex, !!dragEnabled);
 

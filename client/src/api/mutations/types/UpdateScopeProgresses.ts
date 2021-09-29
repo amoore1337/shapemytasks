@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { BatchUpdateScopeProgressMap } from "./../../../../../types/globalTypes";
+import { BatchUpdateScopeProgressMap } from "./../../../../types/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: UpdateScopeProgresses

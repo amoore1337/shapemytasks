@@ -1,8 +1,7 @@
 import { useMutation, gql } from '@apollo/client';
 
-import { SCOPE_FRAGMENT } from '../helpers';
-
-import { UpdateScope, UpdateScopeVariables } from './types/UpdateScope';
+import { UpdateScope, UpdateScopeVariables } from '@/api/mutations/types/UpdateScope';
+import { SCOPE_FRAGMENT } from '@/api/queries/useQueryScope';
 
 const UPDATE_SCOPE = gql`
   mutation UpdateScope($id: ID!, $title: String, $description: String, $niceToHave: Boolean) {

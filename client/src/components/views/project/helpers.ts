@@ -1,30 +1,4 @@
-import { gql } from '@apollo/client';
-
-import { ProjectPage_project_scopes as ProjectPageProjectScopes } from './types/ProjectPage';
-
-export const SCOPE_FRAGMENT = gql`
-  fragment ScopeFragment on Scope {
-    id
-    title
-    progress
-    color
-    projectId
-    position
-    closedAt
-    niceToHave
-    createdAt
-    updatedAt
-    flag {
-      id
-      message
-      createdBy {
-        id
-        name
-        email
-      }
-    }
-  }
-`;
+import { Project_project_scopes as ProjectPageProjectScopes } from '@/api/queries/types/Project';
 
 export type ProjectScope = ProjectPageProjectScopes;
 export type Scopes = (ProjectScope | null)[];

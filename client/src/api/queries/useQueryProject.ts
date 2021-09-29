@@ -1,30 +1,7 @@
 import { gql, QueryHookOptions, useQuery } from '@apollo/client';
 
 import { Project, ProjectVariables } from './types/Project';
-
-export const SCOPE_FRAGMENT = gql`
-  fragment ScopeFragment on Scope {
-    id
-    title
-    progress
-    color
-    projectId
-    position
-    closedAt
-    niceToHave
-    createdAt
-    updatedAt
-    flag {
-      id
-      message
-      createdBy {
-        id
-        name
-        email
-      }
-    }
-  }
-`;
+import { SCOPE_FRAGMENT } from './useQueryScope';
 
 export const PROJECT_FRAGMENT = gql`
   fragment ProjectFragment on Project {

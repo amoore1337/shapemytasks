@@ -7,14 +7,14 @@ import tw, { styled } from 'twin.macro';
 
 import SlideOutDrawer from '@/components/SlideOutDrawer';
 
-import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
+import { Scopes } from '../helpers';
 
 import AddScope from './AddScope';
 import ScopeItem from './ScopeItem';
 
 type Props = {
   projectId: string;
-  scopes: (Scope | null)[];
+  scopes: Scopes;
   openDrawer: boolean;
   drawerContent: ReactNode;
   drawerEnabled: boolean;

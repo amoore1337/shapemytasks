@@ -2,20 +2,20 @@ import {
   ConnectDragPreview, ConnectDragSource, ConnectDropTarget, useDrag, useDrop,
 } from 'react-dnd';
 
-import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
+import { ProjectScope } from '../helpers';
 
 type MoveFn = (scopeId: string, toIndex: number, moveComplete: boolean) => void;
 type FindFn = (scopeId: string) => number;
 
 type DragItem = {
-  scope: Scope;
+  scope: ProjectScope;
   originalIndex: number;
 }
 
 type Return = [dragRef: ConnectDragSource, dropRef: ConnectDropTarget, preview: ConnectDragPreview, isDragging: boolean];
 
 export default function useScopeDnd(
-  scope: Scope,
+  scope: ProjectScope,
   moveScope: MoveFn,
   findScopeIndex: FindFn,
   dragEnabled: boolean,
