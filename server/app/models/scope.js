@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Scope.belongsTo(models.User, { foreignKey: 'createdById', as: 'createdBy', onDelete: 'SET NULL' });
       Scope.belongsTo(models.Project, { foreignKey: 'projectId', as: 'project', onDelete: 'CASCADE' });
-      Scope.hasOne(models.Flag, { foreignKey: 'scopeId', as: 'flag', onDelete: 'SET NULL' });
+      Scope.hasOne(models.Flag, { foreignKey: 'scopeId', as: 'flag', onDelete: 'CASCADE' });
     }
 
     async isFlagged() {

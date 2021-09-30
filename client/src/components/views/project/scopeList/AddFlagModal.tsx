@@ -52,13 +52,14 @@ export default function AddFlagModal({ onClose, scope, ...props }: Props) {
           <TextField
             size="small"
             color="secondary"
-            label="Message"
+            label="Note (Optional)"
             variant="outlined"
             multiline
             maxRows={4}
             name="message"
             value={message}
             onChange={handleChange}
+            autoFocus
           />
           <Button
             type="submit"
