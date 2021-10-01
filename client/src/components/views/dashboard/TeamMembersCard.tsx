@@ -1,38 +1,22 @@
 import React, { useContext, useState } from 'react';
 
-import { gql, useQuery } from '@apollo/client';
 import { Button, Typography } from '@material-ui/core';
 import GroupIcon from '@material-ui/icons/Group';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
+import useQueryTeamMembers from '@/api/queries/useQueryTeamMembers';
 import LoadingIndicator from '@/components/LoadingIndicator';
+import ManageTeamModal from '@/components/ManageTeamModal';
 import TeamCodeCopyButton from '@/components/TeamCodeCopyButton';
-import ManageTeamModal from '@/components/manageTeamModal/ManageTeamModal';
-
-import { DashboardTeamMembersList } from './types/DashboardTeamMembersList';
-
-const FETCH_TEAM_MEMBERS = gql`
-  query DashboardTeamMembersList {
-    currentUser {
-      id
-      team {
-        id
-        members {
-          id
-          name
-          email
-        }
-      }
-    }
-  }
-`;
 
 export default function TeamMembersCard() {
   const { currentUser } = useContext(CurrentUserContext);
   const [openTeamsModal, setOpenTeamsModal] = useState(false);
-  const { loading, data } = useQuery<DashboardTeamMembersList>(FETCH_TEAM_MEMBERS);
+  const { loading, data } = useQueryTeamMembers(currentUser?.team?.id || '', {
+    skip: !currentUser?.team?.id,
+  });
 
-  const members = data?.currentUser?.team?.members || [];
+  const members = data?.team?.members || [];
 
   return (
     <section className="p-4 bg-white shadow rounded text-gray-800">

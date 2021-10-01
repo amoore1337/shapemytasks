@@ -6,10 +6,10 @@ import { RouteComponentProps } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
+import { CURRENT_USER_FRAGMENT } from '@/api/queries/useLazyQueryCurrentUser';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import { ReactComponent as GoogleIcon } from '@/icons/google.svg';
 import routes from '@/routes';
-import { CURRENT_USER_FRAGMENT } from '@/useCurrentUserQuery';
 import { openPopup } from '@/utils/window';
 
 import { LoggingInUser } from './types/LoggingInUser';

@@ -4,7 +4,7 @@ import React, {
 
 import { useApolloClient } from '@apollo/client';
 
-import useCurrentUserQuery, { CurrentUser } from './useCurrentUserQuery';
+import useCurrentUserQuery, { CurrentUser } from '@/api/queries/useLazyQueryCurrentUser';
 
 type CurrentUserCtx = {
   currentUser?: CurrentUser | null,
@@ -22,7 +22,7 @@ export const CurrentUserContext = createContext<CurrentUserCtx>({
 export function CurrentUserProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>();
   const [loading, setLoading] = useState(true);
-  const [fetchUser, { loading: queryLoading, data }] = useCurrentUserQuery();
+  const [fetchUser, { loading: queryLoading, data }] = useCurrentUserQuery({ nextFetchPolicy: 'network-only' });
 
   const client = useApolloClient();
 

@@ -1,46 +1,22 @@
 import React, { useEffect, useState } from 'react';
 
-import { gql, useMutation, useQuery } from '@apollo/client';
 import { Button, TextField, Typography } from '@material-ui/core';
 
-import LoadingIndicator from '../../../LoadingIndicator';
-import Modal from '../../../Modal';
+import useUpdateScope from '@/api/mutations/useUpdateScope';
+import Modal from '@/components/Modal';
 
-import { QueryEditScope } from './types/QueryEditScope';
-import { UpdateScope, UpdateScopeVariables } from './types/UpdateScope';
-
-const FETCH_SCOPE = gql`
-  query QueryEditScope($id: ID!) {
-    scope(id: $id) {
-      id
-      title
-    }
-  }
-`;
-
-const UPDATE_SCOPE = gql`
-  mutation UpdateScope($id: ID!, $title: String, $description: String) {
-    updateScope(id: $id, title: $title, description: $description) {
-      id
-      title
-      description
-    }
-  }
-`;
+import { ProjectScope } from '../helpers';
 
 type Props ={
-  scopeId: string;
+  scope: ProjectScope;
   open: boolean;
   onClose?: () => void;
 }
 
-export default function EditScopeModal({ onClose, scopeId, ...props }: Props) {
-  const [title, setTitle] = useState('');
+export default function EditScopeModal({ onClose, scope, ...props }: Props) {
+  const [title, setTitle] = useState(scope.title);
   const [showError, setShowError] = useState(false);
-  const { data, loading: loadingScope } = useQuery<QueryEditScope>(FETCH_SCOPE, { variables: { id: scopeId } });
-  const [updateScope, { loading, called }] = useMutation<UpdateScope, UpdateScopeVariables>(
-    UPDATE_SCOPE,
-  );
+  const [updateScope, { loading, called }] = useUpdateScope();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -49,7 +25,7 @@ export default function EditScopeModal({ onClose, scopeId, ...props }: Props) {
       return;
     }
 
-    updateScope({ variables: { id: scopeId, title } });
+    updateScope({ variables: { id: scope.id, title } });
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,13 +41,6 @@ export default function EditScopeModal({ onClose, scopeId, ...props }: Props) {
     }
   }, [loading, called]);
 
-  useEffect(() => {
-    const { scope } = data || {};
-    if (scope?.title && scope.title !== title) {
-      setTitle(scope.title);
-    }
-  }, [data]);
-
   return (
     <Modal
       {...props}
@@ -81,34 +50,28 @@ export default function EditScopeModal({ onClose, scopeId, ...props }: Props) {
       }}
     >
       <div className="flex flex-col h-full">
-        {loadingScope ? (
-          <LoadingIndicator />
-        ) : (
-          <>
-            <Typography variant="h4">Edit Scope</Typography>
-            <form noValidate autoComplete="off" className="pt-8 flex-1 flex flex-col justify-between" onSubmit={handleSubmit}>
-              <TextField
-                size="small"
-                color="secondary"
-                label="Project Title"
-                variant="outlined"
-                name="title"
-                value={title}
-                onChange={handleChange}
-                error={showError}
-                helperText={showError && 'Please provide a title.'}
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                color="secondary"
-                className="text-white"
-              >
-                Save
-              </Button>
-            </form>
-          </>
-        )}
+        <Typography variant="h4" className="text-2xl">Edit Scope</Typography>
+        <form noValidate autoComplete="off" className="pt-8 flex-1 flex flex-col justify-between" onSubmit={handleSubmit}>
+          <TextField
+            size="small"
+            color="secondary"
+            label="Title"
+            variant="outlined"
+            name="title"
+            value={title}
+            onChange={handleChange}
+            error={showError}
+            helperText={showError && 'Please provide a title.'}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="secondary"
+            className="text-white"
+          >
+            Save
+          </Button>
+        </form>
       </div>
     </Modal>
   );

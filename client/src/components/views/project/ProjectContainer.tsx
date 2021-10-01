@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import {
-  gql, useMutation, useQuery,
-} from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
 
+import useUpdateScopePosition from '@/api/mutations/useUpdateScopePosition';
+import useUpdateScopeProgresses from '@/api/mutations/useUpdateScopeProgresses';
+import useQueryProject from '@/api/queries/useQueryProject';
+import useRegisterProjectSubscriptions from '@/api/subscriptions/useRegisterProjectSubscriptions';
 import { UpdatedItemsMap } from '@/components/hillChart/HillChart';
 import routes from '@/routes';
 
@@ -12,58 +13,15 @@ import Project from './Project';
 import {
   FilterOption,
   findScopeIndex,
-  moveArrayItem, Scopes, SCOPE_FILTER_OPTIONS, SCOPE_FRAGMENT, SCOPE_SORT_OPTIONS, SortOption,
+  moveArrayItem, Scopes, ProjectScope, SCOPE_FILTER_OPTIONS, SCOPE_SORT_OPTIONS, SortOption,
 } from './helpers';
-import { ProjectPage, ProjectPage_project_scopes as Scope } from './types/ProjectPage';
-import { UpdateScopePosition, UpdateScopePositionVariables } from './types/UpdateScopePosition';
-import { UpdateScopeProgresses, UpdateScopeProgressesVariables } from './types/UpdateScopeProgresses';
-import useRegisterProjectSubscriptions from './useRegisterProjectSubscriptions';
-
-const PROJECT_DETAILS = gql`
-  query ProjectPage($id: ID!) {
-    project(id: $id) {
-      id
-      title
-      description
-      scopes {
-        ...ScopeFragment
-      }
-    }
-  }
-  ${SCOPE_FRAGMENT}
-`;
-
-const UPDATE_SCOPE_PROGRESSES = gql`
-  mutation UpdateScopeProgresses($inputs: [BatchUpdateScopeProgressMap!]!) {
-    batchUpdateScopeProgress(inputs: $inputs) {
-      ...ScopeFragment
-    }
-  }
-  ${SCOPE_FRAGMENT}
-`;
-
-const UPDATE_SCOPE_POSITION = gql`
-  mutation UpdateScopePosition($id: ID!, $targetIndex: Int!) {
-    updateScopePosition(id: $id, targetIndex: $targetIndex) {
-      ...ScopeFragment
-    }
-  }
-  ${SCOPE_FRAGMENT}
-`;
 
 export default function ProjectContainer() {
   const [enableProgressEdit, setEnableProgressEdit] = useState(false);
   const { id } = useParams<{ id: string }>();
-  const { data, loading, error } = useQuery<ProjectPage>(
-    PROJECT_DETAILS,
-    { variables: { id }, skip: !id },
-  );
-  const [updateScopeProgress] = useMutation<UpdateScopeProgresses, UpdateScopeProgressesVariables>(
-    UPDATE_SCOPE_PROGRESSES,
-  );
-  const [updateScopePosition] = useMutation<UpdateScopePosition, UpdateScopePositionVariables>(
-    UPDATE_SCOPE_POSITION,
-  );
+  const { data, loading, error } = useQueryProject(id, { skip: !id });
+  const [updateScopeProgress] = useUpdateScopeProgresses();
+  const [updateScopePosition] = useUpdateScopePosition();
 
   useRegisterProjectSubscriptions(data?.project);
 
@@ -99,7 +57,7 @@ export default function ProjectContainer() {
     const scope = sortedScopes[fromIndex];
     if (!scope) { return; }
 
-    const updatedScopes = moveArrayItem<Scope | null>(sortedScopes, fromIndex, toIndex);
+    const updatedScopes = moveArrayItem<ProjectScope | null>(sortedScopes, fromIndex, toIndex);
     setSortedScopes(updatedScopes);
 
     if (moveComplete) {

@@ -1,38 +1,20 @@
 import React, { useEffect, useState } from 'react';
 
-import { gql, useMutation } from '@apollo/client';
-
+import useUpdateScopeProgressById from '@/api/mutations/useUpdateScopeProgressById';
 import Modal from '@/components/Modal';
 import HillChart, { UpdatedItemsMap } from '@/components/hillChart/HillChart';
 
-import { ProjectPage_project_scopes as Scope } from '../types/ProjectPage';
-
-import { UpdateScopeProgress, UpdateScopeProgressVariables } from './types/UpdateScopeProgress';
-
-const UPDATE_SCOPE_PROGRESS = gql`
-  mutation UpdateScopeProgress($id: ID!, $progress: Float) {
-    updateScope(id: $id, progress: $progress) {
-      id
-      title
-      description
-      progress
-      createdAt
-      updatedAt
-    }
-  }
-`;
+import { ProjectScope } from '../helpers';
 
 type Props = {
-  scope: Scope;
+  scope: ProjectScope;
   open: boolean;
   onClose?: () => void;
 }
 
 export default function EditScopeProgressModal({ onClose, scope, ...props }: Props) {
   const [enableProgressEdit, setEnableProgressEdit] = useState(true);
-  const [updateScope, { loading, called }] = useMutation<UpdateScopeProgress, UpdateScopeProgressVariables>(
-    UPDATE_SCOPE_PROGRESS,
-  );
+  const [updateScope, { loading, called }] = useUpdateScopeProgressById();
 
   const handleSave = (updatedItems: UpdatedItemsMap) => {
     setEnableProgressEdit(false);

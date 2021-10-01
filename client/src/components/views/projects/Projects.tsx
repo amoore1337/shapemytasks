@@ -1,52 +1,25 @@
 import React, { useState } from 'react';
 
-import { gql, useMutation, useQuery } from '@apollo/client';
 import { Grid, Link } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 
+import useDeleteProject from '@/api/mutations/useDeleteProject';
+import { Projects_projects as Project } from '@/api/queries/types/Projects';
+import useQueryProjects from '@/api/queries/useQueryProjects';
 import DeleteConfirmationModal from '@/components/ConfirmationModal';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import routes, { withParams } from '@/routes';
-import { removeCacheItem } from '@/utils/cache';
 
 import AddProjectCard from './AddProjectCard';
 import EditProjectModal from './EditProjectModal';
 import ProjectCard from './ProjectCard';
-import { AllProjects, AllProjects_projects as Project } from './types/AllProjects';
-import { DeleteProject, DeleteProjectVariables } from './types/DeleteProject';
-
-const ALL_PROJECTS = gql`
-  query AllProjects {
-    projects {
-      id
-      title
-      description
-      visibility
-    }
-  }
-`;
-
-const DELETE_PROJECT = gql`
-  mutation DeleteProject($id: ID!) {
-    deleteProjectById(id: $id) {
-      id
-    }
-  }
-`;
 
 export default function Projects() {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<null |Project>();
-  const { data, loading } = useQuery<AllProjects>(ALL_PROJECTS);
-  const [destroyProject] = useMutation<DeleteProject, DeleteProjectVariables>(
-    DELETE_PROJECT,
-    {
-      update: (cache, { data: result }) => (
-        removeCacheItem<DeleteProject>(cache, result, 'projects', 'deleteProjectById')
-      ),
-    },
-  );
+  const { data, loading } = useQueryProjects();
+  const [destroyProject] = useDeleteProject();
 
   const handleProjectEdit = (project: null | Project) => {
     setSelectedProject(project);
@@ -114,7 +87,7 @@ export default function Projects() {
         <EditProjectModal
           open={showEditModal}
           onClose={handleCancelAction}
-          projectId={selectedProject.id}
+          project={selectedProject}
         />
       )}
     </div>

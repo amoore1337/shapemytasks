@@ -71,4 +71,10 @@ module.exports = {
     ...basicQueryAllResolver(Scope),
     ...basicFindByIdResolver(Scope),
   },
+
+  Scope: {
+    flag(scope) {
+      return scope.getFlag();
+    },
+  },
 };

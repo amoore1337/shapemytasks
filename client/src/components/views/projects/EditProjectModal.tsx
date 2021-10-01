@@ -1,47 +1,23 @@
 import React, { useEffect } from 'react';
 
-import { gql, useMutation, useQuery } from '@apollo/client';
 import { Typography } from '@material-ui/core';
 
-import LoadingIndicator from '../../LoadingIndicator';
-import Modal from '../../Modal';
+import useUpdateProject from '@/api/mutations/useUpdateProject';
+import { Projects_projects as Project } from '@/api/queries/types/Projects';
+import Modal from '@/components/Modal';
 
 import ProjectModalForm, { FormValues } from './ProjectModalForm';
-import { ProjectDetails } from './types/ProjectDetails';
-import { UpdateProject, UpdateProjectVariables } from './types/UpdateProject';
-
-const FETCH_PROJECT = gql`
-  query ProjectDetails($id: ID!) {
-    project(id: $id) {
-      title
-      description
-    }
-  }
-`;
-
-const UPDATE_PROJECT = gql`
-  mutation UpdateProject($id: ID!, $title: String, $description: String) {
-    updateProject(id: $id, title: $title, description: $description) {
-      id
-      title
-      description
-    }
-  }
-`;
 
 type Props ={
-  projectId: string;
+  project: Project;
   open: boolean;
   onClose?: () => void;
 }
 
-export default function EditProjectModal({ onClose, projectId, ...props }: Props) {
-  const { data, loading: loadingProject } = useQuery<ProjectDetails>(FETCH_PROJECT, { variables: { id: projectId } });
-  const [updateProject, { loading, called }] = useMutation<UpdateProject, UpdateProjectVariables>(
-    UPDATE_PROJECT,
-  );
+export default function EditProjectModal({ onClose, project, ...props }: Props) {
+  const [updateProject, { loading, called }] = useUpdateProject();
 
-  const handleSubmit = (values: FormValues) => updateProject({ variables: { id: projectId, ...values } });
+  const handleSubmit = (values: FormValues) => updateProject({ variables: { id: project.id, ...values } });
 
   useEffect(() => {
     if (!loading && called && onClose) {
@@ -49,7 +25,6 @@ export default function EditProjectModal({ onClose, projectId, ...props }: Props
     }
   }, [loading, called]);
 
-  const { project } = data || {};
   return (
     <Modal
       {...props}
@@ -59,21 +34,15 @@ export default function EditProjectModal({ onClose, projectId, ...props }: Props
       }}
     >
       <div className="flex flex-col h-full">
-        {loadingProject ? (
-          <LoadingIndicator />
-        ) : (
-          <>
-            <Typography variant="h4">Edit Project</Typography>
-            <ProjectModalForm
-              onSubmit={handleSubmit}
-              disabled={loading}
-              initialValues={{
-                title: project?.title || '',
-                description: project?.description || '',
-              }}
-            />
-          </>
-        )}
+        <Typography variant="h4">Edit Project</Typography>
+        <ProjectModalForm
+          onSubmit={handleSubmit}
+          disabled={loading}
+          initialValues={{
+            title: project?.title || '',
+            description: project?.description || '',
+          }}
+        />
       </div>
     </Modal>
   );

@@ -6,6 +6,7 @@ import {
 import PhotoIcon from '@material-ui/icons/PhotoCamera';
 import useDimensions from 'react-cool-dimensions';
 
+import { Project_project as ProjectDetails } from '@/api/queries/types/Project';
 import ErrorToast from '@/components/ErrorToast';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import HillChart, { UpdatedItemsMap, VIEW_BOX } from '@/components/hillChart/HillChart';
@@ -18,7 +19,6 @@ import {
 } from './helpers';
 import PrintPreviewModal from './print/PrintPreviewModal';
 import ScopeList from './scopeList/ScopeList';
-import { ProjectPage_project as ProjectDetails } from './types/ProjectPage';
 
 type Props = {
   project?: ProjectDetails | null;
