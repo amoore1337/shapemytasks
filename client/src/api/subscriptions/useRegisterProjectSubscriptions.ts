@@ -4,6 +4,7 @@ import { Project_project as Project } from '@/api/queries/types/Project';
 import { SCOPE_FRAGMENT } from '@/api/queries/useQueryScope';
 import { addCacheItem, removeCacheItem } from '@/utils/cache';
 
+import { ProjectScopeBatchProgressUpdatedSubscription, ProjectScopeBatchProgressUpdatedSubscriptionVariables } from './types/ProjectScopeBatchProgressUpdatedSubscription';
 import { ProjectScopeCreatedSubscription, ProjectScopeCreatedSubscriptionVariables } from './types/ProjectScopeCreatedSubscription';
 import { ProjectScopeDeletedSubscription, ProjectScopeDeletedSubscriptionVariables } from './types/ProjectScopeDeletedSubscription';
 import { ProjectScopeUpdatedSubscription, ProjectScopeUpdatedSubscriptionVariables } from './types/ProjectScopeUpdatedSubscription';
@@ -20,6 +21,15 @@ const NEW_SCOPE_SUBSCRIPTION = gql`
 const SCOPE_UPDATED_SUBSCRIPTION = gql`
   subscription ProjectScopeUpdatedSubscription($projectId: ID!) {
     scopeUpdated(projectId: $projectId) {
+      ...ScopeFragment
+    }
+  }
+  ${SCOPE_FRAGMENT}
+`;
+
+const SCOPE_BATCH_PROGRESS_UPDATED_SUBSCRIPTION = gql`
+  subscription ProjectScopeBatchProgressUpdatedSubscription($projectId: ID!) {
+    scopeBatchProgressUpdated(projectId: $projectId) {
       ...ScopeFragment
     }
   }
@@ -55,6 +65,11 @@ export default function useRegisterProjectSubscriptions(project: Project | null 
   });
 
   useSubscription<ProjectScopeUpdatedSubscription, ProjectScopeUpdatedSubscriptionVariables>(SCOPE_UPDATED_SUBSCRIPTION, {
+    variables: { projectId: project?.id! },
+    skip: !project?.id,
+  });
+
+  useSubscription<ProjectScopeBatchProgressUpdatedSubscription, ProjectScopeBatchProgressUpdatedSubscriptionVariables>(SCOPE_BATCH_PROGRESS_UPDATED_SUBSCRIPTION, {
     variables: { projectId: project?.id! },
     skip: !project?.id,
   });

@@ -1,10 +1,12 @@
+import React from 'react';
+
 import {
   Circle as CircleBase, Element,
 } from '@svgdotjs/svg.js';
 
 export type ChartItem = {
   id: string;
-  title?: string | null;
+  title?: string | React.ReactNode | null;
   progress: number;
   color: string;
 };

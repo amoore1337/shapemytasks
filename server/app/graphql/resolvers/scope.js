@@ -52,7 +52,18 @@ module.exports = {
       subscribe: withFilter(
         () => pubSub.asyncIterator(['SCOPE_UPDATED']),
         ({ scopeUpdated }, { projectId }) => (
+        // ({ scopeUpdated, currentUser }, { projectId }, { user }) => (
+          // currentUser.id !== user.id &&
           scopeUpdated.dataValues.projectId.toString() === projectId.toString()
+        ),
+      ),
+    },
+
+    scopeBatchProgressUpdated: {
+      subscribe: withFilter(
+        () => pubSub.asyncIterator(['SCOPE_BATCH_PROGRESS_UPDATED']),
+        ({ scopeBatchProgressUpdated }, { projectId }) => (
+          scopeBatchProgressUpdated[0].dataValues.projectId.toString() === projectId.toString()
         ),
       ),
     },
