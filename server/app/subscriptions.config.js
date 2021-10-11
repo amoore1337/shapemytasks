@@ -3,12 +3,14 @@ const { SubscriptionServer } = require('subscriptions-transport-ws');
 const { getUserForJWT } = require('./services/auth.service');
 const { getCookie } = require('./services/util.service');
 
-async function getUserForConnection(connection) {
-  if (connection.upgradeReq && connection.upgradeReq.headers) {
-    const token = getCookie(connection.upgradeReq.headers.cookie, 't_id');
-    return getUserForJWT(token);
+async function getUserForConnection(websocket) {
+  if (websocket.upgradeReq && websocket.upgradeReq.headers) {
+    const token = getCookie(websocket.upgradeReq.headers.cookie, 't_id');
+    return {
+      user: await getUserForJWT(token),
+    };
   }
-  return null;
+  return false;
 }
 
 module.exports = (schema, httpServer, path) => (
@@ -16,10 +18,8 @@ module.exports = (schema, httpServer, path) => (
     schema,
     execute,
     subscribe,
-    async onConnect(
-      connection,
-    ) {
-      return getUserForConnection(connection);
+    async onConnect(_, websocket) {
+      return getUserForConnection(websocket);
     },
   }, {
     server: httpServer,

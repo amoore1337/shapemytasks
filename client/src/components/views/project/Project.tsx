@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Button, IconButton, Paper, Typography, useMediaQuery, useTheme,
@@ -10,6 +10,7 @@ import { Project_project as ProjectDetails } from '@/api/queries/types/Project';
 import ErrorToast from '@/components/ErrorToast';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import HillChart, { UpdatedItemsMap, VIEW_BOX } from '@/components/hillChart/HillChart';
+import { ChartItem } from '@/components/hillChart/helpers';
 
 import ScopeFilterDropdown from './ScopeFilterDropdown';
 import ScopeSortDropdown from './ScopeSortDropdown';
@@ -41,6 +42,7 @@ type Props = {
 export default function Project(props: Props) {
   const [showPrintPreview, setShowPrintPreview] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [chartPoints, setChartPoints] = useState<(ChartItem | null)[]>([]);
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('sm'));
   const { observe: chartContainerRef, width } = useDimensions<HTMLDivElement | null>();
@@ -63,6 +65,23 @@ export default function Project(props: Props) {
     loading,
     moveScope,
   } = props;
+
+  useEffect(() => {
+    const points = scopes.map((scope) => {
+      if (!scope) { return null; }
+      return {
+        id: scope.id,
+        progress: scope.progress,
+        color: scope.color,
+        title: (
+          <span className={`${scope.flag ? 'text-danger font-medium' : ''} ${scope.niceToHave ? 'italic' : ''}`}>
+            {scope.title}
+          </span>
+        ),
+      };
+    });
+    setChartPoints(points);
+  }, [scopes]);
 
   const resetFilterAndSort = () => {
     onScopeSortChange(SCOPE_SORT_OPTIONS[0].value);
@@ -115,7 +134,7 @@ export default function Project(props: Props) {
                 <HillChart
                   width="100%"
                   height="100%"
-                  data={scopes}
+                  data={chartPoints}
                   allowEdit={hillChartEditEnabled}
                   onSave={onHillChartSave}
                   onCancel={onHillChartEditCancel}

@@ -57,7 +57,7 @@ async function updateScope(scopeId, user, updateValues) {
     }
 
     await scope.save();
-    pubSub.publish('SCOPE_UPDATED', { scopeUpdated: scope });
+    pubSub.publish('SCOPE_UPDATED', { scopeUpdated: scope, currentUser: user });
 
     return scope;
   }
@@ -97,12 +97,12 @@ async function updateScopeProgresses(updatesMap, user) {
       } else if (s.closedAt) {
         s.closedAt = null;
       }
-      pubSub.publish('SCOPE_UPDATED', { scopeUpdated: s });
       results.push(s.save());
     }
   }
 
   await Promise.all(results);
+  pubSub.publish('SCOPE_BATCH_PROGRESS_UPDATED', { scopeBatchProgressUpdated: scopes });
 
   return scopes;
 }
