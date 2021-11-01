@@ -15,5 +15,15 @@ mutation CreateFlag($scopeId: ID!, $message: String) {
 export default function useCreateFlag() {
   return useMutation<CreateFlag, CreateFlagVariables>(
     CREATE_FLAG,
+    {
+      update: (cache, { data: result }) => {
+        cache.modify({
+          id: `Scope:${result?.createFlag?.scopeId}`,
+          fields: {
+            flag: () => `Flag:${result?.createFlag?.id}`,
+          },
+        });
+      },
+    },
   );
 }
