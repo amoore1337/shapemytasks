@@ -8,16 +8,13 @@ import routes from '@/routes';
 import HillChartSection from './sections/HillChartSection';
 import ScopeSection from './sections/ScopeSection';
 import TitleSection from './sections/TitleSection';
-import useDemoData, { PROJECT_ID } from './useDemoData';
 
 export default function Home() {
-  const [scopes, createScope] = useDemoData();
-
   return (
     <div className="py-20 relative w-full flex flex-col items-center text-gray-800">
       <TitleSection />
-      <ScopeSection projectId={PROJECT_ID} scopes={scopes} createScope={createScope} />
-      <HillChartSection scopes={scopes} />
+      <ScopeSection />
+      <HillChartSection />
       <Footer />
     </div>
   );

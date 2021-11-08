@@ -5,13 +5,9 @@ import { Typography } from '@material-ui/core';
 import HillChart from '@/components/hillChart/HillChart';
 
 import Dot from '../Dot';
-import { Scope } from '../useDemoData';
+import scopes from '../demoData';
 
-type Props = {
-  scopes: Scope[];
-}
-
-export default function HillChartSection({ scopes }: Props) {
+export default function HillChartSection() {
   return (
     <div className="flex justify-between items-center px-8 w-full mt-20" style={{ maxWidth: 1200 }}>
       <div>

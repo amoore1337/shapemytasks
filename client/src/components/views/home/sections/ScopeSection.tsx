@@ -5,29 +5,24 @@ import { Typography } from '@material-ui/core';
 import ScopeList from '@/components/views/project/scopeList/ScopeList';
 
 import Dot from '../Dot';
-import { Scope } from '../useDemoData';
+import scopes, { PROJECT_ID } from '../demoData';
 
-type Props = {
-  projectId: string;
-  scopes: Scope[];
-  createScope: (projectId: string, title: string, color: string) => Promise<void>;
-}
-
-export default function ScopeSection({ projectId, scopes, createScope }: Props) {
+export default function ScopeSection() {
   return (
     <div className="flex justify-between items-center px-8 w-full mt-20" style={{ maxWidth: 1200 }}>
-      <div className="flex justify-center" style={{ height: 300, width: 500 }}>
-        <ScopeList
-          projectId={projectId}
-          scopes={scopes}
-          openDrawer={false}
-          drawerContent={<div />}
-          drawerEnabled={false}
-          dragEnabled={false}
-          moveScope={() => {}}
-          createScope={createScope}
-          demoMode
-        />
+      <div className="flex justify-center">
+        <div className="flex" style={{ height: 150, width: 500 }}>
+          <ScopeList
+            projectId={PROJECT_ID}
+            scopes={scopes}
+            openDrawer={false}
+            drawerContent={<div />}
+            drawerEnabled={false}
+            dragEnabled={false}
+            moveScope={() => {}}
+            readonlyMode
+          />
+        </div>
       </div>
       <div>
         <CaptureSection />

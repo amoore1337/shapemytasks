@@ -20,8 +20,7 @@ type Props = {
   drawerEnabled: boolean;
   dragEnabled: boolean;
   moveScope: (scopeId: string, toIndex: number, moveComplete: boolean) => void;
-  createScope?: (projectId: string, title: string, color: string) => Promise<void>;
-  demoMode?: boolean;
+  readonlyMode?: boolean;
 }
 
 const ContentContainer = styled.div`
@@ -33,7 +32,7 @@ const ContentContainer = styled.div`
 const SCOPE_INPUT_HEIGHT = 60;
 
 export default function ScopeList({
-  scopes, projectId, dragEnabled, moveScope, openDrawer, drawerContent, drawerEnabled, createScope, demoMode,
+  scopes, projectId, dragEnabled, moveScope, openDrawer, drawerContent, drawerEnabled, readonlyMode,
 }: Props) {
   const { observe, width, height } = useDimensions<HTMLDivElement>();
 
@@ -41,7 +40,7 @@ export default function ScopeList({
   // In order for the list to take up only the exact height it needs,
   // we need to calculate the max-height based off of:
   // available container height - input component height - border of list container.
-  const maxListHeight = height - SCOPE_INPUT_HEIGHT - 2;
+  const maxListHeight = height - (readonlyMode ? 0 : SCOPE_INPUT_HEIGHT) - 2;
 
   const findScopeIndex = (scopeId: string) => scopes.findIndex((s) => s?.id === scopeId);
 
@@ -64,8 +63,8 @@ export default function ScopeList({
                       dragEnabled={dragEnabled}
                       findScopeIndex={findScopeIndex}
                       moveScope={moveScope}
-                      disableUpdateProgress={demoMode}
-                      disableActions={demoMode}
+                      disableUpdateProgress={readonlyMode}
+                      disableActions={readonlyMode}
                     />
                   </li>
                   ))}
@@ -80,12 +79,14 @@ export default function ScopeList({
                   </SlideOutDrawer>
                 )}
               </div>
-              <div
-                className={`p-2 ${scopes.length ? 'border-t' : ''} border-solid border-blue-200 box-border`}
-                style={{ height: SCOPE_INPUT_HEIGHT }}
-              >
-                <AddScope projectId={projectId} createScope={createScope} />
-              </div>
+              {!readonlyMode && (
+                <div
+                  className={`p-2 ${scopes.length ? 'border-t' : ''} border-solid border-blue-200 box-border`}
+                  style={{ height: SCOPE_INPUT_HEIGHT }}
+                >
+                  <AddScope projectId={projectId} />
+                </div>
+              )}
             </div>
           </div>
         )}

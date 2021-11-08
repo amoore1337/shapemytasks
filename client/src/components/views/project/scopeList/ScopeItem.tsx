@@ -151,11 +151,9 @@ export default function ScopeItem({
             Update Progress
           </Button>
         )}
-        {!disableActions && (
-          <IconButton size="small" onClick={handleMenuOpen}>
-            <MoreIcon fontSize="inherit" />
-          </IconButton>
-        )}
+        <IconButton size="small" onClick={handleMenuOpen} disabled={disableActions}>
+          <MoreIcon fontSize="inherit" />
+        </IconButton>
       </div>
       <Menu anchorEl={menuAnchor} open={!!menuAnchor} onClose={() => setMenuAnchor(null)} keepMounted>
         <MenuItem onClick={handleEdit}>
