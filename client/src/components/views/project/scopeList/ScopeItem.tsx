@@ -31,10 +31,12 @@ type Props = {
   findScopeIndex: (scopeId: string) => number;
   moveScope: (scopeId: string, toIndex: number, moveComplete: boolean) => void;
   dragEnabled?: boolean;
+  disableUpdateProgress?: boolean;
+  disableActions?: boolean;
 }
 
 export default function ScopeItem({
-  scope, dragEnabled, findScopeIndex, moveScope,
+  scope, dragEnabled, findScopeIndex, moveScope, disableUpdateProgress, disableActions,
 }: Props) {
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLButtonElement>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -144,10 +146,16 @@ export default function ScopeItem({
         </Typography>
       </div>
       <div className="flex items-center flex-shrink-0">
-        <Button style={{ width: 180 }} className="mr-3" variant="outlined" color="secondary" onClick={handleUpdateProgress}>Update Progress</Button>
-        <IconButton size="small" onClick={handleMenuOpen}>
-          <MoreIcon fontSize="inherit" />
-        </IconButton>
+        {!disableUpdateProgress && (
+          <Button style={{ width: 180 }} className="mr-3" variant="outlined" color="secondary" onClick={handleUpdateProgress}>
+            Update Progress
+          </Button>
+        )}
+        {!disableActions && (
+          <IconButton size="small" onClick={handleMenuOpen}>
+            <MoreIcon fontSize="inherit" />
+          </IconButton>
+        )}
       </div>
       <Menu anchorEl={menuAnchor} open={!!menuAnchor} onClose={() => setMenuAnchor(null)} keepMounted>
         <MenuItem onClick={handleEdit}>

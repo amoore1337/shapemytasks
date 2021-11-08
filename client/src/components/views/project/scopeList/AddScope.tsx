@@ -9,13 +9,14 @@ import ScopeDot from './ScopeDot';
 
 type Props = {
   projectId: string;
+  createScope?: (projectId: string, title: string, color: string) => Promise<void>;
 }
 
-export default function AddScope({ projectId }: Props) {
+export default function AddScope({ projectId, createScope }: Props) {
   const [title, setTitle] = useState('');
   const [color, setColor] = useState<string>(getRandomColor());
   const [showError, setShowError] = useState(false);
-  const [createScope] = useCreateScope(projectId);
+  const [submitScope] = useCreateScope(projectId);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -30,7 +31,11 @@ export default function AddScope({ projectId }: Props) {
       setShowError(true);
       return;
     }
-    await createScope({ variables: { projectId, title, color } });
+    if (createScope) {
+      await createScope(projectId, title, color);
+    } else {
+      await submitScope({ variables: { projectId, title, color } });
+    }
     setTitle('');
     setColor(getRandomColor());
   };

@@ -20,6 +20,8 @@ type Props = {
   drawerEnabled: boolean;
   dragEnabled: boolean;
   moveScope: (scopeId: string, toIndex: number, moveComplete: boolean) => void;
+  createScope?: (projectId: string, title: string, color: string) => Promise<void>;
+  demoMode?: boolean;
 }
 
 const ContentContainer = styled.div`
@@ -31,7 +33,7 @@ const ContentContainer = styled.div`
 const SCOPE_INPUT_HEIGHT = 60;
 
 export default function ScopeList({
-  scopes, projectId, dragEnabled, moveScope, openDrawer, drawerContent, drawerEnabled,
+  scopes, projectId, dragEnabled, moveScope, openDrawer, drawerContent, drawerEnabled, createScope, demoMode,
 }: Props) {
   const { observe, width, height } = useDimensions<HTMLDivElement>();
 
@@ -57,7 +59,14 @@ export default function ScopeList({
                     key={scope.id}
                     className="border-b border-solid border-blue-200 last:border-b-0"
                   >
-                    <ScopeItem scope={scope} dragEnabled={dragEnabled} findScopeIndex={findScopeIndex} moveScope={moveScope} />
+                    <ScopeItem
+                      scope={scope}
+                      dragEnabled={dragEnabled}
+                      findScopeIndex={findScopeIndex}
+                      moveScope={moveScope}
+                      disableUpdateProgress={demoMode}
+                      disableActions={demoMode}
+                    />
                   </li>
                   ))}
                 </ul>
@@ -75,7 +84,7 @@ export default function ScopeList({
                 className={`p-2 ${scopes.length ? 'border-t' : ''} border-solid border-blue-200 box-border`}
                 style={{ height: SCOPE_INPUT_HEIGHT }}
               >
-                <AddScope projectId={projectId} />
+                <AddScope projectId={projectId} createScope={createScope} />
               </div>
             </div>
           </div>

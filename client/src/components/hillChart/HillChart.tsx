@@ -22,6 +22,7 @@ type Props = {
   data?: (ChartItem | null)[];
   allowEdit?: boolean;
   printMode?: boolean;
+  noActions?: boolean;
   onSave?: (updatedItems: UpdatedItemsMap) => void;
   onCancel?: () => void;
 }
@@ -54,7 +55,7 @@ const DOT_DIAMETER = 10;
 const DOT_RADIUS = DOT_DIAMETER / 2;
 
 export default function HillChart({
-  width, height, allowEdit, printMode, onSave, onCancel, data = [],
+  width, height, allowEdit, printMode, noActions, onSave, onCancel, data = [],
 }: Props) {
   const chartId = useRef<number>(Math.floor(Math.random() * Math.floor(101)));
   const updatedItems = useRef<UpdatedItemsMap>({});
@@ -148,7 +149,7 @@ export default function HillChart({
         const point = findChartPoint(currentChartPoints(hillChartSvg.current), itemId);
         return point && <ChartPointLabel key={itemId} point={point} dragEnabled={allowEdit} printMode={printMode} />;
       })}
-      {allowEdit && (
+      {(allowEdit && !noActions) && (
         <div className="absolute top-2 right-2 flex">
           <Button className="mr-2" variant="outlined" onClick={handleCancel}>Cancel</Button>
           <Button className="text-white" variant="contained" color="secondary" onClick={handleSave}>Save</Button>
