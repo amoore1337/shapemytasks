@@ -30,7 +30,7 @@ export default function TitleSection() {
           <Dot size={12} className="mx-2" />
           <div>Simple to use</div>
           <Dot size={12} className="mx-2" />
-          <Link className="text-gray-700 underline" component={RouterLink} to={routes.login}>Sign in to get started</Link>
+          <Link className="text-gray-700 font-bold underline" component={RouterLink} to={routes.login}>Sign in to get started</Link>
         </div>
       </div>
       <div className="flex items-center justify-center mt-8">

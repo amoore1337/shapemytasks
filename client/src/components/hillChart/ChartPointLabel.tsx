@@ -25,12 +25,18 @@ const StyledLabel = styled.div`
   }
 `;
 
-type Props = { chart: Svg; point: CircleElement, dragEnabled?: boolean, printMode?: boolean };
+type Props = {
+  chart: Svg;
+  point: CircleElement;
+  dragEnabled?: boolean;
+  printMode?: boolean;
+  className?: string;
+};
 
 type EventListener = (event: Event) => void;
 type Position = { top: number, left: number, bottom: number, right: number, progress: number };
 export default function ChartPointLabel({
-  chart, point, dragEnabled, printMode,
+  chart, point, dragEnabled, printMode, className = '',
 }: Props) {
   const chartRect = chart.node.getBoundingClientRect();
   const startPos = point.node.getBoundingClientRect();
@@ -89,7 +95,7 @@ export default function ChartPointLabel({
     <StyledLabel
       ref={labelEl}
       id={`${point.chart}.item.${point.chartItem.id}.label`}
-      className={`absolute ${dragEnabled ? 'cursor-move' : ''} ${inProgress ? 'text-gray-800' : 'text-gray-300'}`}
+      className={`${className} absolute ${dragEnabled ? 'cursor-move' : ''} ${inProgress ? 'text-gray-800' : 'text-gray-300'}`}
       style={labelStyle}
       $printMode={printMode}
     >

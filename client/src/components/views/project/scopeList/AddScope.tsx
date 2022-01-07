@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
 import { Button, TextField } from '@material-ui/core';
-import { Color } from '@svgdotjs/svg.js';
 
 import useCreateScope from '@/api/mutations/useCreateScope';
+import { getRandomColor } from '@/utils/color';
 
 import ScopeDot from './ScopeDot';
 
@@ -63,8 +63,4 @@ export default function AddScope({ projectId }: Props) {
       </div>
     </form>
   );
-}
-
-function getRandomColor() {
-  return (Color as any).random().toHex();
 }

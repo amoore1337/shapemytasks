@@ -2,7 +2,10 @@ import React from 'react';
 
 import { Typography } from '@material-ui/core';
 
+import HillChart from '@/components/hillChart/HillChart';
+
 import Dot from '../Dot';
+import scopes from '../demoData';
 
 export default function HillChartSection() {
   return (
@@ -18,8 +21,13 @@ export default function HillChartSection() {
           Visually track your scopes acress a hill chart.
         </Typography>
       </div>
-      <div className="flex items-center justify-center mt-8" style={{ height: 300, width: 750 }}>
-        Hill Chart here
+      <div className="flex items-center justify-center mt-8" style={{ height: 300, width: 575 }}>
+        <HillChart
+          width="100%"
+          height="100%"
+          data={scopes}
+          labelClassName="text-sm"
+        />
       </div>
     </div>
   );

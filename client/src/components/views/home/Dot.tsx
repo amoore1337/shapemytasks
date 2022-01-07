@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Color } from '@svgdotjs/svg.js';
 import tw, { styled } from 'twin.macro';
+
+import { getRandomColor } from '@/utils/color';
 
 const StyledDot = styled.div`
   ${tw`rounded-full box-content`}
@@ -21,8 +22,4 @@ export default function Dot({
   size, color, className, style,
 }: Props) {
   return <StyledDot className={className} style={style} $color={color || getRandomColor()} $size={size || 20} />;
-}
-
-function getRandomColor() {
-  return (Color as any).random().toHex();
 }

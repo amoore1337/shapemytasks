@@ -11,7 +11,7 @@ export default function ScopeSection() {
   return (
     <div className="flex justify-between items-center px-8 w-full mt-20" style={{ maxWidth: 1200 }}>
       <div className="flex justify-center">
-        <div className="flex" style={{ height: 150, width: 500 }}>
+        <div className="flex" style={{ height: 200, width: 500 }}>
           <ScopeList
             projectId={PROJECT_ID}
             scopes={scopes}
