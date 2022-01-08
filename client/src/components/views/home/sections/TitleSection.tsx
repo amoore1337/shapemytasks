@@ -33,8 +33,9 @@ export default function TitleSection() {
           <Link className="text-gray-700 font-bold underline" component={RouterLink} to={routes.login}>Sign in to get started</Link>
         </div>
       </div>
-      <div className="flex items-center justify-center mt-8">
-        Shape My Tasks Logo
+      <div className="flex flex-col items-center justify-center mt-8">
+        <Typography component="h2" className="text-6xl">Shape My Tasks</Typography>
+        <Typography className="text-sm text-gray-700 pt-2">(Logo coming soon)</Typography>
       </div>
     </div>
   );
