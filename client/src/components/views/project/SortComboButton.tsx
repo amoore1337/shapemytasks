@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Button, Tooltip } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import FilterIcon from '@material-ui/icons/FilterList';
+import CloseIcon from '@mui/icons-material/Close';
+import FilterIcon from '@mui/icons-material/FilterList';
+import { Button, Tooltip } from '@mui/material';
 
 type Props = {
   activeSort: string;

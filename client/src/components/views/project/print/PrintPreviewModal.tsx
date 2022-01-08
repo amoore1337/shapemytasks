@@ -4,8 +4,8 @@ import React, {
   useEffect,
 } from 'react';
 
-import { Button } from '@material-ui/core';
-import DownloadIcon from '@material-ui/icons/GetApp';
+import DownloadIcon from '@mui/icons-material/GetApp';
+import { Button } from '@mui/material';
 import { toPng } from 'html-to-image';
 import useDimensions from 'react-cool-dimensions';
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField } from '@mui/material';
 
 import useCreateScope from '@/api/mutations/useCreateScope';
 import { getRandomColor } from '@/utils/color';

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button } from '@material-ui/core';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import { Button } from '@mui/material';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const BUTTON_TEXTS = {

@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 
+import DefaultAvatar from '@mui/icons-material/AccountCircle';
+import GroupIcon from '@mui/icons-material/Group';
 import {
   Popover, Button, Typography,
-} from '@material-ui/core';
-import DefaultAvatar from '@material-ui/icons/AccountCircle';
-import GroupIcon from '@material-ui/icons/Group';
+} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
+import PhotoIcon from '@mui/icons-material/PhotoCamera';
 import {
   Button, IconButton, Paper, Typography, useMediaQuery, useTheme,
-} from '@material-ui/core';
-import PhotoIcon from '@material-ui/icons/PhotoCamera';
+} from '@mui/material';
 import useDimensions from 'react-cool-dimensions';
 
 import { Project_project as ProjectDetails } from '@/api/queries/types/Project';

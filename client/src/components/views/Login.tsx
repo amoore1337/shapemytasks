@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Paper, Typography } from '@material-ui/core';
+import { Button, Paper, Typography } from '@mui/material';
 import { RouteComponentProps } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 
 import useQueryMetrics from '@/api/queries/useQueryMetrics';
 import LoadingIndicator from '@/components/LoadingIndicator';

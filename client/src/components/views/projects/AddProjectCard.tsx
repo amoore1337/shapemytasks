@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import AddProjectModal from './AddProjectModal';
 import ProjectCard from './ProjectCard';

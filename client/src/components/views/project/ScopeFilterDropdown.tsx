@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormControl, InputLabel, Select } from '@material-ui/core';
+import { FormControl, InputLabel, Select } from '@mui/material';
 
 import { SCOPE_FILTER_OPTIONS, FilterOption } from './helpers';
 

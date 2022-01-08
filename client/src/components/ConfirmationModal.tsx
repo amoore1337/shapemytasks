@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
-import { Button, Typography } from '@material-ui/core';
-import { CSSProperties } from '@material-ui/core/styles/withStyles';
+import { Button, Typography } from '@mui/material';
 
 import Modal from './Modal';
 

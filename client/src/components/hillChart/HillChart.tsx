@@ -2,7 +2,7 @@ import React, {
   MutableRefObject, useEffect, useRef, useState,
 } from 'react';
 
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import {
   SVG, Svg, Path, Circle as CircleBase, G, extend,
 } from '@svgdotjs/svg.js';

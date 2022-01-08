@@ -2,6 +2,11 @@ import React, {
   useCallback, useContext, useEffect, useState,
 } from 'react';
 
+import ProjectsIcon from '@mui/icons-material/Apps';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import HomeIcon from '@mui/icons-material/Home';
+import MenuIcon from '@mui/icons-material/Menu';
+import LoginIcon from '@mui/icons-material/PersonOutline';
 import {
   AppBar,
   Drawer,
@@ -14,12 +19,7 @@ import {
   ListItemText,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
-import ProjectsIcon from '@material-ui/icons/Apps';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import HomeIcon from '@material-ui/icons/Home';
-import MenuIcon from '@material-ui/icons/Menu';
-import LoginIcon from '@material-ui/icons/PersonOutline';
+} from '@mui/material';
 import { Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 

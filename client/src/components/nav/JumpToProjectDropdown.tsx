@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { TextField } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
+import { Autocomplete } from '@mui/lab';
+import { TextField } from '@mui/material';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
 import { Projects_projects as Project } from '@/api/queries/types/Projects';

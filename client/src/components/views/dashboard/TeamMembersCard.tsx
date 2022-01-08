@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 
-import { Button, Typography } from '@material-ui/core';
-import GroupIcon from '@material-ui/icons/Group';
+import GroupIcon from '@mui/icons-material/Group';
+import { Button, Typography } from '@mui/material';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
 import useQueryTeamMembers from '@/api/queries/useQueryTeamMembers';

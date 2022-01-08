@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button, TextField, Typography } from '@material-ui/core';
+import { Button, TextField, Typography } from '@mui/material';
 
 import useUpdateScope from '@/api/mutations/useUpdateScope';
 import Modal from '@/components/Modal';

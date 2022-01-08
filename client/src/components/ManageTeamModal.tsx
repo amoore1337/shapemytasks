@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+import CancelIcon from '@mui/icons-material/Cancel';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
   Typography, IconButton, TextField, Button, FormControlLabel, Checkbox, Accordion, AccordionSummary, AccordionDetails,
-} from '@material-ui/core';
-import CancelIcon from '@material-ui/icons/Cancel';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
 import useCreateOrJoinTeam from '@/api/mutations/useCreateOrJoinTeam';

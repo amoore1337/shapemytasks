@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Grid, Link } from '@material-ui/core';
+import { Grid, Link } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
 import useDeleteProject from '@/api/mutations/useDeleteProject';

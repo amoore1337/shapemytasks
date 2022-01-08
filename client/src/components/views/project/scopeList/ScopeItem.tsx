@@ -1,16 +1,16 @@
 import React, { useState, MouseEvent } from 'react';
 
+import DeleteIcon from '@mui/icons-material/Delete';
+import DragIcon from '@mui/icons-material/DragIndicator';
+import EditIcon from '@mui/icons-material/Edit';
+import FlagIcon from '@mui/icons-material/Flag';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import BoltIcon from '@mui/icons-material/OfflineBolt';
+import StarIcon from '@mui/icons-material/StarBorder';
 import {
   Button,
   IconButton, Menu, MenuItem, Tooltip, Typography,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import DragIcon from '@material-ui/icons/DragIndicator';
-import EditIcon from '@material-ui/icons/Edit';
-import FlagIcon from '@material-ui/icons/Flag';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import BoltIcon from '@material-ui/icons/OfflineBolt';
-import StarIcon from '@material-ui/icons/StarBorder';
+} from '@mui/material';
 
 import useDeleteFlag from '@/api/mutations/useDeleteFlag';
 import useDeleteScope from '@/api/mutations/useDeleteScope';
