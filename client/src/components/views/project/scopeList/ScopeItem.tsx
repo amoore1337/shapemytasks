@@ -130,7 +130,7 @@ export default function ScopeItem({
               </div>
             )}
             placement="top"
-            classes={{ tooltip: 'bg-white text-gray-800 border border-solid border-secondary' }}
+            classes={{ tooltip: 'bg-white text-gray-800 border border-solid border-primary' }}
           >
             <FlagIcon className="text-danger ml-2" />
           </Tooltip>
@@ -147,7 +147,7 @@ export default function ScopeItem({
       </div>
       <div className="flex items-center flex-shrink-0">
         {!disableUpdateProgress && (
-          <Button style={{ width: 180 }} className="mr-3" variant="outlined" color="secondary" onClick={handleUpdateProgress}>
+          <Button style={{ width: 180 }} className="mr-3" variant="outlined" color="primary" onClick={handleUpdateProgress}>
             Update Progress
           </Button>
         )}
@@ -162,9 +162,9 @@ export default function ScopeItem({
         </MenuItem>
         <MenuItem onClick={toggleNiceToHave}>
           {scope.niceToHave ? (
-            <BoltIcon fontSize="small" className="mr-3 text-secondary" />
+            <BoltIcon fontSize="small" className="mr-3 text-primary" />
           ) : (
-            <StarIcon fontSize="small" className="mr-3 text-secondary" />
+            <StarIcon fontSize="small" className="mr-3 text-primary" />
           )}
           {scope.niceToHave ? 'Mark as required' : 'Mark as nice to have'}
         </MenuItem>

@@ -37,7 +37,7 @@ export default function ProjectModalForm({ onSubmit, disabled, initialValues }: 
       <fieldset>
         <TextField
           size="small"
-          color="secondary"
+          color="primary"
           label="Project Title"
           variant="outlined"
           name="title"
@@ -49,7 +49,7 @@ export default function ProjectModalForm({ onSubmit, disabled, initialValues }: 
         />
         <TextField
           size="small"
-          color="secondary"
+          color="primary"
           label="Project Description (Optional)"
           variant="outlined"
           className="mt-4 w-full"
@@ -64,7 +64,7 @@ export default function ProjectModalForm({ onSubmit, disabled, initialValues }: 
       <Button
         type="submit"
         variant="contained"
-        color="secondary"
+        color="primary"
         className="text-white"
         disabled={disabled}
       >

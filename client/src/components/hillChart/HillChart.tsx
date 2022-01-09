@@ -1,4 +1,5 @@
 import React, {
+  memo,
   MutableRefObject, useEffect, useRef, useState,
 } from 'react';
 
@@ -53,8 +54,9 @@ export const VIEW_BOX = DEFAULT_VIEW_BOX;
 
 const DOT_DIAMETER = 10;
 const DOT_RADIUS = DOT_DIAMETER / 2;
+let createSvgTimeout: number;
 
-export default function HillChart({
+function HillChartComponent({
   width, height, allowEdit, printMode, onSave, onCancel, data = [], labelClassName,
 }: Props) {
   const chartId = useRef<number>(Math.floor(Math.random() * Math.floor(101)));
@@ -62,6 +64,7 @@ export default function HillChart({
   const hillChartSvg = useRef<HillSvg>();
   const container = useRef<HTMLDivElement>(null);
   const [plottedItems, setPlottedItems] = useState<string[]>([]);
+  const [svgReady, setSvgReady] = useState(false);
 
   const plotPoints = () => {
     const circles = currentChartPoints(hillChartSvg.current);
@@ -113,7 +116,13 @@ export default function HillChart({
   useEffect(() => {
     if (container.current) {
       hillChartSvg.current = createSvg(container.current);
+      // This kinda sucks...
+      // The SVG needs to be rendered in the DOM before any labels are added
+      // to avoid flicker.
+      createSvgTimeout = window.setTimeout(() => setSvgReady(true), 500);
     }
+    // eslint-disable-next-line no-unused-expressions
+    return () => { createSvgTimeout && clearTimeout(createSvgTimeout); };
   }, [container]);
 
   useEffect(() => {
@@ -146,7 +155,7 @@ export default function HillChart({
 
   return (
     <div ref={container} id={`chart-container-${chartId.current}`} className="relative" style={{ width, height }}>
-      {plottedItems.map((itemId) => {
+      {svgReady && plottedItems.map((itemId) => {
         const point = findChartPoint(currentChartPoints(hillChartSvg.current), itemId);
         return point && (
           <ChartPointLabel
@@ -161,13 +170,16 @@ export default function HillChart({
       })}
       {allowEdit && (
         <div className="absolute top-2 right-2 flex">
-          <Button className="mr-2" variant="outlined" onClick={handleCancel}>Cancel</Button>
-          <Button className="text-white" variant="contained" color="secondary" onClick={handleSave}>Save</Button>
+          <Button className="mr-2" variant="outlined" color="secondary" onClick={handleCancel}>Cancel</Button>
+          <Button className="text-white" variant="contained" color="primary" onClick={handleSave}>Save</Button>
         </div>
       )}
     </div>
   );
 }
+
+const HillChart = memo(HillChartComponent);
+export default HillChart;
 
 function currentChartPoints(svg?: HillSvg) {
   return (svg?.pointsGroup.children().toArray() || []) as CircleElement[];

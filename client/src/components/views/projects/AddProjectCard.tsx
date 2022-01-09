@@ -10,7 +10,7 @@ export default function AddProjectCard() {
   return (
     <>
       <ProjectCard className="bg-blue-50 hover:bg-blue-100" onClick={() => setOpenModal(true)}>
-        <AddCircleIcon className="text-5xl" color="secondary" />
+        <AddCircleIcon className="text-5xl" color="primary" />
       </ProjectCard>
       <AddProjectModal open={openModal} onClose={() => setOpenModal(false)} />
     </>

@@ -59,7 +59,7 @@ export default function UserMenu() {
             {currentUser.avatarUrl ? (
               <img src={currentUser.avatarUrl} alt="avatar" />
             ) : (
-              <DefaultAvatar color="secondary" fontSize="large" />
+              <DefaultAvatar color="primary" fontSize="large" />
             )}
           </Avatar>
         ) : loginButton
@@ -100,7 +100,7 @@ function Menu(props: Props) {
             )}
             {currentUser.team && (
               <div className="mt-2 flex items-center">
-                <GroupIcon color="secondary" />
+                <GroupIcon color="primary" />
                 <Typography noWrap className="ml-2 text-sm font-medium">{currentUser.team?.name}</Typography>
               </div>
             )}
@@ -112,8 +112,8 @@ function Menu(props: Props) {
           <Button
             variant="outlined"
             className="mb-2"
-            color="secondary"
-            startIcon={<GroupIcon color="secondary" fontSize="large" />}
+            color="primary"
+            startIcon={<GroupIcon color="primary" fontSize="large" />}
             onClick={() => setOpenTeamsModal(true)}
           >
             Create / Join Team

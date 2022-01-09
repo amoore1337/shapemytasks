@@ -12,7 +12,7 @@ type Props = {
 
 export default function ScopeFilterDropdown({ filterOption, onChange, className = '' }: Props) {
   return (
-    <FormControl className={`flex-shrink-0 pb-2 ${className}`} variant="outlined" color="secondary">
+    <FormControl className={`flex-shrink-0 pb-2 ${className}`} variant="outlined" color="primary">
       <InputLabel htmlFor="scope-filter-input">Filter by</InputLabel>
       <Select
         native

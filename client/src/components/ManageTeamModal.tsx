@@ -112,7 +112,7 @@ export default function UserSettingsModal({ open, onClose }: Props) {
                   value={teamCode}
                   onChange={handleChange}
                   size="small"
-                  color="secondary"
+                  color="primary"
                   label="Team Code"
                   variant="outlined"
                   error={showCodeError}
@@ -135,7 +135,7 @@ export default function UserSettingsModal({ open, onClose }: Props) {
                   value={teamName}
                   onChange={handleChange}
                   size="small"
-                  color="secondary"
+                  color="primary"
                   label="Team Name"
                   variant="outlined"
                   error={showNameError}
@@ -159,7 +159,7 @@ export default function UserSettingsModal({ open, onClose }: Props) {
                     value={emailDomain}
                     onChange={handleChange}
                     size="small"
-                    color="secondary"
+                    color="primary"
                     label="example.com"
                     variant="outlined"
                     error={showDomainError}
@@ -175,7 +175,7 @@ export default function UserSettingsModal({ open, onClose }: Props) {
           <Button
             type="submit"
             variant="contained"
-            color="secondary"
+            color="primary"
             className="text-white"
             onClick={submitTeam}
             disabled={loading}

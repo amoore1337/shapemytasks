@@ -54,7 +54,7 @@ export default function EditScopeModal({ onClose, scope, ...props }: Props) {
         <form noValidate autoComplete="off" className="pt-8 flex-1 flex flex-col justify-between" onSubmit={handleSubmit}>
           <TextField
             size="small"
-            color="secondary"
+            color="primary"
             label="Title"
             variant="outlined"
             name="title"
@@ -66,7 +66,7 @@ export default function EditScopeModal({ onClose, scope, ...props }: Props) {
           <Button
             type="submit"
             variant="contained"
-            color="secondary"
+            color="primary"
             className="text-white"
           >
             Save

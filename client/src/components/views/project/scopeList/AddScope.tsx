@@ -45,7 +45,7 @@ export default function AddScope({ projectId }: Props) {
           value={title}
           onChange={handleChange}
           size="small"
-          color="secondary"
+          color="primary"
           label="Scope Title"
           variant="outlined"
         />
@@ -54,7 +54,7 @@ export default function AddScope({ projectId }: Props) {
         <Button
           type="submit"
           variant="contained"
-          color="secondary"
+          color="primary"
           className="text-white"
           disabled={!title}
         >

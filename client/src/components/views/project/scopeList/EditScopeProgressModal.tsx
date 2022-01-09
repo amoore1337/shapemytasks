@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import useUpdateScopeProgressById from '@/api/mutations/useUpdateScopeProgressById';
 import Modal from '@/components/Modal';
@@ -13,25 +13,32 @@ type Props = {
 }
 
 export default function EditScopeProgressModal({ onClose, scope, ...props }: Props) {
+  const [data, setData] = useState([scope]);
   const [enableProgressEdit, setEnableProgressEdit] = useState(true);
   const [updateScope, { loading, called }] = useUpdateScopeProgressById();
 
-  const handleSave = (updatedItems: UpdatedItemsMap) => {
-    setEnableProgressEdit(false);
+  const handleSave = useCallback((updatedItems: UpdatedItemsMap) => {
     updateScope({ variables: { id: scope.id, progress: updatedItems[scope.id] } });
-  };
-
-  const handleClose = () => {
     setEnableProgressEdit(false);
+  }, [updateScope]);
+
+  const handleClose = useCallback(() => {
     if (onClose) { onClose(); }
-  };
+    setEnableProgressEdit(false);
+  }, [onClose]);
 
   useEffect(() => {
     if (!loading && called) {
-      setEnableProgressEdit(false);
       handleClose();
+      setEnableProgressEdit(false);
     }
   }, [loading, called]);
+
+  useEffect(() => {
+    if (!data || data[0]?.id !== scope.id) {
+      setData([scope]);
+    }
+  }, [scope]);
 
   return (
     <Modal
@@ -46,7 +53,7 @@ export default function EditScopeProgressModal({ onClose, scope, ...props }: Pro
         <HillChart
           width="100%"
           height="100%"
-          data={[scope]}
+          data={data}
           allowEdit={enableProgressEdit}
           onSave={handleSave}
           onCancel={handleClose}

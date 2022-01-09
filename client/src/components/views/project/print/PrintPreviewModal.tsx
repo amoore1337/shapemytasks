@@ -61,7 +61,7 @@ export default function PrintPreviewModal({
           <Button
             component="a"
             variant="contained"
-            color="secondary"
+            color="primary"
             className="text-white mr-4"
             startIcon={<DownloadIcon className="text-white" />}
             href={imageSrc}

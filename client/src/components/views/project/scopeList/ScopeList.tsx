@@ -50,7 +50,7 @@ export default function ScopeList({
         {/* Wait until dimensions have been calculated before rendering content: */}
         {width + height > 0 && (
           <div style={{ width, height }}>
-            <div className="border border-solid border-secondary rounded-md relative box-border w-full">
+            <div className="border border-solid border-primary rounded-md relative box-border w-full">
               <div className="flex relative">
                 <ul className="overflow-y-auto flex-grow" style={{ maxHeight: maxListHeight }}>
                   {scopes.map((scope) => scope && (

@@ -30,10 +30,10 @@ export default function TeamCodeCopyButton({ teamCode }: { teamCode: string }) {
       <Button
         variant="outlined"
         className="mb-2 w-full"
-        color="secondary"
+        color="primary"
         onMouseEnter={() => !copied && setButtonText(BUTTON_TEXTS.hover)}
         onMouseLeave={() => !copied && setButtonText(BUTTON_TEXTS.normal)}
-        startIcon={!copied && <GroupAddIcon color="secondary" fontSize="large" />}
+        startIcon={!copied && <GroupAddIcon color="primary" fontSize="large" />}
       >
         {buttonText}
       </Button>

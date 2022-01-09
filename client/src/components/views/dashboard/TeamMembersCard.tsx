@@ -45,8 +45,8 @@ export default function TeamMembersCard() {
           <Button
             variant="outlined"
             className="mb-2"
-            color="secondary"
-            startIcon={<GroupIcon color="secondary" fontSize="large" />}
+            color="primary"
+            startIcon={<GroupIcon color="primary" fontSize="large" />}
             onClick={() => setOpenTeamsModal(true)}
           >
             Create / Join Team
