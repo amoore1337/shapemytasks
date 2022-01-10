@@ -74,12 +74,13 @@ export default function UserMenu() {
 }
 
 function Menu(props: Props) {
+  const { onClose } = props;
   const [openTeamsModal, setOpenTeamsModal] = useState(false);
   const { currentUser, logout } = useContext(CurrentUserContext);
 
   const handleLogout = async () => {
-    if (props.onClose) {
-      props.onClose();
+    if (onClose) {
+      onClose();
     }
     await logout();
   };
