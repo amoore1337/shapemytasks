@@ -21,6 +21,7 @@ type Props = {
   dragEnabled: boolean;
   moveScope: (scopeId: string, toIndex: number, moveComplete: boolean) => void;
   readonlyMode?: boolean;
+  compact?: boolean;
 }
 
 const ContentContainer = styled.div`
@@ -32,7 +33,7 @@ const ContentContainer = styled.div`
 const SCOPE_INPUT_HEIGHT = 60;
 
 export default function ScopeList({
-  scopes, projectId, dragEnabled, moveScope, openDrawer, drawerContent, drawerEnabled, readonlyMode,
+  scopes, projectId, dragEnabled, moveScope, openDrawer, drawerContent, drawerEnabled, readonlyMode, compact,
 }: Props) {
   const { observe, width, height } = useDimensions<HTMLDivElement>();
 
@@ -65,6 +66,7 @@ export default function ScopeList({
                       moveScope={moveScope}
                       disableUpdateProgress={readonlyMode}
                       disableActions={readonlyMode}
+                      compact={compact}
                     />
                   </li>
                   ))}

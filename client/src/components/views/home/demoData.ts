@@ -6,10 +6,10 @@ export const PROJECT_ID = 'demo';
 export type Scope = ProjectScope;
 
 export default [
-  buildScope('0', 'Create scopes with 1 click', getRandomColor(), 85),
+  buildScope('0', 'Create scopes with 1 click', getRandomColor(), 88),
   buildScope('1', 'Organize with live updates', getRandomColor(), 75),
   buildScope('2', 'Flag blocked work', getRandomColor(), 33, '0'),
-  buildScope('3', 'Mark nice-to-have\'s', getRandomColor(), 15, undefined, true),
+  buildScope('3', 'Mark nice-to-have\'s', getRandomColor(), 19, undefined, true),
 ];
 
 function buildScope(id: string, title: string, color: string, progress: number, flag?: string, niceToHave = false) {

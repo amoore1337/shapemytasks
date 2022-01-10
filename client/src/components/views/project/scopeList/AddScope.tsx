@@ -3,9 +3,8 @@ import React, { useState } from 'react';
 import { Button, TextField } from '@mui/material';
 
 import useCreateScope from '@/api/mutations/useCreateScope';
+import Dot from '@/components/Dot';
 import { getRandomColor } from '@/utils/color';
-
-import ScopeDot from './ScopeDot';
 
 type Props = {
   projectId: string;
@@ -38,7 +37,7 @@ export default function AddScope({ projectId }: Props) {
   return (
     <form noValidate autoComplete="off" className="flex justify-between" onSubmit={handleSubmit}>
       <div className="flex items-center w-2/3 pl-6">
-        <ScopeDot color={color} className="flex-shrink-0" />
+        <Dot color={color} className="flex-freeze" />
         <TextField
           name="title"
           className="ml-2 w-full"

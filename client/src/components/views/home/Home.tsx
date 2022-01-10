@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from '@mui/material';
+import { Link, useMediaQuery, useTheme } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
 import routes from '@/routes';
@@ -10,11 +10,13 @@ import ScopeSection from './sections/ScopeSection';
 import TitleSection from './sections/TitleSection';
 
 export default function Home() {
+  const { breakpoints } = useTheme();
+  const isMobile = useMediaQuery(breakpoints.down('md'));
   return (
     <div className="py-20 relative w-full flex flex-col items-center text-gray-800">
-      <TitleSection />
-      <ScopeSection />
-      <HillChartSection />
+      <TitleSection isMobile={isMobile} />
+      <ScopeSection isMobile={isMobile} />
+      <HillChartSection isMobile={isMobile} />
       <Footer />
     </div>
   );

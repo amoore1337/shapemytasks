@@ -16,6 +16,7 @@ import useDeleteFlag from '@/api/mutations/useDeleteFlag';
 import useDeleteScope from '@/api/mutations/useDeleteScope';
 import useUpdateScope from '@/api/mutations/useUpdateScope';
 import DeleteConfirmationModal from '@/components/ConfirmationModal';
+import Dot from '@/components/Dot';
 
 import { ProjectScope } from '../helpers';
 
@@ -23,7 +24,6 @@ import AddFlagModal from './AddFlagModal';
 import EditScopeModal from './EditScopeModal';
 import EditScopeProgressModal from './EditScopeProgressModal';
 import NiceToHaveChip from './NiceToHaveChip';
-import ScopeDot from './ScopeDot';
 import useScopeDnd from './useScopeDnD';
 
 type Props = {
@@ -33,10 +33,11 @@ type Props = {
   dragEnabled?: boolean;
   disableUpdateProgress?: boolean;
   disableActions?: boolean;
+  compact?: boolean;
 }
 
 export default function ScopeItem({
-  scope, dragEnabled, findScopeIndex, moveScope, disableUpdateProgress, disableActions,
+  scope, dragEnabled, findScopeIndex, moveScope, disableUpdateProgress, disableActions, compact,
 }: Props) {
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLButtonElement>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -106,7 +107,7 @@ export default function ScopeItem({
         <button ref={dragRef} type="button" disabled={!dragEnabled} className="disabled:cursor-not-allowed">
           <DragIcon className={dragEnabled ? 'text-gray-400 cursor-move' : 'text-gray-100'} />
         </button>
-        <ScopeDot color={scope.color} />
+        <Dot className="flex-freeze" color={scope.color} />
         {isFlagged && (
           <Tooltip
             title={(
@@ -139,11 +140,13 @@ export default function ScopeItem({
           {scope.niceToHave && <NiceToHaveChip className="mr-1" />}
           {scope.title}
         </Typography>
-        <Typography className={`ml-3 text-sm text-gray-600 ${inProgress ? 'font-bold' : ''}`}>
-          (
-          {summaryForProgress(scope.progress)}
-          )
-        </Typography>
+        {!compact && (
+          <Typography className={`ml-3 text-sm text-gray-600 ${inProgress ? 'font-bold' : ''}`}>
+            (
+            {summaryForProgress(scope.progress)}
+            )
+          </Typography>
+        )}
       </div>
       <div className="flex items-center flex-shrink-0">
         {!disableUpdateProgress && (
