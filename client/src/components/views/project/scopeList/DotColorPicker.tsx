@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { ColorPicker } from 'material-ui-color';
 import tw, { styled } from 'twin.macro';
-
-import { getRandomColor } from '@/utils/color';
 
 const StyledContainer = styled.div`
   .muicc-colorpicker-button, .muicc-colorpicker-button div {
