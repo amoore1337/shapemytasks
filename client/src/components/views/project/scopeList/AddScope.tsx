@@ -6,6 +6,8 @@ import useCreateScope from '@/api/mutations/useCreateScope';
 import Dot from '@/components/Dot';
 import { getRandomColor } from '@/utils/color';
 
+import DotColorPicker from './DotColorPicker';
+
 type Props = {
   projectId: string;
 }
@@ -37,7 +39,7 @@ export default function AddScope({ projectId }: Props) {
   return (
     <form noValidate autoComplete="off" className="flex justify-between" onSubmit={handleSubmit}>
       <div className="flex items-center w-2/3 pl-6">
-        <Dot color={color} className="flex-freeze" />
+        <DotColorPicker selectedColor={color} onChange={setColor} />
         <TextField
           name="title"
           className="ml-2 w-full"

@@ -45,4 +45,5 @@ export interface UpdateScopeVariables {
   title?: string | null;
   description?: string | null;
   niceToHave?: boolean | null;
+  color?: string | null;
 }
