@@ -1,34 +1,22 @@
 import React from 'react';
 
-import { Link, Typography } from '@material-ui/core';
+import { Link, useMediaQuery, useTheme } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import tw, { styled } from 'twin.macro';
 
 import routes from '@/routes';
 
-import sampleHillChartImage from './sampleHillChartFull.png';
-
-const StyledImage = styled.img`
-  width: 85%;
-  max-width: 1200px;
-  ${tw`rounded shadow-lg`}
-`;
+import HillChartSection from './sections/HillChartSection';
+import ScopeSection from './sections/ScopeSection';
+import TitleSection from './sections/TitleSection';
 
 export default function Home() {
+  const { breakpoints } = useTheme();
+  const isMobile = useMediaQuery(breakpoints.down('md'));
   return (
-    <div className="text-center p-8 pb-20 text-gray-800 relative">
-      <Typography variant="h3" component="h2">Welcome!</Typography>
-      <Typography component="p" className="mt-2">
-        Shape My Tasks is a simple application for tracking tasks on a
-        {' '}
-        <a target="_blank" rel="noreferrer" href="https://basecamp.com/shapeup" className="underline font-semibold">
-          Shape Up
-        </a>
-        -inspired hill chart.
-      </Typography>
-      <div className="flex items-center justify-center mt-8">
-        <StyledImage src={sampleHillChartImage} alt="Sample Hill Chart" />
-      </div>
+    <div className="py-20 relative w-full flex flex-col items-center text-gray-800">
+      <TitleSection isMobile={isMobile} />
+      <ScopeSection isMobile={isMobile} />
+      <HillChartSection isMobile={isMobile} />
       <Footer />
     </div>
   );

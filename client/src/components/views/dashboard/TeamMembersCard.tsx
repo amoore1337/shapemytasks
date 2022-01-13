@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 
-import { Button, Typography } from '@material-ui/core';
-import GroupIcon from '@material-ui/icons/Group';
+import GroupIcon from '@mui/icons-material/Group';
+import { Button, Typography } from '@mui/material';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
 import useQueryTeamMembers from '@/api/queries/useQueryTeamMembers';
@@ -45,8 +45,8 @@ export default function TeamMembersCard() {
           <Button
             variant="outlined"
             className="mb-2"
-            color="secondary"
-            startIcon={<GroupIcon color="secondary" fontSize="large" />}
+            color="primary"
+            startIcon={<GroupIcon color="primary" fontSize="large" />}
             onClick={() => setOpenTeamsModal(true)}
           >
             Create / Join Team

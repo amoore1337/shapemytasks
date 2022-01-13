@@ -3,14 +3,6 @@
 const CracoAlias = require('craco-alias');
 
 module.exports = {
-  style: {
-    postcss: {
-      plugins: [
-        require('tailwindcss'),
-        require('autoprefixer'),
-      ],
-    },
-  },
   plugins: [
     {
       plugin: CracoAlias,
@@ -21,4 +13,9 @@ module.exports = {
       },
     },
   ],
+  webpack: {
+    alias: {
+      '@mui/styled-engine': '@mui/styled-engine-sc',
+    },
+  },
 };

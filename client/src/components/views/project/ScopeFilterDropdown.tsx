@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormControl, InputLabel, Select } from '@material-ui/core';
+import { FormControl, InputLabel, Select } from '@mui/material';
 
 import { SCOPE_FILTER_OPTIONS, FilterOption } from './helpers';
 
@@ -12,7 +12,7 @@ type Props = {
 
 export default function ScopeFilterDropdown({ filterOption, onChange, className = '' }: Props) {
   return (
-    <FormControl className={`flex-shrink-0 pb-2 ${className}`} variant="outlined" color="secondary">
+    <FormControl className={`flex-shrink-0 pb-2 ${className}`} variant="outlined" color="primary">
       <InputLabel htmlFor="scope-filter-input">Filter by</InputLabel>
       <Select
         native

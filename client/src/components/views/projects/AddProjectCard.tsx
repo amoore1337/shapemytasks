@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import AddProjectModal from './AddProjectModal';
 import ProjectCard from './ProjectCard';
@@ -10,7 +10,7 @@ export default function AddProjectCard() {
   return (
     <>
       <ProjectCard className="bg-blue-50 hover:bg-blue-100" onClick={() => setOpenModal(true)}>
-        <AddCircleIcon className="text-5xl" color="secondary" />
+        <AddCircleIcon className="text-5xl" color="primary" />
       </ProjectCard>
       <AddProjectModal open={openModal} onClose={() => setOpenModal(false)} />
     </>

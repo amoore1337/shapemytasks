@@ -48,6 +48,4 @@ $ sudo docker-compose exec db sh -c "pg_dump -U username smt" > ~/Desktop/backup
 * TODO: Container networking hasn't been tested for MacOS development, might need some tweaks.
 * On Windows, if localhost can't be reached, run `wsl --shutdown` which will also restart docker. See [this issue](https://github.com/microsoft/WSL/issues/4204).
 * Blocked dependency updates:
-    * `autoprefixer`: Can update with tailwind and PostCSS once CRA supports PostCSS 8 ([issue](https://github.com/facebook/create-react-app/issues/9664))
-    * `postcss`: Can update with tailwind and autoprefixer once CRA supports PostCSS 8 ([issue](https://github.com/facebook/create-react-app/issues/9664))
     * `history`: Can update once `react-router-dom` supports v5 ([issue](https://github.com/ReactTraining/history/issues/804))

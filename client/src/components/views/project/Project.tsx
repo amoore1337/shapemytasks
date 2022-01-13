@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
+import PhotoIcon from '@mui/icons-material/PhotoCamera';
 import {
   Button, IconButton, Paper, Typography, useMediaQuery, useTheme,
-} from '@material-ui/core';
-import PhotoIcon from '@material-ui/icons/PhotoCamera';
+} from '@mui/material';
 import useDimensions from 'react-cool-dimensions';
 
 import { Project_project as ProjectDetails } from '@/api/queries/types/Project';
@@ -114,7 +114,7 @@ export default function Project(props: Props) {
                   <Button
                     className="text-white"
                     variant="contained"
-                    color="secondary"
+                    color="primary"
                     onClick={onHillChartEditClick}
                   >
                     Update Progress
@@ -145,13 +145,15 @@ export default function Project(props: Props) {
             <>
               <div className="w-full px-4 flex justify-between" style={{ maxWidth: 1200 }}>
                 <Typography className="flex-grow self-end" variant="h6" component="h2">{project.title}</Typography>
-                <SortComboButton
-                  activeSort={scopeSortOption.label}
-                  activeFilter={scopeFilterOption.label}
-                  onClick={() => setOpenDrawer((v) => !v)}
-                  onClear={resetFilterAndSort}
-                  isActive={sortActive || filterActive}
-                />
+                {!loading && (
+                  <SortComboButton
+                    activeSort={scopeSortOption.label}
+                    activeFilter={scopeFilterOption.label}
+                    onClick={() => setOpenDrawer((v) => !v)}
+                    onClear={resetFilterAndSort}
+                    isActive={sortActive || filterActive}
+                  />
+                )}
               </div>
               <ScopeList
                 scopes={scopes}

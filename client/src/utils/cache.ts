@@ -25,6 +25,7 @@ export function removeCacheItem<T extends GeneralKeyVal>(...args: RemoveCacheIte
   if (!result) { return; }
   const cacheAction: Cache.ModifyOptions = {
     fields: {
+      /* eslint-disable default-param-last */
       [field]: (existingRefs: Reference[] = [], { readField }) => {
         const item = result[action];
         if (!item) { return existingRefs; }
@@ -67,6 +68,7 @@ export function addCacheItem<T extends GeneralKeyVal>(...args: AddCacheItemArgs<
   if (!result) { return; }
   const cacheAction: Cache.ModifyOptions = {
     fields: {
+      /* eslint-disable default-param-last */
       [field]: (existingRefs: Reference[] = [], { readField }) => {
         const item = result[action];
         if (!item) { return existingRefs; }

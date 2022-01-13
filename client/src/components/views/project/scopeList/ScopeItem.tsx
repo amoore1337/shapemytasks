@@ -1,21 +1,22 @@
 import React, { useState, MouseEvent } from 'react';
 
+import DeleteIcon from '@mui/icons-material/Delete';
+import DragIcon from '@mui/icons-material/DragIndicator';
+import EditIcon from '@mui/icons-material/Edit';
+import FlagIcon from '@mui/icons-material/Flag';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import BoltIcon from '@mui/icons-material/OfflineBolt';
+import StarIcon from '@mui/icons-material/StarBorder';
 import {
   Button,
   IconButton, Menu, MenuItem, Tooltip, Typography,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import DragIcon from '@material-ui/icons/DragIndicator';
-import EditIcon from '@material-ui/icons/Edit';
-import FlagIcon from '@material-ui/icons/Flag';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import BoltIcon from '@material-ui/icons/OfflineBolt';
-import StarIcon from '@material-ui/icons/StarBorder';
+} from '@mui/material';
 
 import useDeleteFlag from '@/api/mutations/useDeleteFlag';
 import useDeleteScope from '@/api/mutations/useDeleteScope';
 import useUpdateScope from '@/api/mutations/useUpdateScope';
 import DeleteConfirmationModal from '@/components/ConfirmationModal';
+import Dot from '@/components/Dot';
 
 import { ProjectScope } from '../helpers';
 
@@ -23,7 +24,6 @@ import AddFlagModal from './AddFlagModal';
 import EditScopeModal from './EditScopeModal';
 import EditScopeProgressModal from './EditScopeProgressModal';
 import NiceToHaveChip from './NiceToHaveChip';
-import ScopeDot from './ScopeDot';
 import useScopeDnd from './useScopeDnD';
 
 type Props = {
@@ -31,10 +31,13 @@ type Props = {
   findScopeIndex: (scopeId: string) => number;
   moveScope: (scopeId: string, toIndex: number, moveComplete: boolean) => void;
   dragEnabled?: boolean;
+  disableUpdateProgress?: boolean;
+  disableActions?: boolean;
+  compact?: boolean;
 }
 
 export default function ScopeItem({
-  scope, dragEnabled, findScopeIndex, moveScope,
+  scope, dragEnabled, findScopeIndex, moveScope, disableUpdateProgress, disableActions, compact,
 }: Props) {
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLButtonElement>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -104,7 +107,7 @@ export default function ScopeItem({
         <button ref={dragRef} type="button" disabled={!dragEnabled} className="disabled:cursor-not-allowed">
           <DragIcon className={dragEnabled ? 'text-gray-400 cursor-move' : 'text-gray-100'} />
         </button>
-        <ScopeDot color={scope.color} />
+        <Dot className="flex-freeze" color={scope.color} />
         {isFlagged && (
           <Tooltip
             title={(
@@ -128,7 +131,7 @@ export default function ScopeItem({
               </div>
             )}
             placement="top"
-            classes={{ tooltip: 'bg-white text-gray-800 border border-solid border-secondary' }}
+            classes={{ tooltip: 'bg-white text-gray-800 border border-solid border-primary' }}
           >
             <FlagIcon className="text-danger ml-2" />
           </Tooltip>
@@ -137,15 +140,21 @@ export default function ScopeItem({
           {scope.niceToHave && <NiceToHaveChip className="mr-1" />}
           {scope.title}
         </Typography>
-        <Typography className={`ml-3 text-sm text-gray-600 ${inProgress ? 'font-bold' : ''}`}>
-          (
-          {summaryForProgress(scope.progress)}
-          )
-        </Typography>
+        {!compact && (
+          <Typography className={`ml-3 text-sm text-gray-600 ${inProgress ? 'font-bold' : ''}`}>
+            (
+            {summaryForProgress(scope.progress)}
+            )
+          </Typography>
+        )}
       </div>
       <div className="flex items-center flex-shrink-0">
-        <Button style={{ width: 180 }} className="mr-3" variant="outlined" color="secondary" onClick={handleUpdateProgress}>Update Progress</Button>
-        <IconButton size="small" onClick={handleMenuOpen}>
+        {!disableUpdateProgress && (
+          <Button style={{ width: 180 }} className="mr-3" variant="outlined" color="primary" onClick={handleUpdateProgress}>
+            Update Progress
+          </Button>
+        )}
+        <IconButton size="small" onClick={handleMenuOpen} disabled={disableActions}>
           <MoreIcon fontSize="inherit" />
         </IconButton>
       </div>
@@ -156,9 +165,9 @@ export default function ScopeItem({
         </MenuItem>
         <MenuItem onClick={toggleNiceToHave}>
           {scope.niceToHave ? (
-            <BoltIcon fontSize="small" className="mr-3 text-secondary" />
+            <BoltIcon fontSize="small" className="mr-3 text-primary" />
           ) : (
-            <StarIcon fontSize="small" className="mr-3 text-secondary" />
+            <StarIcon fontSize="small" className="mr-3 text-primary" />
           )}
           {scope.niceToHave ? 'Mark as required' : 'Mark as nice to have'}
         </MenuItem>

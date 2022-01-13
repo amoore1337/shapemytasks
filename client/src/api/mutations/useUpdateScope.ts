@@ -4,8 +4,8 @@ import { UpdateScope, UpdateScopeVariables } from '@/api/mutations/types/UpdateS
 import { SCOPE_FRAGMENT } from '@/api/queries/useQueryScope';
 
 const UPDATE_SCOPE = gql`
-  mutation UpdateScope($id: ID!, $title: String, $description: String, $niceToHave: Boolean) {
-    updateScope(id: $id, title: $title, description: $description, niceToHave: $niceToHave) {
+  mutation UpdateScope($id: ID!, $title: String, $description: String, $niceToHave: Boolean, $color: String) {
+    updateScope(id: $id, title: $title, description: $description, niceToHave: $niceToHave color: $color) {
       ...ScopeFragment
     }
   }

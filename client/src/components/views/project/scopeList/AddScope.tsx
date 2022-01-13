@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import { Button, TextField } from '@material-ui/core';
-import { Color } from '@svgdotjs/svg.js';
+import { Button, TextField } from '@mui/material';
 
 import useCreateScope from '@/api/mutations/useCreateScope';
+import { getRandomColor } from '@/utils/color';
 
-import ScopeDot from './ScopeDot';
+import DotColorPicker from './DotColorPicker';
 
 type Props = {
   projectId: string;
@@ -38,14 +38,14 @@ export default function AddScope({ projectId }: Props) {
   return (
     <form noValidate autoComplete="off" className="flex justify-between" onSubmit={handleSubmit}>
       <div className="flex items-center w-2/3 pl-6">
-        <ScopeDot color={color} className="flex-shrink-0" />
+        <DotColorPicker selectedColor={color} onChange={setColor} />
         <TextField
           name="title"
           className="ml-2 w-full"
           value={title}
           onChange={handleChange}
           size="small"
-          color="secondary"
+          color="primary"
           label="Scope Title"
           variant="outlined"
         />
@@ -54,7 +54,7 @@ export default function AddScope({ projectId }: Props) {
         <Button
           type="submit"
           variant="contained"
-          color="secondary"
+          color="primary"
           className="text-white"
           disabled={!title}
         >
@@ -63,8 +63,4 @@ export default function AddScope({ projectId }: Props) {
       </div>
     </form>
   );
-}
-
-function getRandomColor() {
-  return (Color as any).random().toHex();
 }

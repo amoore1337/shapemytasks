@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button, TextField, Typography } from '@material-ui/core';
+import { Button, TextField, Typography } from '@mui/material';
 
 import useCreateFlag from '@/api/mutations/useCreateFlag';
 import Modal from '@/components/Modal';
@@ -51,7 +51,7 @@ export default function AddFlagModal({ onClose, scope, ...props }: Props) {
         <form noValidate autoComplete="off" className="pt-8 flex-1 flex flex-col justify-between" onSubmit={handleSubmit}>
           <TextField
             size="small"
-            color="secondary"
+            color="primary"
             label="Note (Optional)"
             variant="outlined"
             multiline
@@ -64,7 +64,7 @@ export default function AddFlagModal({ onClose, scope, ...props }: Props) {
           <Button
             type="submit"
             variant="contained"
-            color="secondary"
+            color="primary"
             className="text-white mt-4"
           >
             Add Flag

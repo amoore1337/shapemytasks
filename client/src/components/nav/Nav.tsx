@@ -2,6 +2,11 @@ import React, {
   useCallback, useContext, useEffect, useState,
 } from 'react';
 
+import ProjectsIcon from '@mui/icons-material/Apps';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import HomeIcon from '@mui/icons-material/Home';
+import MenuIcon from '@mui/icons-material/Menu';
+import LoginIcon from '@mui/icons-material/PersonOutline';
 import {
   AppBar,
   Drawer,
@@ -14,12 +19,7 @@ import {
   ListItemText,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
-import ProjectsIcon from '@material-ui/icons/Apps';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import HomeIcon from '@material-ui/icons/Home';
-import MenuIcon from '@material-ui/icons/Menu';
-import LoginIcon from '@material-ui/icons/PersonOutline';
+} from '@mui/material';
 import { Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
@@ -49,9 +49,9 @@ export default function Nav() {
   }, []);
 
   return (
-    <AppBar position="sticky" color="primary">
+    <AppBar position="sticky" color="inherit">
       <Toolbar>
-        <IconButton className="mr-2" edge="start" color="secondary" onClick={() => setSideNavOpened(true)}>
+        <IconButton className="mr-2" edge="start" color="primary" onClick={() => setSideNavOpened(true)}>
           <MenuIcon />
         </IconButton>
         <SideNav
@@ -88,7 +88,7 @@ function SideNav({ open, onClose, loggedIn }: SideNavProps) {
         <List component="nav">
           <ListItem button component={RouterLink} to={routes.home} onClick={onClose}>
             <ListItemIcon>
-              <HomeIcon color="secondary" />
+              <HomeIcon color="primary" />
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItem>
@@ -96,13 +96,13 @@ function SideNav({ open, onClose, loggedIn }: SideNavProps) {
           <>
             <ListItem button component={RouterLink} to={routes.dashboard} onClick={onClose}>
               <ListItemIcon>
-                <DashboardIcon color="secondary" />
+                <DashboardIcon color="primary" />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
             </ListItem>
             <ListItem button component={RouterLink} to={routes.projects} onClick={onClose}>
               <ListItemIcon>
-                <ProjectsIcon color="secondary" />
+                <ProjectsIcon color="primary" />
               </ListItemIcon>
               <ListItemText primary="Projects" />
             </ListItem>
@@ -111,7 +111,7 @@ function SideNav({ open, onClose, loggedIn }: SideNavProps) {
           {!loggedIn && (
             <ListItem button component={RouterLink} to={routes.login} onClick={onClose}>
               <ListItemIcon>
-                <LoginIcon color="secondary" />
+                <LoginIcon color="primary" />
               </ListItemIcon>
               <ListItemText primary="Login" />
             </ListItem>

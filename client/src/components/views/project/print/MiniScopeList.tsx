@@ -2,8 +2,9 @@ import React, { ReactNode } from 'react';
 
 import tw, { styled } from 'twin.macro';
 
+import Dot from '@/components/Dot';
+
 import { ProjectScope, Scopes } from '../helpers';
-import ScopeDot from '../scopeList/ScopeDot';
 
 const ListContainer = styled.div`
   ${tw`px-6`}
@@ -40,7 +41,7 @@ function Row({ scope }: { scope: ProjectScope }) {
   const { title } = scope;
   return (
     <div className="p-2 font-semibold flex items-center">
-      <ScopeDot color={scope.color} className="mr-2 flex-shrink-0" />
+      <Dot color={scope.color} className="mr-2 flex-freeze" />
       {title}
     </div>
   );

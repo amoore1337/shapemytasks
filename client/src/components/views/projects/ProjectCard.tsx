@@ -1,11 +1,11 @@
 import React, { useState, MouseEvent, useEffect } from 'react';
 
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import MoreIcon from '@mui/icons-material/MoreVert';
 import {
   Button, ButtonProps, IconButton, Menu, MenuItem,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import MoreIcon from '@material-ui/icons/MoreVert';
+} from '@mui/material';
 import tw, { styled } from 'twin.macro';
 
 const StyledButton = styled(Button)`

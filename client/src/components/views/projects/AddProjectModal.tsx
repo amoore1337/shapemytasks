@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
 import useCreateProject from '@/api/mutations/useCreateProject';

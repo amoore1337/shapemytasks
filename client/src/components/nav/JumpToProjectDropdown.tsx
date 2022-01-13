@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { TextField } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
+import { TextField, Autocomplete } from '@mui/material';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
 import { Projects_projects as Project } from '@/api/queries/types/Projects';
@@ -36,7 +35,7 @@ export default function JumpToProjectDropdown({ selectedProjectId, onChange }: P
         style={{ width: 300 }}
         renderInput={(params) => (
           loading ? <LoadingIndicator />
-            : <TextField {...params} size="small" color="secondary" label="Jump to project..." variant="outlined" />
+            : <TextField {...params} size="small" color="primary" label="Jump to project..." variant="outlined" />
         )}
       />
     </div>

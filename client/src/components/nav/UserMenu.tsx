@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 
+import DefaultAvatar from '@mui/icons-material/AccountCircle';
+import GroupIcon from '@mui/icons-material/Group';
 import {
   Popover, Button, Typography,
-} from '@material-ui/core';
-import DefaultAvatar from '@material-ui/icons/AccountCircle';
-import GroupIcon from '@material-ui/icons/Group';
+} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
@@ -59,7 +59,7 @@ export default function UserMenu() {
             {currentUser.avatarUrl ? (
               <img src={currentUser.avatarUrl} alt="avatar" />
             ) : (
-              <DefaultAvatar color="secondary" fontSize="large" />
+              <DefaultAvatar color="primary" fontSize="large" />
             )}
           </Avatar>
         ) : loginButton
@@ -74,12 +74,13 @@ export default function UserMenu() {
 }
 
 function Menu(props: Props) {
+  const { onClose } = props;
   const [openTeamsModal, setOpenTeamsModal] = useState(false);
   const { currentUser, logout } = useContext(CurrentUserContext);
 
   const handleLogout = async () => {
-    if (props.onClose) {
-      props.onClose();
+    if (onClose) {
+      onClose();
     }
     await logout();
   };
@@ -100,7 +101,7 @@ function Menu(props: Props) {
             )}
             {currentUser.team && (
               <div className="mt-2 flex items-center">
-                <GroupIcon color="secondary" />
+                <GroupIcon color="primary" />
                 <Typography noWrap className="ml-2 text-sm font-medium">{currentUser.team?.name}</Typography>
               </div>
             )}
@@ -112,8 +113,8 @@ function Menu(props: Props) {
           <Button
             variant="outlined"
             className="mb-2"
-            color="secondary"
-            startIcon={<GroupIcon color="secondary" fontSize="large" />}
+            color="primary"
+            startIcon={<GroupIcon color="primary" fontSize="large" />}
             onClick={() => setOpenTeamsModal(true)}
           >
             Create / Join Team

@@ -20,6 +20,8 @@ type Props = {
   drawerEnabled: boolean;
   dragEnabled: boolean;
   moveScope: (scopeId: string, toIndex: number, moveComplete: boolean) => void;
+  readonlyMode?: boolean;
+  compact?: boolean;
 }
 
 const ContentContainer = styled.div`
@@ -31,7 +33,7 @@ const ContentContainer = styled.div`
 const SCOPE_INPUT_HEIGHT = 60;
 
 export default function ScopeList({
-  scopes, projectId, dragEnabled, moveScope, openDrawer, drawerContent, drawerEnabled,
+  scopes, projectId, dragEnabled, moveScope, openDrawer, drawerContent, drawerEnabled, readonlyMode, compact,
 }: Props) {
   const { observe, width, height } = useDimensions<HTMLDivElement>();
 
@@ -39,7 +41,7 @@ export default function ScopeList({
   // In order for the list to take up only the exact height it needs,
   // we need to calculate the max-height based off of:
   // available container height - input component height - border of list container.
-  const maxListHeight = height - SCOPE_INPUT_HEIGHT - 2;
+  const maxListHeight = height - (readonlyMode ? 0 : SCOPE_INPUT_HEIGHT) - 2;
 
   const findScopeIndex = (scopeId: string) => scopes.findIndex((s) => s?.id === scopeId);
 
@@ -49,7 +51,7 @@ export default function ScopeList({
         {/* Wait until dimensions have been calculated before rendering content: */}
         {width + height > 0 && (
           <div style={{ width, height }}>
-            <div className="border border-solid border-secondary rounded-md relative box-border w-full">
+            <div className="border border-solid border-primary rounded-md relative box-border w-full">
               <div className="flex relative">
                 <ul className="overflow-y-auto flex-grow" style={{ maxHeight: maxListHeight }}>
                   {scopes.map((scope) => scope && (
@@ -57,7 +59,15 @@ export default function ScopeList({
                     key={scope.id}
                     className="border-b border-solid border-blue-200 last:border-b-0"
                   >
-                    <ScopeItem scope={scope} dragEnabled={dragEnabled} findScopeIndex={findScopeIndex} moveScope={moveScope} />
+                    <ScopeItem
+                      scope={scope}
+                      dragEnabled={dragEnabled}
+                      findScopeIndex={findScopeIndex}
+                      moveScope={moveScope}
+                      disableUpdateProgress={readonlyMode}
+                      disableActions={readonlyMode}
+                      compact={compact}
+                    />
                   </li>
                   ))}
                 </ul>
@@ -71,12 +81,14 @@ export default function ScopeList({
                   </SlideOutDrawer>
                 )}
               </div>
-              <div
-                className={`p-2 ${scopes.length ? 'border-t' : ''} border-solid border-blue-200 box-border`}
-                style={{ height: SCOPE_INPUT_HEIGHT }}
-              >
-                <AddScope projectId={projectId} />
-              </div>
+              {!readonlyMode && (
+                <div
+                  className={`p-2 ${scopes.length ? 'border-t' : ''} border-solid border-blue-200 box-border`}
+                  style={{ height: SCOPE_INPUT_HEIGHT }}
+                >
+                  <AddScope projectId={projectId} />
+                </div>
+              )}
             </div>
           </div>
         )}

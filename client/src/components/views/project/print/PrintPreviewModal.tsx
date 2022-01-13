@@ -4,8 +4,8 @@ import React, {
   useEffect,
 } from 'react';
 
-import { Button } from '@material-ui/core';
-import DownloadIcon from '@material-ui/icons/GetApp';
+import DownloadIcon from '@mui/icons-material/GetApp';
+import { Button } from '@mui/material';
 import { toPng } from 'html-to-image';
 import useDimensions from 'react-cool-dimensions';
 
@@ -61,7 +61,7 @@ export default function PrintPreviewModal({
           <Button
             component="a"
             variant="contained"
-            color="secondary"
+            color="primary"
             className="text-white mr-4"
             startIcon={<DownloadIcon className="text-white" />}
             href={imageSrc}

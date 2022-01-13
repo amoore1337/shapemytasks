@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormControl, InputLabel, Select } from '@material-ui/core';
+import { FormControl, InputLabel, Select } from '@mui/material';
 
 import { SCOPE_SORT_OPTIONS, SortOption } from './helpers';
 
@@ -11,7 +11,7 @@ type Props = {
 
 export default function ScopeSortDropdown({ sortOption, onChange }: Props) {
   return (
-    <FormControl className="flex-shrink-0 pb-2" variant="outlined" color="secondary">
+    <FormControl className="flex-shrink-0 pb-2" variant="outlined" color="primary">
       <InputLabel htmlFor="scope-sort-input">Sort by</InputLabel>
       <Select
         native

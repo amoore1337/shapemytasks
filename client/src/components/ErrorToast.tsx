@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { Snackbar } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
+import Alert from '@mui/lab/Alert';
+import { Snackbar } from '@mui/material';
 
 type Props = {
   open?: boolean;

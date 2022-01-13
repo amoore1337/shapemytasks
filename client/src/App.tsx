@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ApolloProvider } from '@apollo/client';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider } from '@mui/material';
 import useDimensions from 'react-cool-dimensions';
 import {
   Redirect, Route, Router, Switch,

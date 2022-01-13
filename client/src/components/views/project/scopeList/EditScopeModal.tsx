@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button, TextField, Typography } from '@material-ui/core';
+import { Button, TextField, Typography } from '@mui/material';
 
 import useUpdateScope from '@/api/mutations/useUpdateScope';
 import Modal from '@/components/Modal';
 
 import { ProjectScope } from '../helpers';
+
+import DotColorPicker from './DotColorPicker';
 
 type Props ={
   scope: ProjectScope;
@@ -15,6 +17,7 @@ type Props ={
 
 export default function EditScopeModal({ onClose, scope, ...props }: Props) {
   const [title, setTitle] = useState(scope.title);
+  const [color, setColor] = useState(scope.color);
   const [showError, setShowError] = useState(false);
   const [updateScope, { loading, called }] = useUpdateScope();
 
@@ -25,7 +28,7 @@ export default function EditScopeModal({ onClose, scope, ...props }: Props) {
       return;
     }
 
-    updateScope({ variables: { id: scope.id, title } });
+    updateScope({ variables: { id: scope.id, title, color } });
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,21 +55,24 @@ export default function EditScopeModal({ onClose, scope, ...props }: Props) {
       <div className="flex flex-col h-full">
         <Typography variant="h4" className="text-2xl">Edit Scope</Typography>
         <form noValidate autoComplete="off" className="pt-8 flex-1 flex flex-col justify-between" onSubmit={handleSubmit}>
-          <TextField
-            size="small"
-            color="secondary"
-            label="Title"
-            variant="outlined"
-            name="title"
-            value={title}
-            onChange={handleChange}
-            error={showError}
-            helperText={showError && 'Please provide a title.'}
-          />
+          <div className="flex items-center justify-between">
+            <DotColorPicker selectedColor={color} onChange={setColor} />
+            <TextField
+              size="small"
+              color="primary"
+              label="Title"
+              variant="outlined"
+              name="title"
+              value={title}
+              onChange={handleChange}
+              error={showError}
+              helperText={showError && 'Please provide a title.'}
+            />
+          </div>
           <Button
             type="submit"
             variant="contained"
-            color="secondary"
+            color="primary"
             className="text-white"
           >
             Save

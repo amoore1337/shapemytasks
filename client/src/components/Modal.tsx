@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 
+import CancelIcon from '@mui/icons-material/Cancel';
 import {
   Modal, Backdrop, Fade, IconButton, ModalProps,
-} from '@material-ui/core';
-import CancelIcon from '@material-ui/icons/Cancel';
+} from '@mui/material';
 import { styled } from 'twin.macro';
 
 const FADE_IN_TIMEOUT = 500;
