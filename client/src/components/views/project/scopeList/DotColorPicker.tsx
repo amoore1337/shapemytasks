@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ColorPicker } from 'material-ui-color';
+import { ColorPicker } from 'mui-color';
 import tw, { styled } from 'twin.macro';
 
 const StyledContainer = styled.div`
