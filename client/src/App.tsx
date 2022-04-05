@@ -3,6 +3,7 @@ import React from 'react';
 import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from '@mui/material';
 import useDimensions from 'react-cool-dimensions';
+import { Helmet } from 'react-helmet';
 import {
   Redirect, Route, Router, Switch,
 } from 'react-router-dom';
@@ -30,6 +31,12 @@ const ContentContainer = styled.div`
 function App() {
   return (
     <ApolloProvider client={apolloClient}>
+      <Helmet>
+        <meta name="og:type" content="object" />
+        <meta name="og:site_name" content="Shape My Tasks" />
+        <meta name="og:url" content="https://shapemytasks.com/" />
+        <meta name="og:image" content="https://shapemytasks.com/logo.png" />
+      </Helmet>
       <Router history={history}>
         <ThemeProvider theme={materialTheme}>
           <CurrentUserProvider>

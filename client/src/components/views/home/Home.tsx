@@ -11,7 +11,7 @@ import TitleSection from './sections/TitleSection';
 
 export default function Home() {
   const { breakpoints } = useTheme();
-  const isMobile = useMediaQuery(breakpoints.down('md'));
+  const isMobile = useMediaQuery(breakpoints.down('lg'));
   return (
     <div className="py-20 relative w-full flex flex-col items-center text-gray-800">
       <TitleSection isMobile={isMobile} />

@@ -67,6 +67,7 @@ export default function EditScopeModal({ onClose, scope, ...props }: Props) {
               onChange={handleChange}
               error={showError}
               helperText={showError && 'Please provide a title.'}
+              className="flex-grow ml-3"
             />
           </div>
           <Button

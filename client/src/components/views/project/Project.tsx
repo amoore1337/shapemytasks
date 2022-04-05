@@ -5,6 +5,7 @@ import {
   Button, IconButton, Paper, Typography, useMediaQuery, useTheme,
 } from '@mui/material';
 import useDimensions from 'react-cool-dimensions';
+import { Helmet } from 'react-helmet';
 
 import { Project_project as ProjectDetails } from '@/api/queries/types/Project';
 import ErrorToast from '@/components/ErrorToast';
@@ -103,6 +104,15 @@ export default function Project(props: Props) {
 
   return (
     <div className="h-full p-4 flex justify-center">
+      {project && (
+        <Helmet>
+          <title>{project?.title}</title>
+          <meta name="description" content={project?.description || `Tracking progress of ${allScopes?.length || 0} scope(s) on ${project?.title}`} />
+          <meta name="og:url" content={window.location.href} />
+          <meta name="og:title" content={project.title || ''} />
+          <meta name="og:description" content={project?.description || `Tracking progress of ${allScopes?.length || 0} scope(s) on ${project?.title}`} />
+        </Helmet>
+      )}
       <Paper className="h-full w-full p-4 flex flex-col items-center" style={{ maxWidth: 1600 }}>
         {!project || loading ? <LoadingIndicator /> : (
           <>

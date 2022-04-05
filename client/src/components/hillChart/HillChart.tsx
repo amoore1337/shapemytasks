@@ -74,7 +74,7 @@ function HillChartComponent({
     circles.forEach((point) => {
       const stillExists = data.find((i) => i?.id === point.chartItem.id);
       if (!stillExists) {
-        point.off(); // TODO: Is this necessary?
+        point.off();
         point.remove();
       }
     });
