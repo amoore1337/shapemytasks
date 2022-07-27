@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
-import { Button, Paper, Typography } from '@mui/material';
+import { Button, Paper } from '@mui/material';
 import { RouteComponentProps } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
@@ -9,16 +9,16 @@ import { CurrentUserContext } from '@/CurrentUserContext';
 import { CURRENT_USER_FRAGMENT } from '@/api/queries/useLazyQueryCurrentUser';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import { ReactComponent as GoogleIcon } from '@/icons/google.svg';
+import logo from '@/icons/smt_logo.png';
 import routes from '@/routes';
 import { openPopup } from '@/utils/window';
 
 import { LoggingInUser } from './types/LoggingInUser';
 
 const LoginContainer = styled(Paper)(() => [
-  tw`p-8 flex flex-col`,
+  tw`p-8 flex flex-col items-center`,
   `
     width: 500px;
-    height: 300px;
   `,
 ]);
 
@@ -65,7 +65,7 @@ export default function Login({ history, location }: Props) {
   return (
     <div className="flex items-center justify-center absolute inset-0">
       <LoginContainer elevation={3}>
-        <Typography className="w-full text-center" variant="h3" component="h2">Sign in</Typography>
+        <img src={logo} alt="logo" width={250} height={250} className="mb-12" />
         <div className="flex justify-center items-center flex-grow">
           {loggingIn ? (
             <div className="italic">
@@ -75,7 +75,8 @@ export default function Login({ history, location }: Props) {
           ) : (
             <Button
               variant="outlined"
-              startIcon={<GoogleIcon width={24} height={25} />}
+              className="normal-case text-lg border-2"
+              startIcon={<GoogleIcon width={28} height={29} />}
               onClick={handleLoginStart}
             >
               Sign in with Google
