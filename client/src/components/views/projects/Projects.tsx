@@ -57,13 +57,15 @@ export default function Projects() {
         {data?.projects?.map((project) => (
           <Grid item key={project?.id}>
             <ProjectCard
+              className="hover:bg-blue-100"
               onEdit={() => handleProjectEdit(project)}
               onDelete={() => handleProjectDelete(project)}
             >
               <Link
                 component={RouterLink}
                 to={withParams(routes.project, { id: project!.id })}
-                className="text-gray-800"
+                className="text-gray-800 hover:underline"
+                underline="none"
               >
                 {project?.title}
               </Link>
