@@ -3,12 +3,12 @@ import React from 'react';
 import { ColorPicker } from 'mui-color';
 import tw, { styled } from 'twin.macro';
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ $size: number }>`
   .muicc-colorpicker-button, .muicc-colorpicker-button div {
     ${tw`m-0`}
-    min-width: 20px!important;
-    width: 20px!important;
-    height: 20px!important;
+    min-width: ${(props: any) => `${props.$size}px`}!important;
+    width: ${(props: any) => `${props.$size}px`}!important;
+    height: ${(props: any) => `${props.$size}px`}!important;
     border-radius: 100%!important;
   }
 `;
@@ -42,14 +42,15 @@ const colorPalette: { [name: string]: string } = {
 type Props = {
   selectedColor: string;
   onChange: (color: string) => void;
+  size?: number;
 }
 
-export default function DotColorPicker({ selectedColor, onChange }: Props) {
+export default function DotColorPicker({ selectedColor, onChange, size = 20 }: Props) {
   const handleColorSelection = (color: ColorValue) => {
     onChange(`#${color.hex}`);
   };
   return (
-    <StyledContainer>
+    <StyledContainer $size={size}>
       <ColorPicker
         palette={colorPalette}
         value={selectedColor}

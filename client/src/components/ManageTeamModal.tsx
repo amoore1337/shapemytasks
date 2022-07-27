@@ -88,16 +88,13 @@ export default function UserSettingsModal({ open, onClose }: Props) {
       open={open}
       onClose={onClose}
       style={{
-        width: '60%', height: 550, maxWidth: 400,
+        width: '80%', height: '80%', maxWidth: 600, maxHeight: 500,
       }}
     >
       <div className="flex flex-col justify-between h-full">
         <div>
           <Typography variant="h5" className="pb-4">Join or Create a Team</Typography>
-          <IconButton onClick={onClose} className="p-1 -mt-2 absolute right-1 top-3">
-            <CancelIcon color="secondary" className="text-4xl" />
-          </IconButton>
-          <Accordion expanded={expandedSection === 'join'} onChange={() => handleAccordionChange('join')}>
+          <Accordion expanded={expandedSection === 'join'} onChange={() => handleAccordionChange('join')} variant="outlined" disableGutters>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} classes={{ content: 'flex-col' }}>
               <Typography variant="h6">Join A Team</Typography>
               <Typography variant="subtitle2">
@@ -121,7 +118,7 @@ export default function UserSettingsModal({ open, onClose }: Props) {
               </form>
             </AccordionDetails>
           </Accordion>
-          <Accordion expanded={expandedSection === 'create'} onChange={() => handleAccordionChange('create')}>
+          <Accordion expanded={expandedSection === 'create'} onChange={() => handleAccordionChange('create')} variant="outlined" disableGutters>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} classes={{ content: 'flex-col' }}>
               <Typography variant="h6">Create A New Team</Typography>
               <Typography variant="subtitle2">

@@ -34,7 +34,7 @@ export default function AddProjectModal({ onClose, ...props }: Props) {
       }}
     >
       <div className="flex flex-col h-full">
-        <Typography variant="h4">Add Project</Typography>
+        <Typography variant="h4" className="text-2xl">Add Project</Typography>
         <ProjectModalForm onSubmit={handleSubmit} disabled={loading} />
       </div>
     </Modal>

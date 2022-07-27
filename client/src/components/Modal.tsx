@@ -59,9 +59,9 @@ export default function StyledModal({
       <Fade in={open} timeout={FADE_IN_TIMEOUT}>
         <ModalContentContainer className={`shadow text-gray-800 ${className}`} style={style}>
           {!noCloseButton && (
-            <IconButton onClick={() => onClose && onClose({}, 'backdropClick')} className="p-1 -mt-2 absolute right-1 top-3">
-              <CancelIcon color="secondary" className="text-4xl" />
-            </IconButton>
+            <button type="button" onClick={() => onClose && onClose({}, 'backdropClick')} className="p-1 -mt-2 absolute right-1 top-3">
+              <CancelIcon color="secondary" className="text-4xl text-primary" />
+            </button>
           )}
           {children}
         </ModalContentContainer>
