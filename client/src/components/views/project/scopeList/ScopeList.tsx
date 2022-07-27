@@ -75,7 +75,7 @@ export default function ScopeList({
                   <SlideOutDrawer
                     width={240}
                     open={openDrawer}
-                    className={`flex-shrink-0 border-solid border-secondary ${openDrawer ? 'border-l' : ''}`}
+                    className={`flex-shrink-0 border-solid border-primary ${openDrawer ? 'border-l' : ''}`}
                   >
                     {drawerContent}
                   </SlideOutDrawer>

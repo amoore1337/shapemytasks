@@ -49,35 +49,40 @@ export default function EditScopeModal({ onClose, scope, ...props }: Props) {
       {...props}
       onClose={onClose}
       style={{
-        width: '60%', height: '80%', maxWidth: 400, maxHeight: 500,
+        width: '80%', height: '80%', maxWidth: 800, maxHeight: 275,
       }}
     >
       <div className="flex flex-col h-full">
         <Typography variant="h4" className="text-2xl">Edit Scope</Typography>
         <form noValidate autoComplete="off" className="pt-8 flex-1 flex flex-col justify-between" onSubmit={handleSubmit}>
-          <div className="flex items-center justify-between">
-            <DotColorPicker selectedColor={color} onChange={setColor} />
-            <TextField
-              size="small"
-              color="primary"
-              label="Title"
-              variant="outlined"
-              name="title"
-              value={title}
-              onChange={handleChange}
-              error={showError}
-              helperText={showError && 'Please provide a title.'}
-              className="flex-grow ml-3"
-            />
+          <div className="mb-4 flex items-center">
+            <div className="mr-4">Edit Color: </div>
+            <DotColorPicker selectedColor={color} onChange={setColor} size={40} />
           </div>
-          <Button
-            type="submit"
-            variant="contained"
+          <TextField
+            size="small"
             color="primary"
-            className="text-white"
-          >
-            Save
-          </Button>
+            label="Title"
+            variant="outlined"
+            name="title"
+            value={title}
+            onChange={handleChange}
+            error={showError}
+            helperText={showError && 'Please provide a title.'}
+            className="flex-grow"
+            autoFocus
+          />
+          <div className="flex justify-end">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className="text-white"
+              style={{ width: 150 }}
+            >
+              Save
+            </Button>
+          </div>
         </form>
       </div>
     </Modal>
