@@ -47,7 +47,7 @@ export default function UserMenu() {
 
   const loginButton = (
     <Button variant="outlined" component={RouterLink} to={routes.login}>
-      Login
+      Login / Sign Up
     </Button>
   );
 

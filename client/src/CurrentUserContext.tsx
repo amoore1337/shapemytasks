@@ -40,7 +40,7 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
     setCurrentUser(data?.currentUser);
     // Only update the loading state after the most recent currentUser value has been set.
     setLoading(queryLoading);
-  }, [data]);
+  }, [data, queryLoading]);
 
   useEffect(() => {
     loadUser();

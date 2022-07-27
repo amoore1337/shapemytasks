@@ -20,7 +20,7 @@ type Props = ButtonProps & {
 };
 
 export default function ProjectCard({
-  onEdit, onDelete, onClick, children, ...props
+  onEdit, onDelete, onClick, children, className = '', ...props
 }: Props) {
   const [hoverActive, setHoverActive] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLButtonElement>(null);
@@ -53,7 +53,7 @@ export default function ProjectCard({
   return (
     <StyledButton
       as={hasActions ? 'div' : undefined}
-      className="relative flex flex-col justify-center items-center"
+      className={`${className} relative flex flex-col justify-center items-center`}
       onMouseEnter={() => setHoverActive(true)}
       onMouseLeave={() => setHoverActive(false)}
       onClick={hasActions ? undefined : onClick}
@@ -61,7 +61,7 @@ export default function ProjectCard({
     >
       {hasActions && (
         <>
-          <IconButton size="small" className="absolute top-2 right-2 bg-white" onClick={handleMenuOpen}>
+          <IconButton size="small" className="absolute top-2 right-2" onClick={handleMenuOpen}>
             <MoreIcon fontSize="inherit" />
           </IconButton>
           <Menu anchorEl={menuAnchor} open={!!menuAnchor} onClose={() => setMenuAnchor(null)} keepMounted>
