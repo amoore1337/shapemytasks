@@ -7,14 +7,6 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  optimizeDeps: {
-    include: ['@/constants.cjs'],
-  },
-  build: {
-    commonjsOptions: {
-      include: [],
-    },
-  },
   plugins: [
     react({
       babel: {

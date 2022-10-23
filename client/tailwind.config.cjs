@@ -1,13 +1,14 @@
-const constants = require('./src/constants.cjs');
+// const constants = require('./src/constants.cjs');
 
-const formattedBreakpoints = {};
-const breakpointEntries = Object.entries(constants.breakpoints);
-// eslint-disable-next-line no-restricted-syntax
-for (const [key, value] of breakpointEntries) {
-  formattedBreakpoints[key] = `${value}px`;
-}
+// const formattedBreakpoints = {};
+// const breakpointEntries = Object.entries(constants.breakpoints);
+// // eslint-disable-next-line no-restricted-syntax
+// for (const [key, value] of breakpointEntries) {
+//   formattedBreakpoints[key] = `${value}px`;
+// }
 
 module.exports = {
+  // content: ['**/**/*'],
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   darkMode: 'media', // or 'media' or 'class'
   theme: {
