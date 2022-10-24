@@ -23,5 +23,8 @@ export default defineConfig({
       cert: readFileSync('../localhost-ssl/localhost.crt'),
     },
   },
+  build: {
+    outDir: './build',
+  },
   define: { 'process.env.BABEL_TYPES_8_BREAKING': 'false' },
 });
