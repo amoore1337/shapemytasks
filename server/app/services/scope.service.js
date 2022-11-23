@@ -1,7 +1,9 @@
+const { QueryTypes } = require('sequelize');
 const { Scope, Project } = require('../models');
 const userService = require('./user.service');
 const { midString } = require('./position.service');
 const pubSub = require('../graphql/pubSub');
+const { sequelize } = require('../db.config');
 
 async function createScope(params, createdBy) {
   if (!params.projectId) { return null; }
@@ -118,9 +120,12 @@ async function updateScopePosition(scopeId, targetIndex, user) {
     return new Error('User cannot access project');
   }
 
-  const scopes = await project.getScopes({ order: [['position', 'ASC']] });
+  const scopes = await sequelize.query(
+    `SELECT * FROM "Scopes" WHERE "projectId" = ${project.id} order by position COLLATE "C" asc;`,
+    { type: QueryTypes.SELECT },
+  );
 
-  const fromIndex = scopes.findIndex(({ dataValues }) => dataValues.id === parseInt(scopeId, 10));
+  const fromIndex = scopes.findIndex((s) => s.id === parseInt(scopeId, 10));
   const scopeAtIndex = scopes[targetIndex];
   if (!scopeAtIndex) { return new Error('Invalid target index'); }
 
