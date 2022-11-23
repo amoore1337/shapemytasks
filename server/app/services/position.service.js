@@ -1,14 +1,15 @@
-function makeCharSet (minChar, maxChar, maxLen, increment) {
+function makeCharSet(minChar, maxChar, maxLen, increment) {
   const charSet = {
     minChar: minChar.charCodeAt(0),
     maxChar: maxChar.charCodeAt(0),
     maxSize: maxLen,
     offsets: [],
-    increment: increment,
+    increment,
   };
   charSet.charCount = charSet.maxChar - charSet.minChar + 1;
   for (let i = 0; i < charSet.maxSize; i++) {
-    charSet.offsets[i] = BigInt(charSet.charCount)**BigInt(i) + (charSet.offsets[i - 1] || BigInt(0));
+    // eslint-disable-next-line max-len
+    charSet.offsets[i] = BigInt(charSet.charCount) ** BigInt(i) + (charSet.offsets[i - 1] || BigInt(0));
   }
   charSet.offsets = charSet.offsets.reverse();
   charSet.maxVal = charSet.offsets[0] * BigInt(charSet.charCount) - BigInt(1);
@@ -16,23 +17,23 @@ function makeCharSet (minChar, maxChar, maxLen, increment) {
   return charSet;
 }
 
-function toAlpha (num) {
+function toAlpha(num) {
   let result = String.fromCharCode(charSet.minChar + Number(num / charSet.offsets[0]));
-  num = num % charSet.offsets[0];
+  num %= charSet.offsets[0];
   let i = 1;
   while (num > 0 && i < charSet.maxSize) {
     const intVal = ((num + charSet.offsets[i] - BigInt(1)) / charSet.offsets[i]) - BigInt(1);
     result += String.fromCharCode(charSet.minChar + Number(intVal));
     if (num > 0) {
-      num = num - BigInt(1);
+      num -= BigInt(1);
     }
-    num = num % charSet.offsets[i];
+    num %= charSet.offsets[i];
     i += 1;
   }
   return result;
 }
 
-function toNum (alpha) {
+function toNum(alpha) {
   let result = BigInt(0);
   for (let i = 0; i < alpha.length; i++) {
     const val = BigInt(alpha.charCodeAt(i) - charSet.minChar);
@@ -47,7 +48,7 @@ function toNum (alpha) {
 // if adding to the end of the list, pass `b` as ""
 // if adding the first item to an empty list, pass both as ""
 function midString(a, b) {
-  if (a > b) {
+  if (a && b && a > b) {
     const temp = a;
     a = b;
     b = temp;
@@ -76,17 +77,17 @@ function midString(a, b) {
   if (!b && aNum + charSet.increment < charSet.maxVal) {
     return toAlpha(aNum + charSet.increment);
   }
-  
+
   // if adding between 2 values, find the midpoint
-  const mid = toAlpha(aNum + (bNum - aNum)/BigInt(2))
+  const mid = toAlpha(aNum + (bNum - aNum) / BigInt(2));
   if (mid === a || mid === b) {
-    const msg = `aw crap, can't find midpoint of ${a} and ${b}`
+    const msg = `aw crap, can't find midpoint of ${a} and ${b}`;
     throw msg;
   }
   return mid;
 }
 
-const charSet = makeCharSet(' ', '~', 20, BigInt(2)**BigInt(100));
+const charSet = makeCharSet(' ', '~', 20, BigInt(2) ** BigInt(100));
 
 module.exports = {
   midString,
