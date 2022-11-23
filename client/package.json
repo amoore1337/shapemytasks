@@ -42,7 +42,8 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "vite",
+    "start": "vite --host",
+    "preview": "vite preview --port 3030 --host",
     "lint": "eslint -c ./.eslintrc.cjs --fix . --ext .js,.tsx,.ts src",
     "build": "tsc && vite build",
     "gen:types": "NODE_TLS_REJECT_UNAUTHORIZED=0 apollo client:codegen --target=typescript --tagName=gql types"
