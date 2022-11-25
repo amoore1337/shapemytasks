@@ -7,9 +7,9 @@ import { Button } from '@mui/material';
 import {
   SVG, Svg, Path, Circle as CircleBase, G, extend,
 } from '@svgdotjs/svg.js';
-
 import '@svgdotjs/svg.draggable.js';
-import { colors } from '@/constants';
+import { theme } from 'twin.macro';
+
 import { debounced } from '@/utils/timing';
 
 import ChartPointLabel, { updatePointLabelPos } from './ChartPointLabel';
@@ -201,7 +201,7 @@ function createSvg(parent: HTMLDivElement): HillSvg {
 
   const axis = canvas.group();
 
-  const axisStroke = { width: 1, color: colors.gray['100'], dasharray: '4 1' };
+  const axisStroke = { width: 1, color: theme`colors.gray.100`, dasharray: '4 1' };
   axis.line(VIEW_BOX.x / 2, 0, VIEW_BOX.x / 2, VIEW_BOX.y).stroke(axisStroke);
   axis.line(0, VIEW_BOX.y, VIEW_BOX.x, VIEW_BOX.y).stroke(axisStroke);
 
@@ -219,7 +219,7 @@ function createSvg(parent: HTMLDivElement): HillSvg {
     path += ` L ${x} ${VIEW_BOX.y - hillForumula(x)}`;
   }
   const hill = axis.path(path);
-  hill.fill('none').stroke({ width: 1, color: colors.gray['700'] });
+  hill.fill('none').stroke({ width: 1, color: theme`colors.gray.700` });
 
   return {
     canvas, hill, pointsGroup: canvas.group(),
