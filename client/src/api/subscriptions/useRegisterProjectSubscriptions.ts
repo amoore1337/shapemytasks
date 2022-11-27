@@ -49,13 +49,13 @@ export default function useRegisterProjectSubscriptions(project: Project | null 
   useSubscription<ProjectScopeCreatedSubscription, ProjectScopeCreatedSubscriptionVariables>(NEW_SCOPE_SUBSCRIPTION, {
     variables: { projectId: project?.id! },
     skip: !project?.id,
-    onSubscriptionData: ({ client, subscriptionData }) => {
+    onData: ({ client, data }) => {
       if (!project) { return; }
       const { cache } = client;
 
       addCacheItem<ProjectScopeCreatedSubscription>(
         cache,
-        subscriptionData.data,
+        data.data,
         'scopes',
         'scopeCreated',
         project as unknown as StoreObject,
@@ -77,13 +77,13 @@ export default function useRegisterProjectSubscriptions(project: Project | null 
   useSubscription<ProjectScopeDeletedSubscription, ProjectScopeDeletedSubscriptionVariables>(SCOPE_DELETED_SUBSCRIPTION, {
     variables: { projectId: project?.id! },
     skip: !project?.id,
-    onSubscriptionData: ({ client, subscriptionData }) => {
+    onData: ({ client, data }) => {
       if (!project) { return; }
       const { cache } = client;
 
       removeCacheItem<ProjectScopeDeletedSubscription>(
         cache,
-        subscriptionData.data,
+        data.data,
         'scopes',
         'scopeDeleted',
         project as unknown as StoreObject,

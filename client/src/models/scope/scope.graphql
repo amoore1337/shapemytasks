@@ -1,0 +1,33 @@
+fragment ScopeFragment on Scope {
+  id
+  title
+  progress
+  color
+  projectId
+  position
+  closedAt
+  niceToHave
+  createdAt
+  updatedAt
+  flag {
+    id
+    message
+    createdBy {
+      id
+      name
+      email
+    }
+  }
+}
+
+query Scope($id: ID!) {
+  scope(id: $id) {
+    ...ScopeFragment
+  }
+}
+
+query Scopes {
+  scopes {
+    ...ScopeFragment
+  }
+}
