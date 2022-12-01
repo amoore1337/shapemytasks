@@ -33,10 +33,10 @@ export default defineConfig((env) => ({
     hmr: {
       clientPort: 3030,
     },
-    https: {
+    https: process.env.WITH_SSL ? {
       key: readFileSync('../localhost-ssl/localhost.key'),
       cert: readFileSync('../localhost-ssl/localhost.crt'),
-    },
+    } : false,
   },
   build: {
     outDir: './build',

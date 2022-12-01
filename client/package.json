@@ -41,8 +41,8 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "vite --host",
-    "preview": "vite preview --port 3030 --host",
+    "start": "WITH_SSL=true vite --host",
+    "preview": "WITH_SSL=true vite preview --port 3030 --host",
     "lint": "eslint -c ./.eslintrc.cjs --fix . --ext .js,.tsx,.ts src",
     "build": "tsc && vite build",
     "build:analyze": "tsc && ANALYZE_BUILD=true vite build",
