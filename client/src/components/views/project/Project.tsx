@@ -7,11 +7,11 @@ import {
 import useDimensions from 'react-cool-dimensions';
 import { Helmet } from 'react-helmet';
 
-import { Project_project as ProjectDetails } from '@/api/queries/types/Project';
 import ErrorToast from '@/components/ErrorToast';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import HillChart, { UpdatedItemsMap, VIEW_BOX } from '@/components/hillChart/HillChart';
 import { ChartItem } from '@/components/hillChart/helpers';
+import { Project as ProjectDetails } from '@/models/types';
 
 import ScopeFilterDropdown from './ScopeFilterDropdown';
 import ScopeSortDropdown from './ScopeSortDropdown';

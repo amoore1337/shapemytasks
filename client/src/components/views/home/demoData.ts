@@ -1,9 +1,7 @@
-import { Project_project_scopes as ProjectScope, Project_project_scopes_flag as Flag } from '@/api/queries/types/Project';
+import { Flag, Scope } from '@/models/types';
 import { getRandomColor } from '@/utils/color';
 
 export const PROJECT_ID = 'demo';
-
-export type Scope = ProjectScope;
 
 export default [
   buildScope('0', 'Create scopes with 1 click', getRandomColor(), 88),
@@ -40,6 +38,10 @@ function buildFlag(id?: string): Flag | null {
       id: '0',
       name: 'You',
       email: 'you@you.com',
+      createdAt: 'foo',
+      updatedAt: 'foo',
     },
+    createdAt: 'foo',
+    updatedAt: 'foo',
   };
 }

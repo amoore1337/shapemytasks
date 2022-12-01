@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import useUpdateScopeProgressById from '@/api/mutations/useUpdateScopeProgressById';
 import Modal from '@/components/Modal';
 import HillChart, { UpdatedItemsMap } from '@/components/hillChart/HillChart';
+import { useUpdateScopeProgressById } from '@/models/scope';
 
 import { ProjectScope } from '../helpers';
 

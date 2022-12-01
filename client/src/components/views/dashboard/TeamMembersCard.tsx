@@ -1,18 +1,33 @@
 import React, { useContext, useState } from 'react';
 
+import { useQuery } from '@apollo/client';
 import GroupIcon from '@mui/icons-material/Group';
 import { Button, Typography } from '@mui/material';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
-import useQueryTeamMembers from '@/api/queries/useQueryTeamMembers';
+import { gql } from '@/apollo';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import ManageTeamModal from '@/components/ManageTeamModal';
 import TeamCodeCopyButton from '@/components/TeamCodeCopyButton';
 
+const TEAM_MEMBERS_QUERY = gql(`
+  query TeamMembers($id: ID!) {
+    team(id: $id) {
+      id
+      members {
+        id
+        name
+        email
+      }
+    }
+  }
+`);
+
 export default function TeamMembersCard() {
   const { currentUser } = useContext(CurrentUserContext);
   const [openTeamsModal, setOpenTeamsModal] = useState(false);
-  const { loading, data } = useQueryTeamMembers(currentUser?.team?.id || '', {
+  const { loading, data } = useQuery(TEAM_MEMBERS_QUERY, {
+    variables: { id: currentUser?.team?.id! },
     skip: !currentUser?.team?.id,
   });
 

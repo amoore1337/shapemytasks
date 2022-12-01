@@ -3,8 +3,8 @@ import React, { useContext, useEffect } from 'react';
 import { Typography } from '@mui/material';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
-import useCreateProject from '@/api/mutations/useCreateProject';
 import Modal from '@/components/Modal';
+import { useCreateProject } from '@/models/project';
 
 import ProjectModalForm, { FormValues } from './ProjectModalForm';
 

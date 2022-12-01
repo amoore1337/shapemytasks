@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { Button, TextField, Typography } from '@mui/material';
 
-import useCreateFlag from '@/api/mutations/useCreateFlag';
 import Modal from '@/components/Modal';
+import { useCreateFlag } from '@/models/flag';
 
 import { ProjectScope } from '../helpers';
 

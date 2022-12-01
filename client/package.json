@@ -45,6 +45,7 @@
     "preview": "vite preview --port 3030 --host",
     "lint": "eslint -c ./.eslintrc.cjs --fix . --ext .js,.tsx,.ts src",
     "build": "tsc && vite build",
+    "build:analyze": "tsc && ANALYZE_BUILD=true vite build",
     "gen:types": "NODE_TLS_REJECT_UNAUTHORIZED=0 graphql-codegen"
   },
   "eslintConfig": {
@@ -93,6 +94,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "postcss": "^8.4.18",
+    "rollup-plugin-visualizer": "^5.8.3",
     "tailwindcss": "^3.2.1"
   }
 }

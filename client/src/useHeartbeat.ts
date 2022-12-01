@@ -1,17 +1,17 @@
 import { useContext, useEffect } from 'react';
 
-import { useLazyQuery, gql } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 
 import { CurrentUserContext } from './CurrentUserContext';
-import { Heartbeat } from './types/Heartbeat';
+import { gql } from './apollo';
 
-const HEARTBEAT = gql`
+const HEARTBEAT = gql(`
   query Heartbeat {
     heartbeat {
       authenticated
     }
   }
-`;
+`);
 
 const FIVE_MINUTES = 5 * 60 * 1000;
 
@@ -19,9 +19,7 @@ export default function useHeartbeat() {
   const { currentUser, logout } = useContext(CurrentUserContext);
   const [checkHealth, {
     loading, data, stopPolling, startPolling,
-  }] = useLazyQuery<Heartbeat>(HEARTBEAT, {
-    fetchPolicy: 'network-only',
-  });
+  }] = useLazyQuery(HEARTBEAT, { fetchPolicy: 'network-only' });
 
   useEffect(() => {
     checkHealth();

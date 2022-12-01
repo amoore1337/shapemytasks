@@ -16,18 +16,51 @@ fragment ScopeFragment on Scope {
       id
       name
       email
+      updatedAt
+      createdAt
     }
+    createdAt
+    updatedAt
   }
 }
 
-query Scope($id: ID!) {
-  scope(id: $id) {
+mutation CreateScope($title: String!, $description: String, $color: String, $projectId: ID!) {
+  createScope(title: $title, description: $description, color: $color, projectId: $projectId) {
     ...ScopeFragment
   }
 }
 
-query Scopes {
-  scopes {
+mutation UpdateScope($id: ID!, $title: String, $description: String, $niceToHave: Boolean, $color: String) {
+  updateScope(id: $id, title: $title, description: $description, niceToHave: $niceToHave color: $color) {
+    ...ScopeFragment
+  }
+}
+
+mutation DeleteScope($id: ID!) {
+  deleteScopeById(id: $id) {
+    id
+  }
+}
+
+mutation UpdateScopePosition($id: ID!, $targetIndex: Int!) {
+  updateScopePosition(id: $id, targetIndex: $targetIndex) {
+    ...ScopeFragment
+  }
+}
+
+mutation UpdateScopeProgress($id: ID!, $progress: Float) {
+  updateScope(id: $id, progress: $progress) {
+    id
+    title
+    description
+    progress
+    createdAt
+    updatedAt
+  }
+}
+
+mutation UpdateScopeProgresses($inputs: [BatchUpdateScopeProgressMap!]!) {
+  batchUpdateScopeProgress(inputs: $inputs) {
     ...ScopeFragment
   }
 }
