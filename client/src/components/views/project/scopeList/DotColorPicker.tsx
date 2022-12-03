@@ -1,43 +1,23 @@
-import React from 'react';
+import React, {
+  FocusEventHandler, FocusEvent, useCallback, useState,
+} from 'react';
 
-import { ColorPicker } from 'mui-color';
-import tw, { styled } from 'twin.macro';
+import { Fade, Tooltip } from '@mui/material';
+import { ColorChangeHandler, TwitterPicker } from 'react-color';
 
-const StyledContainer = styled.div<{ $size: number }>`
-  .muicc-colorpicker-button, .muicc-colorpicker-button div {
-    ${tw`m-0`}
-    min-width: ${(props: any) => `${props.$size}px`}!important;
-    width: ${(props: any) => `${props.$size}px`}!important;
-    height: ${(props: any) => `${props.$size}px`}!important;
-    border-radius: 100%!important;
-  }
-`;
+import useOnChildBlur from '@/useOnChildBlur';
 
-// This lib's typedefs are... not the best.
-// Hacking around them for now:
-type ColorValue = {
-  name: string;
-  raw: string | number[];
-  css: React.CSSProperties;
-  format: string;
-  hex: string;
-  hsl: number[];
-  hsv: number[];
-  rgb: number[];
-  value: number;
-}
-
-const colorPalette: { [name: string]: string } = {
-  red: '#d32f2f',
-  orange: '#de7a00',
-  yellow: '#ecbc27',
-  green: '#00a68b',
-  blue: '#03a9f4',
-  purple: '#8913d8',
-  pink: '#ff69da',
-  gray: '#90a4ae',
-  black: '#37474f',
-};
+const colorPalette = [
+  '#d32f2f',
+  '#de7a00',
+  '#ecbc27',
+  '#00a68b',
+  '#03a9f4',
+  '#8913d8',
+  '#ff69da',
+  '#90a4ae',
+  '#37474f',
+];
 
 type Props = {
   selectedColor: string;
@@ -46,17 +26,46 @@ type Props = {
 }
 
 export default function DotColorPicker({ selectedColor, onChange, size = 20 }: Props) {
-  const handleColorSelection = (color: ColorValue) => {
-    onChange(`#${color.hex}`);
+  const [showPicker, setShowPicker] = useState(false);
+
+  const handleColorSelection: ColorChangeHandler = (color) => {
+    onChange(color.hex);
   };
+
+  const onLoseFocus = () => {
+    if (showPicker) {
+      setShowPicker(false);
+    }
+  };
+
+  const handleBlur = useOnChildBlur(onLoseFocus);
+
+  // Adjust for popover arrow offset.
+  // I'm sure there's a more programmatic way to do this,
+  // but meh, don't want to muck with react-color that much.
+  const offset = Math.min(size / 2) - 20;
+
   return (
-    <StyledContainer $size={size}>
-      <ColorPicker
-        palette={colorPalette}
-        value={selectedColor}
-        onChange={(c: any) => handleColorSelection(c)}
-        hideTextfield
-      />
-    </StyledContainer>
+    <div className="relative z-10 flex-freeze" style={{ width: size, height: size }} onBlur={handleBlur}>
+      <Tooltip title="Edit dot color">
+        <button
+          className="rounded-full w-full h-full"
+          style={{ backgroundColor: selectedColor }}
+          type="button"
+          aria-label="Pick Color"
+          onClick={() => setShowPicker((s) => !s)}
+        />
+      </Tooltip>
+      <Fade in={showPicker} unmountOnExit>
+        <div style={{ left: offset, top: size + 6 }} className="absolute">
+          <TwitterPicker
+            color={selectedColor}
+            colors={colorPalette}
+            onChangeComplete={handleColorSelection}
+            width="285px"
+          />
+        </div>
+      </Fade>
+    </div>
   );
 }

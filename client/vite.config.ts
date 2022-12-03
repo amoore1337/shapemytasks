@@ -40,6 +40,12 @@ export default defineConfig((env) => ({
   },
   build: {
     outDir: './build',
+    target: 'es2020',
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'es2020',
+    },
   },
   define: {
     'process.env.BABEL_TYPES_8_BREAKING': 'false',
