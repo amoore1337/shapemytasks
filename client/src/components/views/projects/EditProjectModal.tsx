@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 
 import { Typography } from '@mui/material';
 
-import useUpdateProject from '@/api/mutations/useUpdateProject';
-import { Projects_projects as Project } from '@/api/queries/types/Projects';
 import Modal from '@/components/Modal';
+import { useUpdateProject } from '@/models/project';
+import { Project } from '@/models/types';
 
 import ProjectModalForm, { FormValues } from './ProjectModalForm';
 

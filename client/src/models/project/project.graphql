@@ -1,0 +1,14 @@
+fragment ProjectFragment on Project {
+  id
+  title
+  description
+  visibility
+  createdAt
+  updatedAt
+}
+
+query Projects {
+  projects {
+    ...ProjectFragment
+  }
+}

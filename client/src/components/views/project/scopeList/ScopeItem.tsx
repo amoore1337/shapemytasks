@@ -12,11 +12,10 @@ import {
   IconButton, Menu, MenuItem, Tooltip, Typography,
 } from '@mui/material';
 
-import useDeleteFlag from '@/api/mutations/useDeleteFlag';
-import useDeleteScope from '@/api/mutations/useDeleteScope';
-import useUpdateScope from '@/api/mutations/useUpdateScope';
 import DeleteConfirmationModal from '@/components/ConfirmationModal';
 import Dot from '@/components/Dot';
+import { useDeleteFlag } from '@/models/flag';
+import { useUpdateScope, useDeleteScope } from '@/models/scope';
 
 import { ProjectScope } from '../helpers';
 

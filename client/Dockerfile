@@ -1,4 +1,4 @@
-FROM node:14.15-alpine AS build
+FROM node:16.18-alpine AS build
 
 RUN mkdir -p /app && chown -R node:node /app
 

@@ -1,0 +1,5 @@
+fragment FlagFragment on Flag {
+  id
+  message
+  scopeId
+}

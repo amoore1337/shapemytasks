@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import CancelIcon from '@mui/icons-material/Cancel';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
-  Typography, IconButton, TextField, Button, FormControlLabel, Checkbox, Accordion, AccordionSummary, AccordionDetails,
+  Typography, TextField, Button, FormControlLabel, Checkbox, Accordion, AccordionSummary, AccordionDetails,
 } from '@mui/material';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
-import useCreateOrJoinTeam from '@/api/mutations/useCreateOrJoinTeam';
+import { useCreateOrJoinTeam } from '@/models/team';
 
 import ErrorToast from './ErrorToast';
 import Modal from './Modal';

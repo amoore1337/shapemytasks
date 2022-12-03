@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
+import { useQuery } from '@apollo/client';
 import { Grid, Link } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
-import useDeleteProject from '@/api/mutations/useDeleteProject';
-import { Projects_projects as Project } from '@/api/queries/types/Projects';
-import useQueryProjects from '@/api/queries/useQueryProjects';
 import DeleteConfirmationModal from '@/components/ConfirmationModal';
 import LoadingIndicator from '@/components/LoadingIndicator';
+import { useDeleteProject } from '@/models/project';
+import { Project, ProjectsDocument } from '@/models/types';
 import routes, { withParams } from '@/routes';
 
 import AddProjectCard from './AddProjectCard';
@@ -18,7 +18,7 @@ export default function Projects() {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<null |Project>();
-  const { data, loading } = useQueryProjects();
+  const { data, loading } = useQuery(ProjectsDocument);
   const [destroyProject] = useDeleteProject();
 
   const handleProjectEdit = (project: null | Project) => {

@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+import { useQuery } from '@apollo/client';
 import { TextField, Autocomplete } from '@mui/material';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
-import { Projects_projects as Project } from '@/api/queries/types/Projects';
-import useQueryProjects from '@/api/queries/useQueryProjects';
-
-import LoadingIndicator from '../LoadingIndicator';
+import LoadingIndicator from '@/components/LoadingIndicator';
+import { Project, ProjectsDocument } from '@/models/types';
 
 type Props = {
   selectedProjectId?: string;
@@ -15,7 +14,7 @@ type Props = {
 
 export default function JumpToProjectDropdown({ selectedProjectId, onChange }: Props) {
   const { currentUser } = useContext(CurrentUserContext);
-  const { data, loading } = useQueryProjects({ skip: !currentUser });
+  const { data, loading } = useQuery(ProjectsDocument, { skip: !currentUser });
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const projects = data?.projects || [];

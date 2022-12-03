@@ -22,6 +22,7 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': [2, { extensions: ['.tsx'] }],
     'no-use-before-define': 'off',
+    'import/no-extraneous-dependencies': 'off',
     '@typescript-eslint/no-use-before-define': ['off'],
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
@@ -31,6 +32,7 @@ module.exports = {
     'no-plusplus': 'off',
     'no-unused-vars': 'off',
     'no-continue': 'off',
+    'import/prefer-default-export': 'off',
     'import/order': ['error', {
       alphabetize: { order: 'asc' },
       'newlines-between': 'always',

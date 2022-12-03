@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
+import { useQuery } from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
 
-import useUpdateScopePosition from '@/api/mutations/useUpdateScopePosition';
-import useUpdateScopeProgresses from '@/api/mutations/useUpdateScopeProgresses';
-import useQueryProject from '@/api/queries/useQueryProject';
-import useRegisterProjectSubscriptions from '@/api/subscriptions/useRegisterProjectSubscriptions';
+import { gql } from '@/apollo';
 import { UpdatedItemsMap } from '@/components/hillChart/HillChart';
+import { useRegisterProjectSubscriptions } from '@/models/project';
+import { useUpdateScopePosition, useUpdateScopeProgresses } from '@/models/scope';
 import routes from '@/routes';
 
 import Project from './Project';
@@ -16,10 +16,21 @@ import {
   moveArrayItem, Scopes, ProjectScope, SCOPE_FILTER_OPTIONS, SCOPE_SORT_OPTIONS, SortOption,
 } from './helpers';
 
+const PROJECT_QUERY = gql(`
+  query Project($id: ID!) {
+    project(id: $id) {
+      ...ProjectFragment
+      scopes {
+        ...ScopeFragment
+      }
+    }
+  }
+`);
+
 export default function ProjectContainer() {
   const [enableProgressEdit, setEnableProgressEdit] = useState(false);
   const { id } = useParams<{ id: string }>();
-  const { data, loading, error } = useQueryProject(id, { skip: !id });
+  const { data, loading, error } = useQuery(PROJECT_QUERY, { variables: { id }, skip: !id });
   const [updateScopeProgress] = useUpdateScopeProgresses();
   const [updateScopePosition] = useUpdateScopePosition();
 
@@ -78,7 +89,7 @@ export default function ProjectContainer() {
   }, [error]);
 
   useEffect(() => {
-    const scopes = data?.project?.scopes || [];
+    const scopes = data?.project?.scopes as Exclude<Scopes, null> || [];
     let scopeList = sortOption.sort(scopes);
     scopeList = filterOption.filter(scopeList);
     setSortedScopes(scopeList);

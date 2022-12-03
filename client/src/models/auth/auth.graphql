@@ -1,0 +1,12 @@
+fragment CurrentUserFragment on CurrentUser {
+  id
+  email
+  name
+  avatarUrl
+
+  team {
+    id
+    name
+    joinCode
+  }
+}

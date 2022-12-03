@@ -1,6 +1,6 @@
-import { Project_project_scopes as ProjectPageProjectScopes } from '@/api/queries/types/Project';
+import { Scope } from '@/models/types';
 
-export type ProjectScope = ProjectPageProjectScopes;
+export type ProjectScope = Scope;
 export type Scopes = (ProjectScope | null)[];
 
 export type SortOption = {
