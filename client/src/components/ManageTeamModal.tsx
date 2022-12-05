@@ -170,9 +170,7 @@ export default function UserSettingsModal({ open, onClose }: Props) {
         <div className="flex justify-end">
           <Button
             type="submit"
-            variant="contained"
-            color="primary"
-            className="text-white"
+            variant="primary"
             onClick={submitTeam}
             disabled={loading}
           >

@@ -60,9 +60,8 @@ export default function PrintPreviewModal({
         <div className="pt-6 pb-4 flex justify-center items-center">
           <Button
             component="a"
-            variant="contained"
-            color="primary"
-            className="text-white mr-4"
+            variant="primary"
+            className="mr-4"
             startIcon={<DownloadIcon className="text-white" />}
             href={imageSrc}
             download={`${projectName}.png`}

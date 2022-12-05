@@ -63,9 +63,7 @@ export default function ProjectModalForm({ onSubmit, disabled, initialValues }: 
       </fieldset>
       <Button
         type="submit"
-        variant="contained"
-        color="primary"
-        className="text-white"
+        variant="primary"
         disabled={disabled}
       >
         Submit

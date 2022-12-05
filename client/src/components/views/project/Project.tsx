@@ -123,7 +123,7 @@ export default function Project(props: Props) {
                 {!hillChartEditEnabled && scopes.length > 0 && (
                   <Button
                     className=""
-                    variant="contained"
+                    variant="primary"
                     color="primary"
                     onClick={onHillChartEditClick}
                   >
@@ -132,7 +132,7 @@ export default function Project(props: Props) {
                 )}
                 {!isMobile && !hillChartEditEnabled && (
                   <IconButton
-                    className="ml-2 border border-solid border-gray-100 shadow-md"
+                    className="ml-2 border border-solid border-gray-100"
                     aria-label="print"
                     onClick={() => setShowPrintPreview(true)}
                   >

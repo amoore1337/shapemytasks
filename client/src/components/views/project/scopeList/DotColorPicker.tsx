@@ -1,6 +1,4 @@
-import React, {
-  FocusEventHandler, FocusEvent, useCallback, useState,
-} from 'react';
+import React, { useState } from 'react';
 
 import { Fade, Tooltip } from '@mui/material';
 import { ColorChangeHandler, TwitterPicker } from 'react-color';
@@ -57,12 +55,13 @@ export default function DotColorPicker({ selectedColor, onChange, size = 20 }: P
         />
       </Tooltip>
       <Fade in={showPicker} unmountOnExit>
-        <div style={{ left: offset, top: size + 6 }} className="absolute">
+        <div style={{ left: offset, bottom: size + 6 }} className="absolute">
           <TwitterPicker
             color={selectedColor}
             colors={colorPalette}
             onChangeComplete={handleColorSelection}
             width="285px"
+            triangle="hide"
           />
         </div>
       </Fade>
