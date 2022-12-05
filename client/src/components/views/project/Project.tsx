@@ -122,7 +122,6 @@ export default function Project(props: Props) {
               <div className="absolute top-8 left-8 z-10">
                 {!hillChartEditEnabled && scopes.length > 0 && (
                   <Button
-                    className=""
                     variant="primary"
                     color="primary"
                     onClick={onHillChartEditClick}
