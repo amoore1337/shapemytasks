@@ -10,20 +10,20 @@
     "@mui/styled-engine-sc": "^5.10.16",
     "@mui/styles": "^5.10.16",
     "@svgdotjs/svg.draggable.js": "^3.0.2",
-    "@svgdotjs/svg.js": "^3.1.1",
+    "@svgdotjs/svg.js": "^3.1.2",
     "@vitejs/plugin-react": "^2.1.0",
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-styled-components": "^2.0.7",
     "formik": "^2.2.9",
     "graphql": "^16.6.0",
     "history": "^4.10.1",
-    "html-to-image": "^1.9.0",
+    "html-to-image": "^1.11.1",
     "react": "^17.0.2",
     "react-color": "^2.19.3",
-    "react-cool-dimensions": "^2.0.7",
-    "react-copy-to-clipboard": "^5.0.4",
-    "react-dnd": "^14.0.5",
-    "react-dnd-html5-backend": "^14.1.0",
+    "react-cool-dimensions": "^3.0.0",
+    "react-copy-to-clipboard": "^5.1.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^5.2.0",
@@ -48,18 +48,6 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
     ]
   },
   "babelMacros": {

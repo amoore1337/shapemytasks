@@ -44,6 +44,10 @@ export default createTheme({
             ':hover': {
               backgroundColor: '#0288d1!important',
             },
+            ':disabled': {
+              backgroundColor: '#b0bec5!important',
+              color: 'white',
+            },
           },
         },
       ],

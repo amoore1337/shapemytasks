@@ -14,8 +14,8 @@ type Props = {
 }
 
 const ClearButton = styled.button(
-  tw`absolute rounded-full border border-solid border-red-600 bg-white flex items-center justify-center`,
-  tw`hover:bg-red-600 hover:text-white text-red-600`,
+  tw`absolute rounded-full border border-solid border-red-600 flex items-center justify-center`,
+  tw`hover:text-white text-red-600`,
   `
     width: 21px;
     height: 21px;
@@ -53,6 +53,7 @@ export default function SortComboButton({
           <ClearButton
             type="button"
             onClick={onClear}
+            className="bg-white hover:bg-red-600"
           >
             <CloseIcon className="text-xs text-inherit icon" />
           </ClearButton>
