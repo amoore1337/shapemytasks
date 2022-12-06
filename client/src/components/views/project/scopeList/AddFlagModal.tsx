@@ -63,9 +63,8 @@ export default function AddFlagModal({ onClose, scope, ...props }: Props) {
           />
           <Button
             type="submit"
-            variant="contained"
-            color="primary"
-            className="text-white mt-4"
+            variant="primary"
+            className="mt-4"
           >
             Add Flag
           </Button>

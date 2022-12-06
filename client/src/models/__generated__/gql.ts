@@ -13,8 +13,6 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel-plugin for production.
  */
 const documents = {
-    "\nmutation DeleteFlag($id: ID!) {\n  deleteFlagById(id: $id) {\n    id\n  }\n}\n": types.DeleteFlagDocument,
-    "\n            fragment ExistingFlag on Flag {\n              id\n              scopeId\n            }\n          ": types.ExistingFlagFragmentDoc,
     "\n  query DashboardMetrics {\n    metrics {\n      openProjects\n      totalTasks\n      inProgressTasks\n      notStartedTasks\n      closedTasks\n    }\n  }\n": types.DashboardMetricsDocument,
     "\n  query TeamMembers($id: ID!) {\n    team(id: $id) {\n      id\n      members {\n        id\n        name\n        email\n      }\n    }\n  }\n": types.TeamMembersDocument,
     "\n  query Project($id: ID!) {\n    project(id: $id) {\n      ...ProjectFragment\n      scopes {\n        ...ScopeFragment\n      }\n    }\n  }\n": types.ProjectDocument,
@@ -23,6 +21,7 @@ const documents = {
     "fragment FlagFragment on Flag {\n  id\n  message\n  scopeId\n}": types.FlagFragmentFragmentDoc,
     "\n  mutation CreateFlag($scopeId: ID!, $message: String) {\n    createFlag(scopeId: $scopeId, message: $message) {\n      ...FlagFragment\n    }\n  }\n": types.CreateFlagDocument,
     "\n  mutation DeleteFlag($id: ID!) {\n    deleteFlagById(id: $id) {\n      id\n    }\n  }\n": types.DeleteFlagDocument,
+    "\n            fragment ExistingFlag on Flag {\n              id\n              scopeId\n            }\n          ": types.ExistingFlagFragmentDoc,
     "fragment ProjectFragment on Project {\n  id\n  title\n  description\n  visibility\n  createdAt\n  updatedAt\n}\n\nquery Projects {\n  projects {\n    ...ProjectFragment\n  }\n}": types.ProjectFragmentFragmentDoc,
     "\n  mutation CreateProject($title: String!, $description: String $visibility: String) {\n    createProject(title: $title, description: $description, visibility: $visibility) {\n      ...ProjectFragment\n    }\n  }\n": types.CreateProjectDocument,
     "\n  mutation DeleteProject($id: ID!) {\n    deleteProjectById(id: $id) {\n      id\n    }\n  }\n": types.DeleteProjectDocument,
@@ -36,14 +35,6 @@ const documents = {
     "\n  query Heartbeat {\n    heartbeat {\n      authenticated\n    }\n  }\n": types.HeartbeatDocument,
 };
 
-/**
- * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function gql(source: "\nmutation DeleteFlag($id: ID!) {\n  deleteFlagById(id: $id) {\n    id\n  }\n}\n"): (typeof documents)["\nmutation DeleteFlag($id: ID!) {\n  deleteFlagById(id: $id) {\n    id\n  }\n}\n"];
-/**
- * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function gql(source: "\n            fragment ExistingFlag on Flag {\n              id\n              scopeId\n            }\n          "): (typeof documents)["\n            fragment ExistingFlag on Flag {\n              id\n              scopeId\n            }\n          "];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -76,6 +67,10 @@ export function gql(source: "\n  mutation CreateFlag($scopeId: ID!, $message: St
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation DeleteFlag($id: ID!) {\n    deleteFlagById(id: $id) {\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation DeleteFlag($id: ID!) {\n    deleteFlagById(id: $id) {\n      id\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n            fragment ExistingFlag on Flag {\n              id\n              scopeId\n            }\n          "): (typeof documents)["\n            fragment ExistingFlag on Flag {\n              id\n              scopeId\n            }\n          "];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

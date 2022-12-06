@@ -171,7 +171,7 @@ function HillChartComponent({
       {allowEdit && (
         <div className="absolute top-2 right-2 flex">
           <Button className="mr-2" variant="outlined" color="secondary" onClick={handleCancel}>Cancel</Button>
-          <Button className="text-white" variant="contained" color="primary" onClick={handleSave}>Save</Button>
+          <Button variant="primary" onClick={handleSave}>Save</Button>
         </div>
       )}
     </div>
@@ -208,7 +208,7 @@ function createSvg(parent: HTMLDivElement): HillSvg {
   const labelAttrs = {
     'alignment-baseline': 'middle',
     'text-anchor': 'middle',
-    class: 'text-xs',
+    class: 'text-xs font-poppins',
   };
   const axisLabels = canvas.group().attr({ transform: `translate(0, ${VIEW_BOX.y + 15})` });
   axisLabels.text('Figuring things out').attr({ ...labelAttrs, x: VIEW_BOX.x / 4, y: 0 });

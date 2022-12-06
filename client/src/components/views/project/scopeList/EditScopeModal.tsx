@@ -56,7 +56,7 @@ export default function EditScopeModal({ onClose, scope, ...props }: Props) {
         <Typography variant="h4" className="text-2xl">Edit Scope</Typography>
         <form noValidate autoComplete="off" className="pt-8 flex-1 flex flex-col justify-between" onSubmit={handleSubmit}>
           <div className="mb-4 flex items-center">
-            <div className="mr-4">Edit Color: </div>
+            <div className="mr-4 font-poppins">Edit Color: </div>
             <DotColorPicker selectedColor={color} onChange={setColor} size={40} />
           </div>
           <TextField
@@ -75,10 +75,8 @@ export default function EditScopeModal({ onClose, scope, ...props }: Props) {
           <div className="flex justify-end">
             <Button
               type="submit"
-              variant="contained"
-              color="primary"
-              className="text-white"
-              style={{ width: 150 }}
+              variant="primary"
+              style={{ width: 100 }}
             >
               Save
             </Button>

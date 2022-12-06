@@ -53,9 +53,7 @@ export default function AddScope({ projectId }: Props) {
       <div className="flex items-center">
         <Button
           type="submit"
-          variant="contained"
-          color="primary"
-          className="text-white"
+          variant="primary"
           disabled={!title}
         >
           Save
