@@ -1,5 +1,3 @@
-import { createBrowserHistory } from 'history';
-
 export default {
   login: '/login',
   home: '/home',
@@ -22,5 +20,3 @@ export const withParams = (route: string, params: {[key: string]: string}) => {
   });
   return populatedRoute;
 };
-
-export const history = createBrowserHistory();

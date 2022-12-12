@@ -20,7 +20,9 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom';
+import {
+  Link as RouterLink, useMatch, useNavigate,
+} from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
 import { CurrentUserContext } from '../../CurrentUserContext';
@@ -35,9 +37,9 @@ export default function Nav() {
   const [jumpToProjectId, setJumpToProjectId] = useState<string>();
   const [sideNavOpened, setSideNavOpened] = useState(false);
   const { currentUser } = useContext(CurrentUserContext);
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  const projectRouteMatch = useRouteMatch<{ id: string }>(routes.project);
+  const projectRouteMatch = useMatch(routes.project);
 
   useEffect(() => {
     setJumpToProjectId(projectRouteMatch?.params.id);
@@ -45,7 +47,7 @@ export default function Nav() {
 
   const handleJumpToProject = useCallback((projectId: string) => {
     setJumpToProjectId(projectId);
-    history.push(withParams(routes.project, { id: projectId }));
+    navigate(withParams(routes.project, { id: projectId }));
   }, []);
 
   return (
