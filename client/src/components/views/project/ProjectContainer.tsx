@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { useQuery } from '@apollo/client';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { gql } from '@/apollo';
 import { UpdatedItemsMap } from '@/components/hillChart/HillChart';
@@ -30,17 +30,18 @@ const PROJECT_QUERY = gql(`
 export default function ProjectContainer() {
   const [enableProgressEdit, setEnableProgressEdit] = useState(false);
   const { id } = useParams<{ id: string }>();
-  const { data, loading, error } = useQuery(PROJECT_QUERY, { variables: { id }, skip: !id });
+  const { data, loading, error } = useQuery(PROJECT_QUERY, { variables: { id: id! }, skip: !id });
   const [updateScopeProgress] = useUpdateScopeProgresses();
   const [updateScopePosition] = useUpdateScopePosition();
 
   useRegisterProjectSubscriptions(data?.project);
 
+  const navigate = useNavigate();
+
   const [hasError, setHasError] = useState(false);
   const [filterOption, setFilterOption] = useState<FilterOption>(SCOPE_FILTER_OPTIONS[0]);
   const [sortOption, setSortOption] = useState<SortOption>(SCOPE_SORT_OPTIONS[0]);
   const [sortedScopes, setSortedScopes] = useState<Scopes>([]);
-  const history = useHistory();
 
   const handleSave = async (updatedItems: UpdatedItemsMap) => {
     setEnableProgressEdit(false);
@@ -97,7 +98,7 @@ export default function ProjectContainer() {
 
   useEffect(() => {
     if (!loading && !data?.project) {
-      history.replace(routes.projects);
+      navigate(routes.projects);
     }
   }, [loading, data]);
 

@@ -4,9 +4,7 @@ import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from '@mui/material';
 import useDimensions from 'react-cool-dimensions';
 import { Helmet } from 'react-helmet';
-import {
-  Redirect, Route, Router, Switch,
-} from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
 import { CurrentUserProvider } from './CurrentUserContext';
@@ -20,7 +18,7 @@ import Home from './components/views/home/Home';
 import ProjectContainer from './components/views/project/ProjectContainer';
 import Projects from './components/views/projects/Projects';
 import materialTheme from './materialTheme';
-import routes, { history } from './routes';
+import routes from './routes';
 import useHeartbeat from './useHeartbeat';
 
 const ContentContainer = styled.div`
@@ -37,32 +35,32 @@ function App() {
         <meta name="og:url" content="https://shapemytasks.com/" />
         <meta name="og:image" content="https://shapemytasks.com/logo.png" />
       </Helmet>
-      <Router history={history}>
-        <ThemeProvider theme={materialTheme}>
-          <CurrentUserProvider>
-            <AppContent />
-          </CurrentUserProvider>
-        </ThemeProvider>
-      </Router>
+      <ThemeProvider theme={materialTheme}>
+        <CurrentUserProvider>
+          <AppContent />
+        </CurrentUserProvider>
+      </ThemeProvider>
     </ApolloProvider>
   );
 }
 
+const appRoutes = (
+  <Routes>
+    <Route path={routes.login} element={<Login />} />
+    <Route path={routes.home} element={<Home />} />
+    <Route path={routes.privacy} element={<PrivacyPolicy />} />
+    <Route path="/" element={<PrivateRoute />}>
+      <Route path={routes.dashboard} element={<Dashboard />} />
+      <Route path={routes.project} element={<ProjectContainer />} />
+      <Route path={routes.projects} element={<Projects />} />
+    </Route>
+    <Route path="*" element={<Navigate to={routes.home} replace />} />
+  </Routes>
+);
+
 function AppContent() {
   useHeartbeat();
   const { observe, width, height } = useDimensions<HTMLDivElement>();
-
-  const appRoutes = (
-    <Switch>
-      <Route path={routes.login} component={Login} />
-      <Route path={routes.home} component={Home} />
-      <Route path={routes.privacy} component={PrivacyPolicy} />
-      <PrivateRoute path={routes.dashboard} component={Dashboard} />
-      <PrivateRoute path={routes.project} component={ProjectContainer} />
-      <PrivateRoute path={routes.projects} component={Projects} />
-      <Redirect to={routes.home} />
-    </Switch>
-  );
 
   return (
     <div className="flex flex-col min-h-full">

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
 import {
-  Redirect, Route, RouteProps, useHistory,
+  Navigate, Outlet, useLocation,
 } from 'react-router-dom';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
@@ -9,20 +9,19 @@ import routes from '@/routes';
 
 import LoadingIndicator from './LoadingIndicator';
 
-export default function PrivateRoute({ children, component: Component, ...rest }: RouteProps) {
+export default function PrivateRoute() {
   const { currentUser, loading } = useContext(CurrentUserContext);
-  const { location } = useHistory();
+  const { pathname, search } = useLocation();
 
   if (!loading && !currentUser?.id) {
     return (
-      <Redirect
-        to={{
-          pathname: routes.login,
-          state: { from: location.pathname + location.search },
-        }}
+      <Navigate
+        to={routes.login}
+        state={{ from: pathname + search }}
+        replace
       />
     );
   }
 
-  return loading ? <LoadingIndicator /> : <Route {...rest} render={(props) => (Component ? <Component {...props} /> : children)} />;
+  return loading ? <LoadingIndicator /> : <Outlet />;
 }

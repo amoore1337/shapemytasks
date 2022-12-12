@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { useQuery } from '@apollo/client';
 import { Button, Paper } from '@mui/material';
-import { RouteComponentProps } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
@@ -22,15 +22,16 @@ const LoginContainer = styled(Paper)(() => [
 
 const LOGIN_URL = '/api/auth/google';
 
-type Props = RouteComponentProps<{}, any, { from?: string }>;
-
-export default function Login({ history, location }: Props) {
+export default function Login() {
   const [loggingIn, setLoggingIn] = useState(false);
   const { data, stopPolling } = useQuery(
     CURRENT_USER_QUERY,
     { skip: !loggingIn, pollInterval: 1000, fetchPolicy: 'network-only' },
   );
   const { currentUser, loading, refresh } = useContext(CurrentUserContext);
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data?.currentUser) {
@@ -42,7 +43,7 @@ export default function Login({ history, location }: Props) {
 
   useEffect(() => {
     if (!loading && currentUser) {
-      history.replace(toLocation(location.state?.from));
+      navigate(toLocation(location.state?.from));
     }
   }, [currentUser, loading]);
 
