@@ -53,6 +53,7 @@ const appRoutes = (
       <Route path={routes.dashboard} element={<Dashboard />} />
       <Route path={routes.project} element={<ProjectContainer />} />
       <Route path={routes.projects} element={<Projects />} />
+      <Route path="/" element={<Navigate to={routes.projects} replace />} />
     </Route>
     <Route path="*" element={<Navigate to={routes.home} replace />} />
   </Routes>
