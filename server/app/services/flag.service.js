@@ -3,7 +3,9 @@ const userService = require('./user.service');
 const pubSub = require('../graphql/pubSub');
 
 async function createFlag(params, createdBy) {
-  if (!params.scopeId) { return null; }
+  if (!params.scopeId) {
+    return null;
+  }
 
   const scope = await Scope.findByPk(params.scopeId);
   if (scope && userService.canEditProject(createdBy, await scope.getProject())) {
@@ -21,7 +23,9 @@ async function createFlag(params, createdBy) {
 
 async function deleteFlag(flagId, user) {
   const flag = await Flag.findByPk(flagId);
-  if (!flag) { return null; }
+  if (!flag) {
+    return null;
+  }
 
   const scope = await flag.getScope();
   if (scope && userService.canEditProject(user, await scope.getProject())) {
@@ -34,11 +38,15 @@ async function deleteFlag(flagId, user) {
 
 async function updateFlag(flagId, user, updateValues) {
   const flag = await Flag.findByPk(flagId);
-  if (!flag) { return null; }
+  if (!flag) {
+    return null;
+  }
 
   const scope = await flag.getScope();
   if (scope && updateValues && userService.canEditProject(user, await scope.getProject())) {
-    Object.keys(updateValues).forEach((field) => { flag[field] = updateValues[field]; });
+    Object.keys(updateValues).forEach((field) => {
+      flag[field] = updateValues[field];
+    });
 
     await flag.save();
     pubSub.publish('SCOPE_UPDATED', { scopeUpdated: scope });

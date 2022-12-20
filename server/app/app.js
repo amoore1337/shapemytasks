@@ -55,15 +55,17 @@ module.exports = async (callback) => {
     schema,
     ...graphConfig,
     playground: config.get('NODE_ENV') === 'dev',
-    plugins: [{
-      async serverWillStart() {
-        return {
-          async drainServer() {
-            subscriptionServer.close();
-          },
-        };
+    plugins: [
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              subscriptionServer.close();
+            },
+          };
+        },
       },
-    }],
+    ],
   });
 
   await apollo.start();
@@ -71,25 +73,34 @@ module.exports = async (callback) => {
   apollo.applyMiddleware({ app, path: graphqlPath });
 
   httpServer.listen(SERVER_PORT, SERVER_HOST, () => {
-    console.log(`Server running in ${config.get('NODE_ENV')} mode on port ${SERVER_PORT} - GraphQL: ${apollo.graphqlPath} - Subscriptions: ${subscriptionPath}`);
-    if (callback) { callback(); }
+    console.log(
+      `Server running in ${config.get('NODE_ENV')} mode on port ${SERVER_PORT} - GraphQL: ${
+        apollo.graphqlPath
+      } - Subscriptions: ${subscriptionPath}`
+    );
+    if (callback) {
+      callback();
+    }
   });
 };
 
 async function waitForDb(sequelize) {
-  const dbReady = (wait) => new Promise((resolve) => {
-    setTimeout(async () => {
-      try {
-        console.log('Trying to connect to db...');
-        await sequelize.authenticate();
-        resolve(true);
-      } catch (error) {
-        resolve(false);
-      }
-    }, wait);
-  });
+  const dbReady = (wait) =>
+    new Promise((resolve) => {
+      setTimeout(async () => {
+        try {
+          console.log('Trying to connect to db...');
+          await sequelize.authenticate();
+          resolve(true);
+        } catch (error) {
+          resolve(false);
+        }
+      }, wait);
+    });
 
-  if (await dbReady()) { return; }
+  if (await dbReady()) {
+    return;
+  }
 
   let ready = false;
   while (!ready) {

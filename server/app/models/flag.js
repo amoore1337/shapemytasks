@@ -7,7 +7,11 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static associate(models) {
-      Flag.belongsTo(models.User, { foreignKey: 'createdById', as: 'createdBy', onDelete: 'SET NULL' });
+      Flag.belongsTo(models.User, {
+        foreignKey: 'createdById',
+        as: 'createdBy',
+        onDelete: 'SET NULL',
+      });
       Flag.belongsTo(models.Scope, { foreignKey: 'scopeId', as: 'scope', onDelete: 'CASCADE' });
     }
   }
@@ -17,13 +21,16 @@ module.exports = (sequelize, DataTypes) => {
     scope: 'Scope',
   };
 
-  Flag.init({
-    message: DataTypes.STRING,
-    createdById: DataTypes.INTEGER,
-    scopeId: DataTypes.INTEGER,
-  }, {
-    sequelize,
-    modelName: 'Flag',
-  });
+  Flag.init(
+    {
+      message: DataTypes.STRING,
+      createdById: DataTypes.INTEGER,
+      scopeId: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: 'Flag',
+    }
+  );
   return Flag;
 };

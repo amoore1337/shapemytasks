@@ -13,7 +13,9 @@ config.env();
 const dbSettings = configValuesFromConnectionString(config.get('DB_URL'));
 
 function configValuesFromConnectionString(dbString) {
-  if (!dbString) { return null; }
+  if (!dbString) {
+    return null;
+  }
 
   const dbUrl = new URL(dbString);
   return {

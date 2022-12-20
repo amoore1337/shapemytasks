@@ -3,7 +3,9 @@ const express = require('express');
 const routes = require('require-dir')();
 
 module.exports = (app) => {
-  app.get('/api/ping', (_, res) => { res.send('pong'); });
+  app.get('/api/ping', (_, res) => {
+    res.send('pong');
+  });
 
   Object.keys(routes).forEach((routeName) => {
     const router = express.Router();

@@ -7,10 +7,16 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static associate(models) {
-      Project.belongsTo(models.User, { foreignKey: 'createdById', as: 'owner', onDelete: 'SET NULL' });
+      Project.belongsTo(models.User, {
+        foreignKey: 'createdById',
+        as: 'owner',
+        onDelete: 'SET NULL',
+      });
       Project.belongsTo(models.Team, { foreignKey: 'teamId', as: 'team', onDelete: 'SET NULL' });
       Project.hasMany(models.Scope, {
-        foreignKey: 'projectId', as: 'scopes', onDelete: 'CASCADE',
+        foreignKey: 'projectId',
+        as: 'scopes',
+        onDelete: 'CASCADE',
       });
     }
 
@@ -25,15 +31,18 @@ module.exports = (sequelize, DataTypes) => {
     scopes: '[Scope]',
   };
 
-  Project.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
-    createdById: DataTypes.INTEGER,
-    visibility: DataTypes.STRING,
-    teamId: DataTypes.INTEGER,
-  }, {
-    sequelize,
-    modelName: 'Project',
-  });
+  Project.init(
+    {
+      title: DataTypes.STRING,
+      description: DataTypes.STRING,
+      createdById: DataTypes.INTEGER,
+      visibility: DataTypes.STRING,
+      teamId: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: 'Project',
+    }
+  );
   return Project;
 };

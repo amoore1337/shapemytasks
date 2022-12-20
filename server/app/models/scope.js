@@ -7,8 +7,16 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static associate(models) {
-      Scope.belongsTo(models.User, { foreignKey: 'createdById', as: 'createdBy', onDelete: 'SET NULL' });
-      Scope.belongsTo(models.Project, { foreignKey: 'projectId', as: 'project', onDelete: 'CASCADE' });
+      Scope.belongsTo(models.User, {
+        foreignKey: 'createdById',
+        as: 'createdBy',
+        onDelete: 'SET NULL',
+      });
+      Scope.belongsTo(models.Project, {
+        foreignKey: 'projectId',
+        as: 'project',
+        onDelete: 'CASCADE',
+      });
       Scope.hasOne(models.Flag, { foreignKey: 'scopeId', as: 'flag', onDelete: 'CASCADE' });
     }
 
@@ -23,27 +31,30 @@ module.exports = (sequelize, DataTypes) => {
     flag: 'Flag',
   };
 
-  Scope.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
-    createdById: DataTypes.INTEGER,
-    projectId: DataTypes.INTEGER,
-    position: DataTypes.STRING,
-    closedAt: DataTypes.DATE,
-    niceToHave: DataTypes.BOOLEAN,
-    color: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: '#0277bd',
+  Scope.init(
+    {
+      title: DataTypes.STRING,
+      description: DataTypes.STRING,
+      createdById: DataTypes.INTEGER,
+      projectId: DataTypes.INTEGER,
+      position: DataTypes.STRING,
+      closedAt: DataTypes.DATE,
+      niceToHave: DataTypes.BOOLEAN,
+      color: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: '#0277bd',
+      },
+      progress: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        defaultValue: 0,
+      },
     },
-    progress: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-      defaultValue: 0,
-    },
-  }, {
-    sequelize,
-    modelName: 'Scope',
-  });
+    {
+      sequelize,
+      modelName: 'Scope',
+    }
+  );
   return Scope;
 };

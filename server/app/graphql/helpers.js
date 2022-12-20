@@ -65,7 +65,9 @@ function basicFindByIdResolver(Model, requireAuth = true) {
   const resolver = {};
   const modelName = Model.getModelName().toLowerCase();
   resolver[modelName] = async (_, { id }, { user }) => {
-    if (!user && requireAuth) { return null; }
+    if (!user && requireAuth) {
+      return null;
+    }
     return Model.findByPk(id);
   };
 
