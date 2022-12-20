@@ -17,14 +17,16 @@ const FIVE_MINUTES = 5 * 60 * 1000;
 
 export default function useHeartbeat() {
   const { currentUser, logout } = useContext(CurrentUserContext);
-  const [checkHealth, {
-    loading, data, stopPolling, startPolling,
-  }] = useLazyQuery(HEARTBEAT, { fetchPolicy: 'network-only' });
+  const [checkHealth, { loading, data, stopPolling, startPolling }] = useLazyQuery(HEARTBEAT, {
+    fetchPolicy: 'network-only',
+  });
 
   useEffect(() => {
     checkHealth();
     return () => {
-      if (stopPolling) { stopPolling(); }
+      if (stopPolling) {
+        stopPolling();
+      }
     };
   }, []);
 
@@ -37,7 +39,9 @@ export default function useHeartbeat() {
   }, [currentUser]);
 
   useEffect(() => {
-    if (loading || !data?.heartbeat) { return; }
+    if (loading || !data?.heartbeat) {
+      return;
+    }
     if (currentUser && !data.heartbeat.authenticated) {
       logout();
     }

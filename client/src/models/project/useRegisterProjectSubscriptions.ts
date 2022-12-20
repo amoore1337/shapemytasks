@@ -41,7 +41,9 @@ export function useRegisterProjectSubscriptions(project: Project | null | undefi
     variables: { projectId: project?.id! },
     skip: !project?.id,
     onData: ({ client, data }) => {
-      if (!project) { return; }
+      if (!project) {
+        return;
+      }
       const { cache } = client;
 
       addCacheItem(
@@ -50,7 +52,7 @@ export function useRegisterProjectSubscriptions(project: Project | null | undefi
         'scopes',
         'scopeCreated',
         project as unknown as StoreObject,
-        ScopeFragmentFragmentDoc,
+        ScopeFragmentFragmentDoc
       );
     },
   });
@@ -69,7 +71,9 @@ export function useRegisterProjectSubscriptions(project: Project | null | undefi
     variables: { projectId: project?.id! },
     skip: !project?.id,
     onData: ({ client, data }) => {
-      if (!project) { return; }
+      if (!project) {
+        return;
+      }
       const { cache } = client;
 
       removeCacheItem(
@@ -77,7 +81,7 @@ export function useRegisterProjectSubscriptions(project: Project | null | undefi
         data.data,
         'scopes',
         'scopeDeleted',
-        project as unknown as StoreObject,
+        project as unknown as StoreObject
       );
     },
   });

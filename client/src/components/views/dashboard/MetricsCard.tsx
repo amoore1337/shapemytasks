@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useQuery } from '@apollo/client';
 import { Typography } from '@mui/material';
 
@@ -24,28 +22,32 @@ export default function MetricsCard() {
   const metrics = data?.metrics;
 
   return (
-    <section className="p-4 bg-white shadow rounded text-gray-800">
-      <Typography variant="h6" component="h2">Metrics</Typography>
-      {loading ? <LoadingIndicator /> : (
+    <section className="rounded bg-white p-4 text-gray-800 shadow">
+      <Typography variant="h6" component="h2">
+        Metrics
+      </Typography>
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
         <ul>
           <li>
-            <span className="font-bold mr-2">Open Projects:</span>
+            <span className="mr-2 font-bold">Open Projects:</span>
             {metrics?.openProjects || 0}
           </li>
           <li>
-            <span className="font-bold mr-2">Total Tasks:</span>
+            <span className="mr-2 font-bold">Total Tasks:</span>
             {metrics?.totalTasks || 0}
           </li>
           <li>
-            <span className="font-bold mr-2">In Progress Tasks:</span>
+            <span className="mr-2 font-bold">In Progress Tasks:</span>
             {metrics?.inProgressTasks || 0}
           </li>
           <li>
-            <span className="font-bold mr-2">Not Started Tasks:</span>
+            <span className="mr-2 font-bold">Not Started Tasks:</span>
             {metrics?.notStartedTasks || 0}
           </li>
           <li>
-            <span className="font-bold mr-2">Done Tasks:</span>
+            <span className="mr-2 font-bold">Done Tasks:</span>
             {metrics?.closedTasks || 0}
           </li>
         </ul>

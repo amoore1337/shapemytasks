@@ -14,7 +14,7 @@ export function debounced<A extends Array<any>>(delay: number, fn: (...args: A) 
 export function throttled<A extends Array<any>, R>(delay: number, fn: (...args: A) => R) {
   let lastCall = 0;
   return (...args: any) => {
-    const now = (new Date()).getTime();
+    const now = new Date().getTime();
     if (now - lastCall < delay) {
       return null;
     }

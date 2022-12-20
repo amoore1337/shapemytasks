@@ -7,11 +7,11 @@ import { useCreateFlag } from '@/models/flag';
 
 import { ProjectScope } from '../helpers';
 
-type Props ={
+type Props = {
   scope: ProjectScope;
   open: boolean;
   onClose?: () => void;
-}
+};
 
 export default function AddFlagModal({ onClose, scope, ...props }: Props) {
   const [message, setMessage] = useState('');
@@ -39,16 +39,21 @@ export default function AddFlagModal({ onClose, scope, ...props }: Props) {
       onClose={onClose}
       afterClose={() => setMessage('')}
       style={{
-        width: '60%', maxWidth: 400, maxHeight: 500,
+        width: '60%',
+        maxWidth: 400,
+        maxHeight: 500,
       }}
     >
-      <div className="flex flex-col h-full">
+      <div className="flex h-full flex-col">
         <Typography variant="h4" className="text-2xl">
-          Add Flag to
-          {' '}
-          <span className="italic">{scope.title}</span>
+          Add Flag to <span className="italic">{scope.title}</span>
         </Typography>
-        <form noValidate autoComplete="off" className="pt-8 flex-1 flex flex-col justify-between" onSubmit={handleSubmit}>
+        <form
+          noValidate
+          autoComplete="off"
+          className="flex flex-1 flex-col justify-between pt-8"
+          onSubmit={handleSubmit}
+        >
           <TextField
             size="small"
             color="primary"
@@ -61,11 +66,7 @@ export default function AddFlagModal({ onClose, scope, ...props }: Props) {
             onChange={handleChange}
             autoFocus
           />
-          <Button
-            type="submit"
-            variant="primary"
-            className="mt-4"
-          >
+          <Button type="submit" variant="primary" className="mt-4">
             Add Flag
           </Button>
         </form>

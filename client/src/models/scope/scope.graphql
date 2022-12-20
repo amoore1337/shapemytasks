@@ -30,8 +30,20 @@ mutation CreateScope($title: String!, $description: String, $color: String, $pro
   }
 }
 
-mutation UpdateScope($id: ID!, $title: String, $description: String, $niceToHave: Boolean, $color: String) {
-  updateScope(id: $id, title: $title, description: $description, niceToHave: $niceToHave color: $color) {
+mutation UpdateScope(
+  $id: ID!
+  $title: String
+  $description: String
+  $niceToHave: Boolean
+  $color: String
+) {
+  updateScope(
+    id: $id
+    title: $title
+    description: $description
+    niceToHave: $niceToHave
+    color: $color
+  ) {
     ...ScopeFragment
   }
 }

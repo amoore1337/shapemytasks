@@ -1,5 +1,3 @@
-import React from 'react';
-
 import MetricsCard from './MetricsCard';
 import TeamMembersCard from './TeamMembersCard';
 

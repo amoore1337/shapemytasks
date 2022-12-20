@@ -2,7 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
-  Typography, TextField, Button, FormControlLabel, Checkbox, Accordion, AccordionSummary, AccordionDetails,
+  Typography,
+  TextField,
+  Button,
+  FormControlLabel,
+  Checkbox,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from '@mui/material';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
@@ -11,10 +18,10 @@ import { useCreateOrJoinTeam } from '@/models/team';
 import ErrorToast from './ErrorToast';
 import Modal from './Modal';
 
-type Props ={
+type Props = {
   open: boolean;
   onClose?: () => void;
-}
+};
 export default function UserSettingsModal({ open, onClose }: Props) {
   const { currentUser } = useContext(CurrentUserContext);
   const [expandedSection, setExpandedSection] = useState<'join' | 'create'>('join');
@@ -25,9 +32,9 @@ export default function UserSettingsModal({ open, onClose }: Props) {
   const [formError, setFormError] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
 
-  const [joinTeam, { loading, called, error }] = useCreateOrJoinTeam(
-    { onError: () => setShowErrorToast(true) },
-  );
+  const [joinTeam, { loading, called, error }] = useCreateOrJoinTeam({
+    onError: () => setShowErrorToast(true),
+  });
 
   useEffect(() => {
     // If we're done, close the modal
@@ -63,7 +70,10 @@ export default function UserSettingsModal({ open, onClose }: Props) {
       const restrictEmailDomain = enforceDomainRestriction ? emailDomain : '';
       joinTeam({
         variables: {
-          name: teamName, joinCode: '', restrictEmailDomain, joinTeam: false,
+          name: teamName,
+          joinCode: '',
+          restrictEmailDomain,
+          joinTeam: false,
         },
       });
     } else if (teamCode) {
@@ -87,13 +97,23 @@ export default function UserSettingsModal({ open, onClose }: Props) {
       open={open}
       onClose={onClose}
       style={{
-        width: '80%', height: '80%', maxWidth: 600, maxHeight: 500,
+        width: '80%',
+        height: '80%',
+        maxWidth: 600,
+        maxHeight: 500,
       }}
     >
-      <div className="flex flex-col justify-between h-full">
+      <div className="flex h-full flex-col justify-between">
         <div>
-          <Typography variant="h5" className="pb-4">Join or Create a Team</Typography>
-          <Accordion expanded={expandedSection === 'join'} onChange={() => handleAccordionChange('join')} variant="outlined" disableGutters>
+          <Typography variant="h5" className="pb-4">
+            Join or Create a Team
+          </Typography>
+          <Accordion
+            expanded={expandedSection === 'join'}
+            onChange={() => handleAccordionChange('join')}
+            variant="outlined"
+            disableGutters
+          >
             <AccordionSummary expandIcon={<ExpandMoreIcon />} classes={{ content: 'flex-col' }}>
               <Typography variant="h6">Join A Team</Typography>
               <Typography variant="subtitle2">
@@ -112,12 +132,19 @@ export default function UserSettingsModal({ open, onClose }: Props) {
                   label="Team Code"
                   variant="outlined"
                   error={showCodeError}
-                  helperText={showCodeError && 'Please provide the code for the team you wish to join.'}
+                  helperText={
+                    showCodeError && 'Please provide the code for the team you wish to join.'
+                  }
                 />
               </form>
             </AccordionDetails>
           </Accordion>
-          <Accordion expanded={expandedSection === 'create'} onChange={() => handleAccordionChange('create')} variant="outlined" disableGutters>
+          <Accordion
+            expanded={expandedSection === 'create'}
+            onChange={() => handleAccordionChange('create')}
+            variant="outlined"
+            disableGutters
+          >
             <AccordionSummary expandIcon={<ExpandMoreIcon />} classes={{ content: 'flex-col' }}>
               <Typography variant="h6">Create A New Team</Typography>
               <Typography variant="subtitle2">
@@ -138,47 +165,46 @@ export default function UserSettingsModal({ open, onClose }: Props) {
                   helperText={showNameError && 'Please provide a name for the team'}
                 />
                 <FormControlLabel
-                  control={(
+                  control={
                     <Checkbox
                       name="domain-restriction"
                       checked={enforceDomainRestriction}
                       onChange={handleChange}
                     />
-                )}
+                  }
                   label="Restrict by email domain"
                 />
                 {enforceDomainRestriction && (
-                <div className="flex items-center">
-                  <span className="mr-1 text-xl font-bold text-gray-600">@</span>
-                  <TextField
-                    name="domain"
-                    value={emailDomain}
-                    onChange={handleChange}
-                    size="small"
-                    color="primary"
-                    label="example.com"
-                    variant="outlined"
-                    error={showDomainError}
-                    helperText={showDomainError && 'Please provide an email domain name'}
-                  />
-                </div>
+                  <div className="flex items-center">
+                    <span className="mr-1 text-xl font-bold text-gray-600">@</span>
+                    <TextField
+                      name="domain"
+                      value={emailDomain}
+                      onChange={handleChange}
+                      size="small"
+                      color="primary"
+                      label="example.com"
+                      variant="outlined"
+                      error={showDomainError}
+                      helperText={showDomainError && 'Please provide an email domain name'}
+                    />
+                  </div>
                 )}
               </form>
             </AccordionDetails>
           </Accordion>
         </div>
         <div className="flex justify-end">
-          <Button
-            type="submit"
-            variant="primary"
-            onClick={submitTeam}
-            disabled={loading}
-          >
+          <Button type="submit" variant="primary" onClick={submitTeam} disabled={loading}>
             Submit
           </Button>
         </div>
         {showErrorToast && (
-          <ErrorToast open={open} onClose={() => setShowErrorToast(false)} message={error?.message} />
+          <ErrorToast
+            open={open}
+            onClose={() => setShowErrorToast(false)}
+            message={error?.message}
+          />
         )}
       </div>
     </Modal>

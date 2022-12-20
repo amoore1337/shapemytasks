@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { useQuery } from '@apollo/client';
 import { TextField, Autocomplete } from '@mui/material';
@@ -10,7 +10,7 @@ import { Project, ProjectsDocument } from '@/models/types';
 type Props = {
   selectedProjectId?: string;
   onChange: (projectId: string) => void;
-}
+};
 
 export default function JumpToProjectDropdown({ selectedProjectId, onChange }: Props) {
   const { currentUser } = useContext(CurrentUserContext);
@@ -22,7 +22,9 @@ export default function JumpToProjectDropdown({ selectedProjectId, onChange }: P
     setSelectedProject(projects.find((p) => p?.id === selectedProjectId) || null);
   }, [selectedProjectId, data]);
 
-  if (!data) { return null; }
+  if (!data) {
+    return null;
+  }
 
   return (
     <div>
@@ -32,10 +34,19 @@ export default function JumpToProjectDropdown({ selectedProjectId, onChange }: P
         onChange={(_, value) => value && onChange(value.id)}
         getOptionLabel={(option) => option?.title || 'Project'}
         style={{ width: 300 }}
-        renderInput={(params) => (
-          loading ? <LoadingIndicator />
-            : <TextField {...params} size="small" color="primary" label="Jump to project..." variant="outlined" />
-        )}
+        renderInput={(params) =>
+          loading ? (
+            <LoadingIndicator />
+          ) : (
+            <TextField
+              {...params}
+              size="small"
+              color="primary"
+              label="Jump to project..."
+              variant="outlined"
+            />
+          )
+        }
       />
     </div>
   );

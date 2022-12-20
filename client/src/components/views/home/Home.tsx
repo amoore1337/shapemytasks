@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Link, useMediaQuery, useTheme } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -13,7 +11,7 @@ export default function Home() {
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('lg'));
   return (
-    <div className="py-20 relative w-full flex flex-col items-center text-gray-800">
+    <div className="relative flex w-full flex-col items-center py-20 text-gray-800">
       <TitleSection isMobile={isMobile} />
       <ScopeSection isMobile={isMobile} />
       <HillChartSection isMobile={isMobile} />
@@ -24,8 +22,10 @@ export default function Home() {
 
 function Footer() {
   return (
-    <div className="absolute bottom-0 text-center inset-x-0 pb-2">
-      <Link className="text-gray-300 text-sm" component={RouterLink} to={routes.privacy}>Privacy Policy</Link>
+    <div className="absolute inset-x-0 bottom-0 pb-2 text-center">
+      <Link className="text-sm text-gray-300" component={RouterLink} to={routes.privacy}>
+        Privacy Policy
+      </Link>
     </div>
   );
 }

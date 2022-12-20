@@ -1,4 +1,4 @@
-import React from 'react';
+import { CSSProperties } from 'react';
 
 import tw, { styled } from 'twin.macro';
 
@@ -16,11 +16,16 @@ type Props = {
   size?: number;
   color?: string;
   className?: string;
-  style?: React.CSSProperties;
-}
+  style?: CSSProperties;
+};
 
-export default function Dot({
-  size, color, className, style,
-}: Props) {
-  return <StyledDot className={className} style={style} $color={color || getRandomColor()} $size={size || 20} />;
+export default function Dot({ size, color, className, style }: Props) {
+  return (
+    <StyledDot
+      className={className}
+      style={style}
+      $color={color || getRandomColor()}
+      $size={size || 20}
+    />
+  );
 }

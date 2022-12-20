@@ -1,18 +1,16 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import React, {
-  createContext, useCallback, useEffect, useState,
-} from 'react';
+import React, { createContext, useCallback, useEffect, useState } from 'react';
 
 import { useApolloClient, useLazyQuery } from '@apollo/client';
 
 import { CurrentUser, CURRENT_USER_QUERY } from '@/models/auth';
 
 type CurrentUserCtx = {
-  currentUser?: CurrentUser | null,
-  loading: boolean,
+  currentUser?: CurrentUser | null;
+  loading: boolean;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
- };
+};
 
 export const CurrentUserContext = createContext<CurrentUserCtx>({
   loading: true,
@@ -23,7 +21,9 @@ export const CurrentUserContext = createContext<CurrentUserCtx>({
 export function CurrentUserProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<CurrentUser>();
   const [loading, setLoading] = useState(true);
-  const [fetchUser, { loading: queryLoading, data }] = useLazyQuery(CURRENT_USER_QUERY, { nextFetchPolicy: 'network-only' });
+  const [fetchUser, { loading: queryLoading, data }] = useLazyQuery(CURRENT_USER_QUERY, {
+    nextFetchPolicy: 'network-only',
+  });
 
   const client = useApolloClient();
 
@@ -60,12 +60,13 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
   }, []);
 
   return (
-    <CurrentUserContext.Provider value={{
-      currentUser,
-      loading,
-      logout: handleLogout,
-      refresh: loadUser,
-    }}
+    <CurrentUserContext.Provider
+      value={{
+        currentUser,
+        loading,
+        logout: handleLogout,
+        refresh: loadUser,
+      }}
     >
       {children}
     </CurrentUserContext.Provider>

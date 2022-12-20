@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 
 import CancelIcon from '@mui/icons-material/Cancel';
-import {
-  Modal, Backdrop, Fade, IconButton, ModalProps,
-} from '@mui/material';
+import { Modal, Backdrop, Fade, ModalProps } from '@mui/material';
 import { styled } from 'twin.macro';
 
 const FADE_IN_TIMEOUT = 500;
@@ -12,7 +10,7 @@ const ModalContentContainer = styled.div`
   /* Don't use tailwind so that styles can easily be overwritten */
   background-color: white;
   padding: 1rem;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
   position: relative;
 `;
 
@@ -20,12 +18,20 @@ type Props = ModalProps & {
   noCloseButton?: boolean;
   afterOpen?: () => void;
   afterClose?: () => void;
-}
+};
 
 let timeout: number;
 
 export default function StyledModal({
-  open, onClose, afterOpen, afterClose, children, style, noCloseButton, className = '', ...props
+  open,
+  onClose,
+  afterOpen,
+  afterClose,
+  children,
+  style,
+  noCloseButton,
+  className = '',
+  ...props
 }: Props) {
   useEffect(() => {
     if (open && afterOpen) {
@@ -35,13 +41,22 @@ export default function StyledModal({
     }
 
     return () => {
-      if (timeout) { window.clearTimeout(timeout); }
+      if (timeout) {
+        window.clearTimeout(timeout);
+      }
     };
   }, [open]);
 
-  const handleClose: ((event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void) = (event, reason) => {
-    if (reason === 'backdropClick') { return; }
-    if (onClose) { onClose(event, reason); }
+  const handleClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void = (
+    event,
+    reason
+  ) => {
+    if (reason === 'backdropClick') {
+      return;
+    }
+    if (onClose) {
+      onClose(event, reason);
+    }
   };
 
   return (
@@ -57,9 +72,13 @@ export default function StyledModal({
       }}
     >
       <Fade in={open} timeout={FADE_IN_TIMEOUT}>
-        <ModalContentContainer className={`shadow text-gray-800 ${className}`} style={style}>
+        <ModalContentContainer className={`text-gray-800 shadow ${className}`} style={style}>
           {!noCloseButton && (
-            <button type="button" onClick={() => onClose && onClose({}, 'backdropClick')} className="p-1 -mt-2 absolute right-1 top-3">
+            <button
+              type="button"
+              onClick={() => onClose && onClose({}, 'backdropClick')}
+              className="absolute right-1 top-3 -mt-2 p-1"
+            >
               <CancelIcon color="secondary" className="text-4xl text-primary" />
             </button>
           )}

@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import PhotoIcon from '@mui/icons-material/PhotoCamera';
-import {
-  Button, IconButton, Paper, Typography, useMediaQuery, useTheme,
-} from '@mui/material';
+import { Button, IconButton, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 import useDimensions from 'react-cool-dimensions';
 import { Helmet } from 'react-helmet';
 
@@ -17,7 +15,11 @@ import ScopeFilterDropdown from './ScopeFilterDropdown';
 import ScopeSortDropdown from './ScopeSortDropdown';
 import SortComboButton from './SortComboButton';
 import {
-  FilterOption, Scopes, SCOPE_FILTER_OPTIONS, SCOPE_SORT_OPTIONS, SortOption,
+  FilterOption,
+  Scopes,
+  SCOPE_FILTER_OPTIONS,
+  SCOPE_SORT_OPTIONS,
+  SortOption,
 } from './helpers';
 import PrintPreviewModal from './print/PrintPreviewModal';
 import ScopeList from './scopeList/ScopeList';
@@ -35,10 +37,10 @@ type Props = {
   onHillChartEditCancel: () => void;
   showError: boolean;
   onErrorToastDismiss: () => void;
-  hillChartEditEnabled: boolean
+  hillChartEditEnabled: boolean;
   loading: boolean;
   moveScope: (scopeId: string, toIndex: number, moveComplete: boolean) => void;
-}
+};
 
 export default function Project(props: Props) {
   const [showPrintPreview, setShowPrintPreview] = useState(false);
@@ -69,13 +71,19 @@ export default function Project(props: Props) {
 
   useEffect(() => {
     const points = scopes.map((scope) => {
-      if (!scope) { return null; }
+      if (!scope) {
+        return null;
+      }
       return {
         id: scope.id,
         progress: scope.progress,
         color: scope.color,
         title: (
-          <span className={`${scope.flag ? 'text-danger font-medium' : ''} ${scope.niceToHave ? 'italic' : ''}`}>
+          <span
+            className={`${scope.flag ? 'font-medium text-danger' : ''} ${
+              scope.niceToHave ? 'italic' : ''
+            }`}
+          >
             {scope.title}
           </span>
         ),
@@ -91,10 +99,14 @@ export default function Project(props: Props) {
   };
 
   const drawerContent = (
-    <div className="h-full p-4 flex items-center flex-col">
+    <div className="flex h-full flex-col items-center p-4">
       <section className="flex flex-col">
         <ScopeSortDropdown sortOption={scopeSortOption} onChange={onScopeSortChange} />
-        <ScopeFilterDropdown className="mt-2" filterOption={scopeFilterOption} onChange={onScopeFilterChange} />
+        <ScopeFilterDropdown
+          className="mt-2"
+          filterOption={scopeFilterOption}
+          onChange={onScopeFilterChange}
+        />
       </section>
     </div>
   );
@@ -103,29 +115,41 @@ export default function Project(props: Props) {
   const sortActive = scopeSortOption.value !== SCOPE_SORT_OPTIONS[0].value;
 
   return (
-    <div className="h-full p-4 flex justify-center">
+    <div className="flex h-full justify-center p-4">
       {project && (
         <Helmet>
           <title>{project?.title}</title>
-          <meta name="description" content={project?.description || `Tracking progress of ${allScopes?.length || 0} scope(s) on ${project?.title}`} />
+          <meta
+            name="description"
+            content={
+              project?.description ||
+              `Tracking progress of ${allScopes?.length || 0} scope(s) on ${project?.title}`
+            }
+          />
           <meta name="og:url" content={window.location.href} />
           <meta name="og:title" content={project.title || ''} />
-          <meta name="og:description" content={project?.description || `Tracking progress of ${allScopes?.length || 0} scope(s) on ${project?.title}`} />
+          <meta
+            name="og:description"
+            content={
+              project?.description ||
+              `Tracking progress of ${allScopes?.length || 0} scope(s) on ${project?.title}`
+            }
+          />
         </Helmet>
       )}
-      <Paper className="h-full w-full p-4 flex flex-col items-center" style={{ maxWidth: 1600 }}>
-        {!project || loading ? <LoadingIndicator /> : (
+      <Paper className="flex h-full w-full flex-col items-center p-4" style={{ maxWidth: 1600 }}>
+        {!project || loading ? (
+          <LoadingIndicator />
+        ) : (
           <>
             <div
-              className={`flex justify-center w-full pb-4 relative ${isMobile ? 'items-center h-full' : ''}`}
+              className={`relative flex w-full justify-center pb-4 ${
+                isMobile ? 'h-full items-center' : ''
+              }`}
             >
               <div className="absolute top-8 left-8 z-10">
                 {!hillChartEditEnabled && scopes.length > 0 && (
-                  <Button
-                    variant="primary"
-                    color="primary"
-                    onClick={onHillChartEditClick}
-                  >
+                  <Button variant="primary" color="primary" onClick={onHillChartEditClick}>
                     Update Progress
                   </Button>
                 )}
@@ -139,7 +163,10 @@ export default function Project(props: Props) {
                   </IconButton>
                 )}
               </div>
-              <div ref={chartContainerRef} style={{ width: isMobile ? '100%' : '80%', height: chartHeight }}>
+              <div
+                ref={chartContainerRef}
+                style={{ width: isMobile ? '100%' : '80%', height: chartHeight }}
+              >
                 <HillChart
                   width="100%"
                   height="100%"
@@ -151,29 +178,31 @@ export default function Project(props: Props) {
               </div>
             </div>
             {!isMobile && (
-            <>
-              <div className="w-full px-4 flex justify-between" style={{ maxWidth: 1200 }}>
-                <Typography className="flex-grow self-end" variant="h6" component="h2">{project.title}</Typography>
-                {!loading && (
-                  <SortComboButton
-                    activeSort={scopeSortOption.label}
-                    activeFilter={scopeFilterOption.label}
-                    onClick={() => setOpenDrawer((v) => !v)}
-                    onClear={resetFilterAndSort}
-                    isActive={sortActive || filterActive}
-                  />
-                )}
-              </div>
-              <ScopeList
-                scopes={scopes}
-                projectId={project.id}
-                dragEnabled={scopeSortOption.allowDrag && scopeFilterOption.allowDrag}
-                moveScope={moveScope}
-                openDrawer={openDrawer}
-                drawerContent={drawerContent}
-                drawerEnabled={!isMobile}
-              />
-            </>
+              <>
+                <div className="flex w-full justify-between px-4" style={{ maxWidth: 1200 }}>
+                  <Typography className="flex-grow self-end" variant="h6" component="h2">
+                    {project.title}
+                  </Typography>
+                  {!loading && (
+                    <SortComboButton
+                      activeSort={scopeSortOption.label}
+                      activeFilter={scopeFilterOption.label}
+                      onClick={() => setOpenDrawer((v) => !v)}
+                      onClear={resetFilterAndSort}
+                      isActive={sortActive || filterActive}
+                    />
+                  )}
+                </div>
+                <ScopeList
+                  scopes={scopes}
+                  projectId={project.id}
+                  dragEnabled={scopeSortOption.allowDrag && scopeFilterOption.allowDrag}
+                  moveScope={moveScope}
+                  openDrawer={openDrawer}
+                  drawerContent={drawerContent}
+                  drawerEnabled={!isMobile}
+                />
+              </>
             )}
           </>
         )}

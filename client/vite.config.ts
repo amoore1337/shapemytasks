@@ -17,11 +17,13 @@ const plugins = [
 ];
 
 if (process.env.ANALYZE_BUILD) {
-  plugins.push(visualizer({
-    title: 'SMT Build Analysis',
-    filename: 'build-analysis.html',
-    template: 'treemap', // 'sunburst is also useful
-  }));
+  plugins.push(
+    visualizer({
+      title: 'SMT Build Analysis',
+      filename: 'build-analysis.html',
+      template: 'treemap', // 'sunburst is also useful
+    })
+  );
 }
 
 // https://vitejs.dev/config/
@@ -33,10 +35,12 @@ export default defineConfig((env) => ({
     hmr: {
       clientPort: 3030,
     },
-    https: process.env.WITH_SSL ? {
-      key: readFileSync('../localhost-ssl/localhost.key'),
-      cert: readFileSync('../localhost-ssl/localhost.crt'),
-    } : false,
+    https: process.env.WITH_SSL
+      ? {
+          key: readFileSync('../localhost-ssl/localhost.key'),
+          cert: readFileSync('../localhost-ssl/localhost.crt'),
+        }
+      : false,
   },
   build: {
     outDir: './build',

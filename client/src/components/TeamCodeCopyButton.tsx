@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { Button } from '@mui/material';
@@ -22,7 +22,11 @@ export default function TeamCodeCopyButton({ teamCode }: { teamCode: string }) {
     } else {
       setButtonText(BUTTON_TEXTS.normal);
     }
-    return () => { if (timeout) { clearTimeout(timeout); } };
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
   }, [copied]);
 
   return (

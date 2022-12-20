@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useQuery } from '@apollo/client';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -13,7 +13,12 @@ import Project from './Project';
 import {
   FilterOption,
   findScopeIndex,
-  moveArrayItem, Scopes, ProjectScope, SCOPE_FILTER_OPTIONS, SCOPE_SORT_OPTIONS, SortOption,
+  moveArrayItem,
+  Scopes,
+  ProjectScope,
+  SCOPE_FILTER_OPTIONS,
+  SCOPE_SORT_OPTIONS,
+  SortOption,
 } from './helpers';
 
 const PROJECT_QUERY = gql(`
@@ -45,7 +50,7 @@ export default function ProjectContainer() {
 
   const handleSave = async (updatedItems: UpdatedItemsMap) => {
     setEnableProgressEdit(false);
-    const updates: { id: string, progress: number }[] = [];
+    const updates: { id: string; progress: number }[] = [];
     Object.keys(updatedItems).forEach((itemId) => {
       updates.push({ id: itemId, progress: updatedItems[itemId] });
     });
@@ -67,7 +72,9 @@ export default function ProjectContainer() {
   const moveScope = (scopeId: string, toIndex: number, moveComplete: boolean) => {
     const fromIndex = findScopeIndex(sortedScopes, scopeId);
     const scope = sortedScopes[fromIndex];
-    if (!scope) { return; }
+    if (!scope) {
+      return;
+    }
 
     const updatedScopes = moveArrayItem<ProjectScope | null>(sortedScopes, fromIndex, toIndex);
     setSortedScopes(updatedScopes);
@@ -90,7 +97,7 @@ export default function ProjectContainer() {
   }, [error]);
 
   useEffect(() => {
-    const scopes = data?.project?.scopes as Exclude<Scopes, null> || [];
+    const scopes = (data?.project?.scopes as Exclude<Scopes, null>) || [];
     let scopeList = sortOption.sort(scopes);
     scopeList = filterOption.filter(scopeList);
     setSortedScopes(scopeList);

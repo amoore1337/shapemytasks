@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import Alert from '@mui/lab/Alert';
 import { Snackbar } from '@mui/material';
@@ -8,11 +8,9 @@ type Props = {
   duration?: number;
   onClose?: () => void;
   message?: string;
-}
+};
 
-export default function ErrorToast({
-  open = true, duration = 6000, onClose, message,
-}: Props) {
+export default function ErrorToast({ open = true, duration = 6000, onClose, message }: Props) {
   const [snackbarOpen, setSnackbarOpen] = useState(open);
 
   const handleClose = () => {

@@ -8,7 +8,7 @@ export default {
   project: '/projects/:id',
 };
 
-export const withParams = (route: string, params: {[key: string]: string}) => {
+export const withParams = (route: string, params: { [key: string]: string }) => {
   let populatedRoute = route;
   Object.keys(params).forEach((key) => {
     const regex = new RegExp(`:${key}([?/]|$)`);

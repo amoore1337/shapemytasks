@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import useDimensions from 'react-cool-dimensions';
 import { DndProvider } from 'react-dnd';
@@ -22,7 +22,7 @@ type Props = {
   moveScope: (scopeId: string, toIndex: number, moveComplete: boolean) => void;
   readonlyMode?: boolean;
   compact?: boolean;
-}
+};
 
 const ContentContainer = styled.div`
   ${tw`flex-grow overflow-hidden w-full`}
@@ -33,7 +33,15 @@ const ContentContainer = styled.div`
 const SCOPE_INPUT_HEIGHT = 60;
 
 export default function ScopeList({
-  scopes, projectId, dragEnabled, moveScope, openDrawer, drawerContent, drawerEnabled, readonlyMode, compact,
+  scopes,
+  projectId,
+  dragEnabled,
+  moveScope,
+  openDrawer,
+  drawerContent,
+  drawerEnabled,
+  readonlyMode,
+  compact,
 }: Props) {
   const { observe, width, height } = useDimensions<HTMLDivElement>();
 
@@ -51,31 +59,36 @@ export default function ScopeList({
         {/* Wait until dimensions have been calculated before rendering content: */}
         {width + height > 0 && (
           <div style={{ width, height }}>
-            <div className="border border-solid border-primary rounded-md relative box-border w-full">
-              <div className="flex relative">
-                <ul className="overflow-y-auto flex-grow" style={{ maxHeight: maxListHeight }}>
-                  {scopes.map((scope) => scope && (
-                  <li
-                    key={scope.id}
-                    className="border-b border-solid border-blue-200 last:border-b-0"
-                  >
-                    <ScopeItem
-                      scope={scope}
-                      dragEnabled={dragEnabled}
-                      findScopeIndex={findScopeIndex}
-                      moveScope={moveScope}
-                      disableUpdateProgress={readonlyMode}
-                      disableActions={readonlyMode}
-                      compact={compact}
-                    />
-                  </li>
-                  ))}
+            <div className="relative box-border w-full rounded-md border border-solid border-primary">
+              <div className="relative flex">
+                <ul className="flex-grow overflow-y-auto" style={{ maxHeight: maxListHeight }}>
+                  {scopes.map(
+                    (scope) =>
+                      scope && (
+                        <li
+                          key={scope.id}
+                          className="border-b border-solid border-blue-200 last:border-b-0"
+                        >
+                          <ScopeItem
+                            scope={scope}
+                            dragEnabled={dragEnabled}
+                            findScopeIndex={findScopeIndex}
+                            moveScope={moveScope}
+                            disableUpdateProgress={readonlyMode}
+                            disableActions={readonlyMode}
+                            compact={compact}
+                          />
+                        </li>
+                      )
+                  )}
                 </ul>
                 {drawerEnabled && (
                   <SlideOutDrawer
                     width={240}
                     open={openDrawer}
-                    className={`flex-shrink-0 border-solid border-primary ${openDrawer ? 'border-l' : ''}`}
+                    className={`flex-shrink-0 border-solid border-primary ${
+                      openDrawer ? 'border-l' : ''
+                    }`}
                   >
                     {drawerContent}
                   </SlideOutDrawer>
@@ -83,7 +96,9 @@ export default function ScopeList({
               </div>
               {!readonlyMode && (
                 <div
-                  className={`p-2 ${scopes.length ? 'border-t' : ''} border-solid border-blue-200 box-border`}
+                  className={`p-2 ${
+                    scopes.length ? 'border-t' : ''
+                  } box-border border-solid border-blue-200`}
                   style={{ height: SCOPE_INPUT_HEIGHT }}
                 >
                   <AddScope projectId={projectId} />

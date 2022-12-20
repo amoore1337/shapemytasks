@@ -9,7 +9,7 @@ import DotColorPicker from './DotColorPicker';
 
 type Props = {
   projectId: string;
-}
+};
 
 export default function AddScope({ projectId }: Props) {
   const [title, setTitle] = useState('');
@@ -37,7 +37,7 @@ export default function AddScope({ projectId }: Props) {
 
   return (
     <form noValidate autoComplete="off" className="flex justify-between" onSubmit={handleSubmit}>
-      <div className="flex items-center w-2/3 pl-6">
+      <div className="flex w-2/3 items-center pl-6">
         <DotColorPicker selectedColor={color} onChange={setColor} />
         <TextField
           name="title"
@@ -51,11 +51,7 @@ export default function AddScope({ projectId }: Props) {
         />
       </div>
       <div className="flex items-center">
-        <Button
-          type="submit"
-          variant="primary"
-          disabled={!title}
-        >
+        <Button type="submit" variant="primary" disabled={!title}>
           Save
         </Button>
       </div>

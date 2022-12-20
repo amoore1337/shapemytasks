@@ -1,7 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import {
-  ApolloClient, HttpLink, split, InMemoryCache, from,
-} from '@apollo/client';
+import { ApolloClient, HttpLink, split, InMemoryCache, from } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
@@ -50,13 +48,10 @@ const wsLink = new WebSocketLink({
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition'
-      && definition.operation === 'subscription'
-    );
+    return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
   },
   wsLink,
-  httpLink,
+  httpLink
 );
 
 const errorLink = onError(({ graphQLErrors, response }) => {
@@ -64,7 +59,10 @@ const errorLink = onError(({ graphQLErrors, response }) => {
     // We're apparently logged out, tell the App.
     document.dispatchEvent(new Event('logout'));
     if (response?.errors) {
-      (response.errors as any) = filterErrorsByCode(response.errors, GRAPH_ERROR_MAP.UNAUTHENTICATED);
+      (response.errors as any) = filterErrorsByCode(
+        response.errors,
+        GRAPH_ERROR_MAP.UNAUTHENTICATED
+      );
     }
   }
 });

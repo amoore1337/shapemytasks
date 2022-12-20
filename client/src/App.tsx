@@ -64,10 +64,10 @@ function AppContent() {
   const { observe, width, height } = useDimensions<HTMLDivElement>();
 
   return (
-    <div className="flex flex-col min-h-full">
+    <div className="flex min-h-full flex-col">
       <Nav />
       <ContentContainer ref={observe}>
-        <div className="bg-gray-50 overflow-auto" style={{ width, height }}>
+        <div className="overflow-auto bg-gray-50" style={{ width, height }}>
           {appRoutes}
         </div>
       </ContentContainer>

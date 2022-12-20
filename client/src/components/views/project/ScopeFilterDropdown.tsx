@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { FormControl, InputLabel, Select } from '@mui/material';
 
 import { SCOPE_FILTER_OPTIONS, FilterOption } from './helpers';
@@ -7,8 +5,8 @@ import { SCOPE_FILTER_OPTIONS, FilterOption } from './helpers';
 type Props = {
   filterOption: FilterOption | null;
   onChange: (value: string) => void;
-  className?: string
-}
+  className?: string;
+};
 
 export default function ScopeFilterDropdown({ filterOption, onChange, className = '' }: Props) {
   return (
@@ -23,7 +21,9 @@ export default function ScopeFilterDropdown({ filterOption, onChange, className 
         inputProps={{ name: 'age', id: 'scope-filter-input', className: 'text-sm leading-4' }}
       >
         {SCOPE_FILTER_OPTIONS.map((o) => (
-          <option key={o.value} value={o.value}>{o.label}</option>
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
         ))}
       </Select>
     </FormControl>

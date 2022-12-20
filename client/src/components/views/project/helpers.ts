@@ -8,14 +8,14 @@ export type SortOption = {
   value: string;
   sort: (scopes: Scopes) => Scopes;
   allowDrag: boolean;
-}
+};
 
 export type FilterOption = {
   label: string;
   value: string;
   filter: (scopes: Scopes) => Scopes;
   allowDrag: boolean;
-}
+};
 
 export function findScopeIndex(scopes: Scopes, scopeId: string) {
   return scopes.findIndex((s) => s?.id === scopeId);
@@ -23,7 +23,9 @@ export function findScopeIndex(scopes: Scopes, scopeId: string) {
 
 export function moveArrayItem<I>(arr: I[], fromIndex: number, toIndex: number) {
   const item = arr[fromIndex];
-  if (!item) { return arr; }
+  if (!item) {
+    return arr;
+  }
   const arrCopy = [...arr];
   arrCopy.splice(fromIndex, 1);
   arrCopy.splice(toIndex, 0, item);
@@ -89,7 +91,9 @@ export function sortScopesByProgressAsc(scopes: Scopes) {
   return [...scopes].sort((a, b) => {
     const aProgress = a?.progress || 0;
     const bProgress = b?.progress || 0;
-    if (aProgress !== bProgress) { return aProgress - bProgress; }
+    if (aProgress !== bProgress) {
+      return aProgress - bProgress;
+    }
 
     return compareStringAlphabetically(a?.title, b?.title);
   });
@@ -99,7 +103,9 @@ export function sortScopesByProgressDesc(scopes: Scopes) {
   return [...scopes].sort((a, b) => {
     const aProgress = a?.progress || 0;
     const bProgress = b?.progress || 0;
-    if (aProgress !== bProgress) { return bProgress - aProgress; }
+    if (aProgress !== bProgress) {
+      return bProgress - aProgress;
+    }
 
     return compareStringAlphabetically(a?.title, b?.title);
   });
@@ -112,8 +118,12 @@ export function sortScopesByTitle(scopes: Scopes) {
 function compareStringAlphabetically(a?: string | null, b?: string | null) {
   const safeA = a || '';
   const safeB = b || '';
-  if (safeA < safeB) { return -1; }
-  if (safeA > safeB) { return 1; }
+  if (safeA < safeB) {
+    return -1;
+  }
+  if (safeA > safeB) {
+    return 1;
+  }
   return 0;
 }
 

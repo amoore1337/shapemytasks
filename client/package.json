@@ -38,6 +38,7 @@
     "start": "WITH_SSL=true vite --host 0.0.0.0",
     "preview": "WITH_SSL=true vite preview --port 3030 --host 0.0.0.0",
     "lint": "eslint -c ./.eslintrc.cjs --fix . --ext .js,.tsx,.ts src",
+    "format": "prettier --write .",
     "build": "tsc && vite build",
     "build:analyze": "tsc && ANALYZE_BUILD=true vite build",
     "gen:types": "NODE_TLS_REJECT_UNAUTHORIZED=0 graphql-codegen"
@@ -70,11 +71,14 @@
     "autoprefixer": "^10.4.13",
     "eslint": "^8.6.0",
     "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "postcss": "^8.4.19",
+    "prettier": "^2.8.1",
+    "prettier-plugin-tailwindcss": "^0.2.1",
     "rollup-plugin-visualizer": "^5.8.3",
     "tailwindcss": "^3.2.4"
   }

@@ -13,6 +13,8 @@ const UPDATE_PROJECT = gql(`
   }
 `);
 
-export function useUpdateProject(options?: MutationHookOptions<UpdateProjectMutation, UpdateProjectMutationVariables>) {
+export function useUpdateProject(
+  options?: MutationHookOptions<UpdateProjectMutation, UpdateProjectMutationVariables>
+) {
   return useMutation(UPDATE_PROJECT, options);
 }

@@ -11,17 +11,14 @@ const CREATE_FLAG = gql(`
 `);
 
 export function useCreateFlag() {
-  return useMutation(
-    CREATE_FLAG,
-    {
-      update: (cache, { data: result }) => {
-        cache.modify({
-          id: `Scope:${result?.createFlag?.scopeId}`,
-          fields: {
-            flag: () => `Flag:${result?.createFlag?.id}`,
-          },
-        });
-      },
+  return useMutation(CREATE_FLAG, {
+    update: (cache, { data: result }) => {
+      cache.modify({
+        id: `Scope:${result?.createFlag?.scopeId}`,
+        fields: {
+          flag: () => `Flag:${result?.createFlag?.id}`,
+        },
+      });
     },
-  );
+  });
 }
