@@ -15,12 +15,15 @@ async function createTeam(name, restrictEmailDomain, createdBy) {
     await createdBy.save();
 
     // Move any projects they've created part of the team too:
-    await Project.update({ teamId: team.id }, {
-      where: {
-        createdById: createdBy.id,
-        teamId: null,
-      },
-    });
+    await Project.update(
+      { teamId: team.id },
+      {
+        where: {
+          createdById: createdBy.id,
+          teamId: null,
+        },
+      }
+    );
 
     await transaction.commit();
   } catch (error) {

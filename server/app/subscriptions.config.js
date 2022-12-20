@@ -13,16 +13,18 @@ async function getUserForConnection(websocket) {
   return false;
 }
 
-module.exports = (schema, httpServer, path) => (
-  SubscriptionServer.create({
-    schema,
-    execute,
-    subscribe,
-    async onConnect(_, websocket) {
-      return getUserForConnection(websocket);
+module.exports = (schema, httpServer, path) =>
+  SubscriptionServer.create(
+    {
+      schema,
+      execute,
+      subscribe,
+      async onConnect(_, websocket) {
+        return getUserForConnection(websocket);
+      },
     },
-  }, {
-    server: httpServer,
-    path,
-  })
-);
+    {
+      server: httpServer,
+      path,
+    }
+  );

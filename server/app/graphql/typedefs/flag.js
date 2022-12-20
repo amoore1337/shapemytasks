@@ -11,7 +11,7 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createFlag(message: String, scopeId:ID!): Flag
+    createFlag(message: String, scopeId: ID!): Flag
     updateFlag(id: ID!, message: String): Flag
     deleteFlagById(id: ID!): Flag
   }

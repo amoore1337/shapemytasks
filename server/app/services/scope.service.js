@@ -6,7 +6,9 @@ const pubSub = require('../graphql/pubSub');
 const { sequelize } = require('../db.config');
 
 async function createScope(params, createdBy) {
-  if (!params.projectId) { return null; }
+  if (!params.projectId) {
+    return null;
+  }
 
   const project = await Project.findByPk(params.projectId);
   if (project && userService.canEditProject(createdBy, project)) {
@@ -33,7 +35,9 @@ async function createScope(params, createdBy) {
 
 async function deleteScope(scopeId, user) {
   const scope = await Scope.findByPk(scopeId);
-  if (!scope) { return null; }
+  if (!scope) {
+    return null;
+  }
 
   const project = await scope.getProject();
   if (project && userService.canEditProject(user, project)) {
@@ -46,11 +50,15 @@ async function deleteScope(scopeId, user) {
 
 async function updateScope(scopeId, user, updateValues) {
   const scope = await Scope.findByPk(scopeId);
-  if (!scope) { return null; }
+  if (!scope) {
+    return null;
+  }
 
   const project = await scope.getProject();
   if (project && updateValues && userService.canEditProject(user, project)) {
-    Object.keys(updateValues).forEach((field) => { scope[field] = updateValues[field]; });
+    Object.keys(updateValues).forEach((field) => {
+      scope[field] = updateValues[field];
+    });
 
     if (updateValues.progress > 99) {
       scope.closedAt = new Date();
@@ -67,10 +75,14 @@ async function updateScope(scopeId, user, updateValues) {
 }
 
 async function updateScopeProgresses(updatesMap, user) {
-  if (!updatesMap.length) { return null; }
+  if (!updatesMap.length) {
+    return null;
+  }
 
   const scope = await Scope.findByPk(updatesMap[0].id);
-  if (!scope) { return null; }
+  if (!scope) {
+    return null;
+  }
 
   const project = await scope.getProject();
   if (!project || !userService.canEditProject(user, project)) {
@@ -113,7 +125,9 @@ async function updateScopeProgresses(updatesMap, user) {
 // wait and see if that's needed.
 async function updateScopePosition(scopeId, targetIndex, user) {
   const scope = await Scope.findByPk(scopeId);
-  if (!scope) { return new Error('Scope not found'); }
+  if (!scope) {
+    return new Error('Scope not found');
+  }
 
   const project = await scope.getProject();
   if (!project || !userService.canEditProject(user, project)) {
@@ -122,14 +136,17 @@ async function updateScopePosition(scopeId, targetIndex, user) {
 
   const scopes = await sequelize.query(
     `SELECT * FROM "Scopes" WHERE "projectId" = ${project.id} order by position COLLATE "C" asc;`,
-    { type: QueryTypes.SELECT },
+    { type: QueryTypes.SELECT }
   );
 
   const fromIndex = scopes.findIndex((s) => s.id === parseInt(scopeId, 10));
   const scopeAtIndex = scopes[targetIndex];
-  if (!scopeAtIndex) { return new Error('Invalid target index'); }
+  if (!scopeAtIndex) {
+    return new Error('Invalid target index');
+  }
 
-  let abovePos; let belowPos;
+  let abovePos;
+  let belowPos;
   if (fromIndex < targetIndex) {
     abovePos = scopeAtIndex.position;
     belowPos = scopes[targetIndex + 1] ? scopes[targetIndex + 1].position : '';

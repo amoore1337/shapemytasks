@@ -84,14 +84,8 @@ const context = async ({ req, connection }) => ({
 // ============================================================================================
 
 module.exports = {
-  typeDefs: [
-    typeDefs,
-    ...Object.values(appTypeDefs),
-  ],
-  resolvers: [
-    resolvers,
-    ...Object.values(appResolvers),
-  ],
+  typeDefs: [typeDefs, ...Object.values(appTypeDefs)],
+  resolvers: [resolvers, ...Object.values(appResolvers)],
   context,
   playground: {
     settings: {

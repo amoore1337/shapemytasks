@@ -23,7 +23,9 @@ async function createProject(title, description, visibility, createdBy) {
 }
 
 async function findAllProjectsForUser(user) {
-  if (!user) { return []; }
+  if (!user) {
+    return [];
+  }
   return Project.findAll({
     where: {
       [Sequelize.Op.or]: [
@@ -35,7 +37,9 @@ async function findAllProjectsForUser(user) {
 }
 
 async function findProjectForUser(projectId, user) {
-  if (!user) { return null; }
+  if (!user) {
+    return null;
+  }
   const project = await Project.findOne({
     where: {
       id: projectId,
@@ -61,7 +65,9 @@ async function deleteProject(projectId, user) {
 async function updateProject(projectId, user, updateValues) {
   const project = await Project.findByPk(projectId);
   if (project && updateValues && userService.canEditProject(user, project)) {
-    Object.keys(updateValues).forEach((field) => { project[field] = updateValues[field]; });
+    Object.keys(updateValues).forEach((field) => {
+      project[field] = updateValues[field];
+    });
     return project.save();
   }
   return null;

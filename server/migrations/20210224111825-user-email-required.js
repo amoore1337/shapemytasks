@@ -2,11 +2,16 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.changeColumn('Users', 'email', {
-        allowNull: false,
-        unique: true,
-        type: Sequelize.STRING,
-      }, { transaction });
+      await queryInterface.changeColumn(
+        'Users',
+        'email',
+        {
+          allowNull: false,
+          unique: true,
+          type: Sequelize.STRING,
+        },
+        { transaction }
+      );
 
       await queryInterface.addIndex('Users', ['email'], {
         name: 'users_email',

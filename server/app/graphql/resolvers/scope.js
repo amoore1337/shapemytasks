@@ -42,38 +42,34 @@ module.exports = {
     scopeCreated: {
       subscribe: withFilter(
         () => pubSub.asyncIterator(['SCOPE_CREATED']),
-        ({ scopeCreated }, { projectId }) => (
+        ({ scopeCreated }, { projectId }) =>
           scopeCreated.dataValues.projectId.toString() === projectId.toString()
-        ),
       ),
     },
 
     scopeUpdated: {
       subscribe: withFilter(
         () => pubSub.asyncIterator(['SCOPE_UPDATED']),
-        ({ scopeUpdated }, { projectId }) => (
-        // ({ scopeUpdated, currentUser }, { projectId }, { user }) => (
+        ({ scopeUpdated }, { projectId }) =>
+          // ({ scopeUpdated, currentUser }, { projectId }, { user }) => (
           // currentUser.id !== user.id &&
           scopeUpdated.dataValues.projectId.toString() === projectId.toString()
-        ),
       ),
     },
 
     scopeBatchProgressUpdated: {
       subscribe: withFilter(
         () => pubSub.asyncIterator(['SCOPE_BATCH_PROGRESS_UPDATED']),
-        ({ scopeBatchProgressUpdated }, { projectId }) => (
+        ({ scopeBatchProgressUpdated }, { projectId }) =>
           scopeBatchProgressUpdated[0].dataValues.projectId.toString() === projectId.toString()
-        ),
       ),
     },
 
     scopeDeleted: {
       subscribe: withFilter(
         () => pubSub.asyncIterator(['SCOPE_DELETED']),
-        ({ scopeDeleted }, { projectId }) => (
+        ({ scopeDeleted }, { projectId }) =>
           scopeDeleted.dataValues.projectId.toString() === projectId.toString()
-        ),
       ),
     },
   },

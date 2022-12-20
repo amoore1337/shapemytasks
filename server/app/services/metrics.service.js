@@ -2,7 +2,9 @@ const { Scope } = require('../models');
 const projectService = require('./project.service');
 
 async function getMetricsForUser(user) {
-  if (!user) { return null; }
+  if (!user) {
+    return null;
+  }
   const projects = await projectService.findAllProjectsForUser(user);
 
   const { count, rows: tasks } = await Scope.findAndCountAll({

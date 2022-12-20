@@ -1,6 +1,4 @@
-const {
-  Model,
-} = require('sequelize');
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -25,18 +23,21 @@ module.exports = (sequelize, DataTypes) => {
     projects: '[Project]',
   };
 
-  User.init({
-    name: DataTypes.STRING,
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
+  User.init(
+    {
+      name: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      avatarUrl: DataTypes.STRING,
+      teamId: DataTypes.INTEGER,
     },
-    avatarUrl: DataTypes.STRING,
-    teamId: DataTypes.INTEGER,
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+    {
+      sequelize,
+      modelName: 'User',
+    }
+  );
   return User;
 };

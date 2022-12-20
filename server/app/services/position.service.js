@@ -9,7 +9,8 @@ function makeCharSet(minChar, maxChar, maxLen, increment) {
   charSet.charCount = charSet.maxChar - charSet.minChar + 1;
   for (let i = 0; i < charSet.maxSize; i++) {
     // eslint-disable-next-line max-len
-    charSet.offsets[i] = BigInt(charSet.charCount) ** BigInt(i) + (charSet.offsets[i - 1] || BigInt(0));
+    charSet.offsets[i] =
+      BigInt(charSet.charCount) ** BigInt(i) + (charSet.offsets[i - 1] || BigInt(0));
   }
   charSet.offsets = charSet.offsets.reverse();
   charSet.maxVal = charSet.offsets[0] * BigInt(charSet.charCount) - BigInt(1);
@@ -22,7 +23,7 @@ function toAlpha(num) {
   num %= charSet.offsets[0];
   let i = 1;
   while (num > 0 && i < charSet.maxSize) {
-    const intVal = ((num + charSet.offsets[i] - BigInt(1)) / charSet.offsets[i]) - BigInt(1);
+    const intVal = (num + charSet.offsets[i] - BigInt(1)) / charSet.offsets[i] - BigInt(1);
     result += String.fromCharCode(charSet.minChar + Number(intVal));
     if (num > 0) {
       num -= BigInt(1);
