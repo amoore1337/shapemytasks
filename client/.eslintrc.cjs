@@ -16,6 +16,7 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': [2, { extensions: ['.tsx'] }],
     'no-use-before-define': 'off',
+    'react/react-in-jsx-scope': 'off',
     'import/no-extraneous-dependencies': 'off',
     '@typescript-eslint/no-use-before-define': ['off'],
     'import/extensions': 'off',

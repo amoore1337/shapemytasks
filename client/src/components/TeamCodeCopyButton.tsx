@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { Button } from '@mui/material';

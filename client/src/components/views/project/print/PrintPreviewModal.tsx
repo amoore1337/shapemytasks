@@ -1,4 +1,4 @@
-import React, { CSSProperties, useState, useEffect } from 'react';
+import { CSSProperties, useState, useEffect } from 'react';
 
 import DownloadIcon from '@mui/icons-material/GetApp';
 import { Button } from '@mui/material';

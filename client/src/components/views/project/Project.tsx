@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import PhotoIcon from '@mui/icons-material/PhotoCamera';
 import { Button, IconButton, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';

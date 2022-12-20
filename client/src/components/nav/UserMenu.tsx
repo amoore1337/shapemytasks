@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import DefaultAvatar from '@mui/icons-material/AccountCircle';
 import GroupIcon from '@mui/icons-material/Group';

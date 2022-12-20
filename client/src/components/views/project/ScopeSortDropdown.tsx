@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { FormControl, InputLabel, Select } from '@mui/material';
 
 import { SCOPE_SORT_OPTIONS, SortOption } from './helpers';

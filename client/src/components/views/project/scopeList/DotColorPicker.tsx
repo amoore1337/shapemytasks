@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { Fade, Tooltip } from '@mui/material';
 import { ColorChangeHandler, TwitterPicker } from 'react-color';

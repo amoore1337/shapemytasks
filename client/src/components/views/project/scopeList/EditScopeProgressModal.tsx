@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import Modal from '@/components/Modal';
 import HillChart, { UpdatedItemsMap } from '@/components/hillChart/HillChart';

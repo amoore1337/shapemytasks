@@ -1,4 +1,4 @@
-import React, { memo, MutableRefObject, useEffect, useRef, useState } from 'react';
+import { memo, MutableRefObject, useEffect, useRef, useState } from 'react';
 
 import { Button } from '@mui/material';
 import { SVG, Svg, Path, Circle as CircleBase, G, extend } from '@svgdotjs/svg.js';
@@ -141,9 +141,10 @@ function HillChartComponent({
       // to avoid flicker.
       createSvgTimeout = window.setTimeout(() => setSvgReady(true), 500);
     }
-    // eslint-disable-next-line no-unused-expressions
     return () => {
-      createSvgTimeout && clearTimeout(createSvgTimeout);
+      if (createSvgTimeout) {
+        clearTimeout(createSvgTimeout);
+      }
     };
   }, [container]);
 

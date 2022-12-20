@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Typography, Link } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 

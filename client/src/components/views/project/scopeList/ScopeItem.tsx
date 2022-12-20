@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from 'react';
+import { useState, MouseEvent } from 'react';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import DragIcon from '@mui/icons-material/DragIndicator';

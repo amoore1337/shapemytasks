@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import useDimensions from 'react-cool-dimensions';
 import { DndProvider } from 'react-dnd';
