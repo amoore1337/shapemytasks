@@ -7,10 +7,17 @@ export default [
   buildScope('0', 'Create scopes with 1 click', getRandomColor(), 88),
   buildScope('1', 'Organize with live updates', getRandomColor(), 75),
   buildScope('2', 'Flag blocked work', getRandomColor(), 33, '0'),
-  buildScope('3', 'Mark nice-to-have\'s', getRandomColor(), 19, undefined, true),
+  buildScope('3', "Mark nice-to-have's", getRandomColor(), 19, undefined, true),
 ];
 
-function buildScope(id: string, title: string, color: string, progress: number, flag?: string, niceToHave = false) {
+function buildScope(
+  id: string,
+  title: string,
+  color: string,
+  progress: number,
+  flag?: string,
+  niceToHave = false
+) {
   return {
     __typename: 'Scope',
     id,
@@ -28,7 +35,9 @@ function buildScope(id: string, title: string, color: string, progress: number, 
 }
 
 function buildFlag(id?: string): Flag | null {
-  if (!id) { return null; }
+  if (!id) {
+    return null;
+  }
   return {
     __typename: 'Flag',
     id,

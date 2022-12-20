@@ -7,7 +7,7 @@ import * as yup from 'yup';
 export type FormValues = {
   title: string;
   description: string;
-}
+};
 
 const validationSchema = yup.object({
   title: yup.string().required('Please provide a title'),
@@ -18,7 +18,7 @@ type Props = {
   onSubmit: (values: FormValues) => Promise<any>;
   disabled?: boolean;
   initialValues?: FormValues;
-}
+};
 
 export default function ProjectModalForm({ onSubmit, disabled, initialValues }: Props) {
   const handleSubmit: FormikConfig<FormValues>['onSubmit'] = async (values) => {
@@ -33,7 +33,12 @@ export default function ProjectModalForm({ onSubmit, disabled, initialValues }: 
   });
 
   return (
-    <form noValidate autoComplete="off" className="pt-8 flex-1 flex flex-col justify-between" onSubmit={formik.handleSubmit}>
+    <form
+      noValidate
+      autoComplete="off"
+      className="flex flex-1 flex-col justify-between pt-8"
+      onSubmit={formik.handleSubmit}
+    >
       <fieldset>
         <TextField
           size="small"
@@ -61,11 +66,7 @@ export default function ProjectModalForm({ onSubmit, disabled, initialValues }: 
           onChange={formik.handleChange}
         />
       </fieldset>
-      <Button
-        type="submit"
-        variant="primary"
-        disabled={disabled}
-      >
+      <Button type="submit" variant="primary" disabled={disabled}>
         Submit
       </Button>
     </form>

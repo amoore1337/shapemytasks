@@ -1,6 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 import {
-  gql, Reference, Cache, ApolloCache, DocumentNode, TypedDocumentNode, StoreObject,
+  gql,
+  Reference,
+  Cache,
+  ApolloCache,
+  DocumentNode,
+  TypedDocumentNode,
+  StoreObject,
 } from '@apollo/client';
 
 type GeneralKeyVal = { [key: string]: any };
@@ -10,25 +16,23 @@ type RemoveCacheItemArgs<T extends GeneralKeyVal> = [
   result: T | null | undefined,
   field: string,
   action: string,
-  existingCacheReference?: string | StoreObject,
+  existingCacheReference?: string | StoreObject
 ];
 
 export function removeCacheItem<T extends GeneralKeyVal>(...args: RemoveCacheItemArgs<T>) {
-  const [
-    cache,
-    result,
-    field,
-    action,
-    existingCacheReference,
-  ] = args;
+  const [cache, result, field, action, existingCacheReference] = args;
 
-  if (!result) { return; }
+  if (!result) {
+    return;
+  }
   const cacheAction: Cache.ModifyOptions = {
     fields: {
       /* eslint-disable default-param-last */
       [field]: (existingRefs: Reference[] = [], { readField }) => {
         const item = result[action];
-        if (!item) { return existingRefs; }
+        if (!item) {
+          return existingRefs;
+        }
 
         return existingRefs.filter((ref) => item.id !== readField('id', ref));
       },
@@ -52,30 +56,29 @@ type AddCacheItemArgs<T extends GeneralKeyVal> = [
   field: string,
   action: string,
   existingCacheReference?: string | StoreObject,
-  fragment?: Fragment,
+  fragment?: Fragment
 ];
 
 export function addCacheItem<T extends GeneralKeyVal>(...args: AddCacheItemArgs<T>) {
-  const [
-    cache,
-    result,
-    field,
-    action,
-    existingCacheReference,
-    fragment,
-  ] = args;
+  const [cache, result, field, action, existingCacheReference, fragment] = args;
 
-  if (!result) { return; }
+  if (!result) {
+    return;
+  }
   const cacheAction: Cache.ModifyOptions = {
     fields: {
       /* eslint-disable default-param-last */
       [field]: (existingRefs: Reference[] = [], { readField }) => {
         const item = result[action];
-        if (!item) { return existingRefs; }
+        if (!item) {
+          return existingRefs;
+        }
 
         const newRef = cache.writeFragment({
           data: item,
-          fragment: fragment || gql`
+          fragment:
+            fragment ||
+            gql`
             fragment New${item.__typename} on ${item.__typename} {
               ${queryValuesForItem(item)}
             }
@@ -103,6 +106,8 @@ export function addCacheItem<T extends GeneralKeyVal>(...args: AddCacheItemArgs<
 
 function queryValuesForItem(item: any) {
   let query = '';
-  Object.keys(item).forEach((key) => { query += `${key}\n`; });
+  Object.keys(item).forEach((key) => {
+    query += `${key}\n`;
+  });
   return query;
 }

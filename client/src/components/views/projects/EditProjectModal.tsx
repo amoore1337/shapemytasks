@@ -8,16 +8,17 @@ import { Project } from '@/models/types';
 
 import ProjectModalForm, { FormValues } from './ProjectModalForm';
 
-type Props ={
+type Props = {
   project: Project;
   open: boolean;
   onClose?: () => void;
-}
+};
 
 export default function EditProjectModal({ onClose, project, ...props }: Props) {
   const [updateProject, { loading, called }] = useUpdateProject();
 
-  const handleSubmit = (values: FormValues) => updateProject({ variables: { id: project.id, ...values } });
+  const handleSubmit = (values: FormValues) =>
+    updateProject({ variables: { id: project.id, ...values } });
 
   useEffect(() => {
     if (!loading && called && onClose) {
@@ -30,11 +31,16 @@ export default function EditProjectModal({ onClose, project, ...props }: Props) 
       {...props}
       onClose={onClose}
       style={{
-        width: '60%', height: '80%', maxWidth: 400, maxHeight: 500,
+        width: '60%',
+        height: '80%',
+        maxWidth: 400,
+        maxHeight: 500,
       }}
     >
-      <div className="flex flex-col h-full">
-        <Typography variant="h4" className="text-2xl">Edit Project</Typography>
+      <div className="flex h-full flex-col">
+        <Typography variant="h4" className="text-2xl">
+          Edit Project
+        </Typography>
         <ProjectModalForm
           onSubmit={handleSubmit}
           disabled={loading}

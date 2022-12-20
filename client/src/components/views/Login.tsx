@@ -24,10 +24,11 @@ const LOGIN_URL = '/api/auth/google';
 
 export default function Login() {
   const [loggingIn, setLoggingIn] = useState(false);
-  const { data, stopPolling } = useQuery(
-    CURRENT_USER_QUERY,
-    { skip: !loggingIn, pollInterval: 1000, fetchPolicy: 'network-only' },
-  );
+  const { data, stopPolling } = useQuery(CURRENT_USER_QUERY, {
+    skip: !loggingIn,
+    pollInterval: 1000,
+    fetchPolicy: 'network-only',
+  });
   const { currentUser, loading, refresh } = useContext(CurrentUserContext);
 
   const location = useLocation();
@@ -53,10 +54,10 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center absolute inset-0">
+    <div className="absolute inset-0 flex items-center justify-center">
       <LoginContainer elevation={3}>
         <img src={logo} alt="logo" width={250} height={250} className="mb-12" />
-        <div className="flex justify-center items-center flex-grow">
+        <div className="flex flex-grow items-center justify-center">
           {loggingIn ? (
             <div className="italic">
               <LoadingIndicator />
@@ -65,7 +66,7 @@ export default function Login() {
           ) : (
             <Button
               variant="outlined"
-              className="normal-case text-lg border-2"
+              className="border-2 text-lg normal-case"
               startIcon={<GoogleIcon width={28} height={29} />}
               onClick={handleLoginStart}
             >

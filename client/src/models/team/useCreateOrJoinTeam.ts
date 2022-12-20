@@ -32,6 +32,8 @@ const CREATE_OR_JOIN_TEAM = gql(`
   }
 `);
 
-export function useCreateOrJoinTeam(options?: MutationHookOptions<JoinTeamMutation, JoinTeamMutationVariables>) {
+export function useCreateOrJoinTeam(
+  options?: MutationHookOptions<JoinTeamMutation, JoinTeamMutationVariables>
+) {
   return useMutation(CREATE_OR_JOIN_TEAM, options);
 }

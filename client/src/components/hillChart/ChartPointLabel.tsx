@@ -3,9 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Svg } from '@svgdotjs/svg.js';
 import tw, { styled, css } from 'twin.macro';
 
-import {
-  Circle, CircleElement, getProgressFromPosition, ViewBox,
-} from './helpers';
+import { Circle, CircleElement, getProgressFromPosition, ViewBox } from './helpers';
 
 const LABEL_HEIGHT = 24;
 
@@ -13,11 +11,13 @@ const StyledLabel = styled.div`
   max-width: 400px;
   height: ${LABEL_HEIGHT}px;
   ${tw`overflow-hidden overflow-ellipsis whitespace-nowrap px-1`}
-  
-  ${({ $printMode }: { $printMode?: boolean }) => $printMode && css`
-    ${tw`whitespace-normal overflow-auto rounded bg-white z-10 shadow`}
-    height: auto;
-  `}
+
+  ${({ $printMode }: { $printMode?: boolean }) =>
+    $printMode &&
+    css`
+      ${tw`whitespace-normal overflow-auto rounded bg-white z-10 shadow`}
+      height: auto;
+    `}
 
   &:hover {
     ${tw`whitespace-normal overflow-auto rounded bg-white z-10 shadow`}
@@ -34,9 +34,13 @@ type Props = {
 };
 
 type EventListener = (event: Event) => void;
-type Position = { top: number, left: number, bottom: number, right: number, progress: number };
+type Position = { top: number; left: number; bottom: number; right: number; progress: number };
 export default function ChartPointLabel({
-  chart, point, dragEnabled, printMode, className = '',
+  chart,
+  point,
+  dragEnabled,
+  printMode,
+  className = '',
 }: Props) {
   const chartRect = chart.node.getBoundingClientRect();
   const startPos = point.node.getBoundingClientRect();
@@ -61,7 +65,10 @@ export default function ChartPointLabel({
       point.dispatchEvent(new MouseEvent(event.type, event));
     };
     if (labelEl.current) {
-      labelEl.current.addEventListener(`${point.chart}.item.${point.chartItem.id}`, handlePosChange as EventListener);
+      labelEl.current.addEventListener(
+        `${point.chart}.item.${point.chartItem.id}`,
+        handlePosChange as EventListener
+      );
       if (dragEnabled) {
         labelEl.current.addEventListener('mousedown', redirectMouseEvent);
       }
@@ -69,7 +76,10 @@ export default function ChartPointLabel({
 
     return () => {
       if (labelEl.current) {
-        labelEl.current.removeEventListener(`${point.chart}.item.${point.chartItem.id}`, handlePosChange as EventListener);
+        labelEl.current.removeEventListener(
+          `${point.chart}.item.${point.chartItem.id}`,
+          handlePosChange as EventListener
+        );
         labelEl.current.removeEventListener('mousedown', redirectMouseEvent);
       }
     };
@@ -77,8 +87,8 @@ export default function ChartPointLabel({
 
   useEffect(() => {
     const pointDiameter = Math.abs(pos.right - pos.left);
-    const midHeight = pos.bottom - (pointDiameter / 2);
-    const top = midHeight - (LABEL_HEIGHT / 2);
+    const midHeight = pos.bottom - pointDiameter / 2;
+    const top = midHeight - LABEL_HEIGHT / 2;
     const style: React.CSSProperties = { top };
 
     if (pos.progress < 51) {
@@ -95,7 +105,9 @@ export default function ChartPointLabel({
     <StyledLabel
       ref={labelEl}
       id={`${point.chart}.item.${point.chartItem.id}.label`}
-      className={`${className} absolute ${dragEnabled ? 'cursor-move' : ''} ${inProgress ? 'text-gray-800' : 'text-gray-300'}`}
+      className={`${className} absolute ${dragEnabled ? 'cursor-move' : ''} ${
+        inProgress ? 'text-gray-800' : 'text-gray-300'
+      }`}
       style={labelStyle}
       $printMode={printMode}
     >
@@ -121,7 +133,9 @@ export function updatePointLabelPos(chart: Svg, point: Circle | CircleElement, v
       progress: getProgressFromPosition(chartPos, viewbox),
     },
   });
-  document.getElementById(`${point.chart}.item.${point.chartItem.id}.label`)?.dispatchEvent(moveEvent);
+  document
+    .getElementById(`${point.chart}.item.${point.chartItem.id}.label`)
+    ?.dispatchEvent(moveEvent);
 }
 
 function getStartPosition(chart: DOMRect, startPos: DOMRect, point: CircleElement) {

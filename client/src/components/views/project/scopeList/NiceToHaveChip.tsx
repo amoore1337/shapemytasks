@@ -7,9 +7,5 @@ const StyledChip = styled.span`
 `;
 
 export default function NiceToHaveChip(props: React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <StyledChip {...props}>
-      Nice to have
-    </StyledChip>
-  );
+  return <StyledChip {...props}>Nice to have</StyledChip>;
 }

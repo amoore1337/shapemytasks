@@ -1,8 +1,6 @@
 import React from 'react';
 
-import {
-  Circle as CircleBase, Element,
-} from '@svgdotjs/svg.js';
+import { Circle as CircleBase, Element } from '@svgdotjs/svg.js';
 
 export type ChartItem = {
   id: string;
@@ -14,7 +12,7 @@ export type ChartItem = {
 export type ViewBox = {
   x: number;
   y: number;
-}
+};
 
 export const DEFAULT_VIEW_BOX: ViewBox = {
   x: 750,
@@ -39,7 +37,7 @@ const Y_OFFSET = 2;
 export function hillForumula(x: number, viewbox: ViewBox = DEFAULT_VIEW_BOX) {
   // TODO: Eh, performance seems fine so far, but this function is called a TON.
   // Maybe round x values to nearest int and store cache of results in-memory?
-  const amp = (viewbox.y / 2) - Y_OFFSET;
+  const amp = viewbox.y / 2 - Y_OFFSET;
   return -amp * Math.sin(x * ((2 * Math.PI) / viewbox.x) - 1.5 * Math.PI) + amp;
 }
 
@@ -57,7 +55,7 @@ export function findChartPoint(points: CircleElement[], itemId?: string | null) 
 }
 
 export function getProgressFromPosition(position: number, viewbox: ViewBox = DEFAULT_VIEW_BOX) {
-  let progress = (position / (viewbox.x)) * 100;
+  let progress = (position / viewbox.x) * 100;
   progress = Math.min(progress, 100);
   progress = Math.max(progress, 0);
 

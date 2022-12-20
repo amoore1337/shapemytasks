@@ -12,9 +12,14 @@ export const CREATE_PROJECT = gql(`
   }
 `);
 
-export function useCreateProject(options?: Omit<MutationHookOptions<CreateProjectMutation, CreateProjectMutationVariables>, 'update'>) {
-  return useMutation(
-    CREATE_PROJECT,
-    { update: (cache, { data: result }) => addCacheItem(cache, result, 'projects', 'createProject'), ...options },
-  );
+export function useCreateProject(
+  options?: Omit<
+    MutationHookOptions<CreateProjectMutation, CreateProjectMutationVariables>,
+    'update'
+  >
+) {
+  return useMutation(CREATE_PROJECT, {
+    update: (cache, { data: result }) => addCacheItem(cache, result, 'projects', 'createProject'),
+    ...options,
+  });
 }

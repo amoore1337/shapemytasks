@@ -66,9 +66,7 @@ module.exports = {
       cursor: ['disabled'],
     },
   },
-  plugins: [
-    flexFreeze,
-  ],
+  plugins: [flexFreeze],
   important: true,
 };
 

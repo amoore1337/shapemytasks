@@ -3,10 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: [
-    'plugin:react/recommended',
-    'airbnb',
-  ],
+  extends: ['plugin:react/recommended', 'airbnb', 'prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -15,10 +12,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-  ],
+  plugins: ['react', '@typescript-eslint'],
   rules: {
     'react/jsx-filename-extension': [2, { extensions: ['.tsx'] }],
     'no-use-before-define': 'off',
@@ -33,17 +27,23 @@ module.exports = {
     'no-unused-vars': 'off',
     'no-continue': 'off',
     'import/prefer-default-export': 'off',
-    'import/order': ['error', {
-      alphabetize: { order: 'asc' },
-      'newlines-between': 'always',
-      groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
-      pathGroups: [
-        { pattern: 'react', group: 'builtin' },
-        { pattern: '@/**', group: 'internal', position: 'after' },
-      ],
-      pathGroupsExcludedImportTypes: [],
-    }],
-    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+    'import/order': [
+      'error',
+      {
+        alphabetize: { order: 'asc' },
+        'newlines-between': 'always',
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+        pathGroups: [
+          { pattern: 'react', group: 'builtin' },
+          { pattern: '@/**', group: 'internal', position: 'after' },
+        ],
+        pathGroupsExcludedImportTypes: [],
+      },
+    ],
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+    ],
     'react/no-array-index-key': 'warn',
   },
   settings: {

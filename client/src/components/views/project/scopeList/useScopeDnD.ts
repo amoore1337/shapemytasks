@@ -1,5 +1,9 @@
 import {
-  ConnectDragPreview, ConnectDragSource, ConnectDropTarget, useDrag, useDrop,
+  ConnectDragPreview,
+  ConnectDragSource,
+  ConnectDropTarget,
+  useDrag,
+  useDrop,
 } from 'react-dnd';
 
 import { ProjectScope } from '../helpers';
@@ -10,15 +14,20 @@ type FindFn = (scopeId: string) => number;
 type DragItem = {
   scope: ProjectScope;
   originalIndex: number;
-}
+};
 
-type Return = [dragRef: ConnectDragSource, dropRef: ConnectDropTarget, preview: ConnectDragPreview, isDragging: boolean];
+type Return = [
+  dragRef: ConnectDragSource,
+  dropRef: ConnectDropTarget,
+  preview: ConnectDragPreview,
+  isDragging: boolean
+];
 
 export default function useScopeDnd(
   scope: ProjectScope,
   moveScope: MoveFn,
   findScopeIndex: FindFn,
-  dragEnabled: boolean,
+  dragEnabled: boolean
 ): Return {
   const originalIndex = findScopeIndex(scope.id);
   const [{ isDragging }, drag, preview] = useDrag(
@@ -40,7 +49,7 @@ export default function useScopeDnd(
         }
       },
     }),
-    [scope, originalIndex, moveScope],
+    [scope, originalIndex, moveScope]
   );
 
   const [, drop] = useDrop(
@@ -54,13 +63,8 @@ export default function useScopeDnd(
         }
       },
     }),
-    [findScopeIndex, moveScope],
+    [findScopeIndex, moveScope]
   );
 
-  return [
-    drag,
-    drop,
-    preview,
-    isDragging,
-  ];
+  return [drag, drop, preview, isDragging];
 }

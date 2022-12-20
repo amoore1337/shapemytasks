@@ -12,12 +12,15 @@ export const DELETE_PROJECT = gql(`
   }
 `);
 
-export function useDeleteProject(options?: Omit<MutationHookOptions<DeleteProjectMutation, DeleteProjectMutationVariables>, 'update'>) {
-  return useMutation(
-    DELETE_PROJECT,
-    {
-      update: (cache, { data: result }) => (removeCacheItem(cache, result, 'projects', 'deleteProjectById')),
-      ...options,
-    },
-  );
+export function useDeleteProject(
+  options?: Omit<
+    MutationHookOptions<DeleteProjectMutation, DeleteProjectMutationVariables>,
+    'update'
+  >
+) {
+  return useMutation(DELETE_PROJECT, {
+    update: (cache, { data: result }) =>
+      removeCacheItem(cache, result, 'projects', 'deleteProjectById'),
+    ...options,
+  });
 }

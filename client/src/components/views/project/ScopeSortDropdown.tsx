@@ -7,7 +7,7 @@ import { SCOPE_SORT_OPTIONS, SortOption } from './helpers';
 type Props = {
   sortOption: SortOption;
   onChange: (value: string) => void;
-}
+};
 
 export default function ScopeSortDropdown({ sortOption, onChange }: Props) {
   return (
@@ -22,7 +22,9 @@ export default function ScopeSortDropdown({ sortOption, onChange }: Props) {
         inputProps={{ name: 'age', id: 'scope-sort-input', className: 'text-sm leading-4' }}
       >
         {SCOPE_SORT_OPTIONS.map((o) => (
-          <option key={o.value} value={o.value}>{o.label}</option>
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
         ))}
       </Select>
     </FormControl>

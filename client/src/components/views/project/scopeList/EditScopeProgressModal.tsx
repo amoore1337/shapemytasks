@@ -10,20 +10,25 @@ type Props = {
   scope: ProjectScope;
   open: boolean;
   onClose?: () => void;
-}
+};
 
 export default function EditScopeProgressModal({ onClose, scope, ...props }: Props) {
   const [data, setData] = useState([scope]);
   const [enableProgressEdit, setEnableProgressEdit] = useState(true);
   const [updateScope, { loading, called }] = useUpdateScopeProgressById();
 
-  const handleSave = useCallback((updatedItems: UpdatedItemsMap) => {
-    updateScope({ variables: { id: scope.id, progress: updatedItems[scope.id] } });
-    setEnableProgressEdit(false);
-  }, [updateScope]);
+  const handleSave = useCallback(
+    (updatedItems: UpdatedItemsMap) => {
+      updateScope({ variables: { id: scope.id, progress: updatedItems[scope.id] } });
+      setEnableProgressEdit(false);
+    },
+    [updateScope]
+  );
 
   const handleClose = useCallback(() => {
-    if (onClose) { onClose(); }
+    if (onClose) {
+      onClose();
+    }
     setEnableProgressEdit(false);
   }, [onClose]);
 
@@ -45,11 +50,14 @@ export default function EditScopeProgressModal({ onClose, scope, ...props }: Pro
       {...props}
       onClose={onClose}
       style={{
-        width: '95%', height: '80%', maxWidth: 1200, maxHeight: 800,
+        width: '95%',
+        height: '80%',
+        maxWidth: 1200,
+        maxHeight: 800,
       }}
       noCloseButton
     >
-      <div className="flex flex-col h-full pt-10">
+      <div className="flex h-full flex-col pt-10">
         <HillChart
           width="100%"
           height="100%"

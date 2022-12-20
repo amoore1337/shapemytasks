@@ -17,10 +17,15 @@ type Props = {
   color?: string;
   className?: string;
   style?: React.CSSProperties;
-}
+};
 
-export default function Dot({
-  size, color, className, style,
-}: Props) {
-  return <StyledDot className={className} style={style} $color={color || getRandomColor()} $size={size || 20} />;
+export default function Dot({ size, color, className, style }: Props) {
+  return (
+    <StyledDot
+      className={className}
+      style={style}
+      $color={color || getRandomColor()}
+      $size={size || 20}
+    />
+  );
 }

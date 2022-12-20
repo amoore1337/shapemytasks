@@ -34,9 +34,11 @@ export default function TeamMembersCard() {
   const members = data?.team?.members || [];
 
   return (
-    <section className="p-4 bg-white shadow rounded text-gray-800">
+    <section className="rounded bg-white p-4 text-gray-800 shadow">
       <div className="flex w-full justify-between">
-        <Typography variant="h6" component="h2">Team Members</Typography>
+        <Typography variant="h6" component="h2">
+          Team Members
+        </Typography>
         {currentUser?.team && (
           // TODO: Ugh, TeamCodeCopyButton should handle it's own static width better:
           <div style={{ width: 190 }}>
@@ -47,11 +49,17 @@ export default function TeamMembersCard() {
       {loading && <LoadingIndicator />}
       {members.length > 0 && (
         <ul>
-          {members.map((member) => member && (
-            <li className="border-b border-solid border-blue-200 last:border-b-0 py-2" key={member.id}>
-              {member.name || member.email}
-            </li>
-          ))}
+          {members.map(
+            (member) =>
+              member && (
+                <li
+                  className="border-b border-solid border-blue-200 py-2 last:border-b-0"
+                  key={member.id}
+                >
+                  {member.name || member.email}
+                </li>
+              )
+          )}
         </ul>
       )}
       {!currentUser?.team && (

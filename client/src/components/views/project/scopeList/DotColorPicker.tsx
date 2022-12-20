@@ -21,7 +21,7 @@ type Props = {
   selectedColor: string;
   onChange: (color: string) => void;
   size?: number;
-}
+};
 
 export default function DotColorPicker({ selectedColor, onChange, size = 20 }: Props) {
   const [showPicker, setShowPicker] = useState(false);
@@ -44,10 +44,14 @@ export default function DotColorPicker({ selectedColor, onChange, size = 20 }: P
   const offset = Math.min(size / 2) - 20;
 
   return (
-    <div className="relative z-10 flex-freeze flex" style={{ width: size, height: size }} onBlur={handleBlur}>
+    <div
+      className="flex-freeze relative z-10 flex"
+      style={{ width: size, height: size }}
+      onBlur={handleBlur}
+    >
       <Tooltip title="Edit dot color">
         <button
-          className="rounded-full w-full h-full"
+          className="h-full w-full rounded-full"
           style={{ backgroundColor: selectedColor }}
           type="button"
           aria-label="Pick Color"

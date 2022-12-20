@@ -22,7 +22,11 @@ export default function TeamCodeCopyButton({ teamCode }: { teamCode: string }) {
     } else {
       setButtonText(BUTTON_TEXTS.normal);
     }
-    return () => { if (timeout) { clearTimeout(timeout); } };
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
   }, [copied]);
 
   return (

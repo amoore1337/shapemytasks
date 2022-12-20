@@ -17,7 +17,7 @@ import ProjectCard from './ProjectCard';
 export default function Projects() {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<null |Project>();
+  const [selectedProject, setSelectedProject] = useState<null | Project>();
   const { data, loading } = useQuery(ProjectsDocument);
   const [destroyProject] = useDeleteProject();
 
@@ -45,14 +45,14 @@ export default function Projects() {
 
   if (!data && loading) {
     return (
-      <div className="text-center p-8">
+      <div className="p-8 text-center">
         <LoadingIndicator />
       </div>
     );
   }
 
   return (
-    <div className="text-center p-8">
+    <div className="p-8 text-center">
       <Grid container spacing={2} justifyContent="center">
         {data?.projects?.map((project) => (
           <Grid item key={project?.id}>
