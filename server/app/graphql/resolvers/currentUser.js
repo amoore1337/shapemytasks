@@ -1,6 +1,7 @@
 const userService = require('../../services/user.service');
 const teamService = require('../../services/team.service');
 const { rejectUnauthenticated } = require('../helpers');
+const { db } = require('../../db.ts');
 
 module.exports = {
   Mutation: {
@@ -24,8 +25,11 @@ module.exports = {
   },
 
   CurrentUser: {
-    team(currentUser) {
-      return currentUser.getTeam();
+    async team(currentUser) {
+      if (currentUser.teamId) {
+        return db.teams.findUnique({ where: { id: currentUser.teamId } });
+      }
+      return null;
     },
   },
 };

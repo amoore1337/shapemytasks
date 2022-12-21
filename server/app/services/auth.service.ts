@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from 'nconf';
-const { User } = require('../models');
+import { db } from '../db';
 
 interface JwtContent {
   userId: number;
@@ -26,9 +26,14 @@ export async function loginFromGoogle(data: BasicGoogleProfile) {
     email: data.emails[0].value,
     avatarUrl: data.photos[0].value,
   };
-  const [user] = await User.findOrCreate({
+  // const [user] = await User.findOrCreate({
+  //   where: { email },
+  //   profileDetails,
+  // });
+  const user = await db.users.upsert({
     where: { email },
-    profileDetails,
+    update: {},
+    create: { ...profileDetails, email },
   });
   return generateJWT({ userId: user.id });
 }
@@ -38,7 +43,7 @@ export async function getUserForJWT(token: string) {
   if (token) {
     try {
       const { userId } = verifyJWT(token);
-      user = await User.findByPk(userId);
+      user = await db.users.findUnique({ where: { id: userId } });
     } catch (error) {
       // Just don't return a user for now?
     }

@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+// @default(now())
+//   updatedAt        DateTime       @updatedAt
+model Flags {
+  id          Int      @id @default(autoincrement())
+  message     String?  @db.VarChar(255)
+  createdById Int
+  scopeId     Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        Users    @relation(fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  scope       Scopes   @relation(fields: [scopeId], references: [id], onDelete: Cascade)
+}
+
+model Projects {
+  id          Int      @id @default(autoincrement())
+  title       String?  @db.VarChar(255)
+  description String?  @db.VarChar(255)
+  createdById Int?
+  visibility  String   @default("visible") @db.VarChar(255)
+  teamId      Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        Users?   @relation(fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  team        Teams?   @relation(fields: [teamId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  scopes      Scopes[]
+}
+
+model Scopes {
+  id          Int       @id @default(autoincrement())
+  title       String?   @db.VarChar(255)
+  description String?   @db.VarChar(255)
+  createdById Int?
+  projectId   Int?
+  color       String    @default("#0277bd") @db.VarChar(255)
+  progress    Float     @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  position    String?   @db.VarChar(255)
+  closedAt    DateTime? @db.Timestamptz(6)
+  niceToHave  Boolean?
+  flags       Flags[]
+  creator     Users?    @relation(fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  project     Projects? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model SequelizeMeta {
+  name String @id @db.VarChar(255)
+}
+
+model Teams {
+  id                             Int        @id @default(autoincrement())
+  name                           String?    @db.VarChar(255)
+  createdById                    Int?
+  createdAt                      DateTime   @default(now())
+  updatedAt                      DateTime   @updatedAt
+  joinCode                       String?    @db.VarChar(255)
+  restrictEmailDomain            String?    @db.VarChar(255)
+  Projects                       Projects[]
+  users                          Users[]
+}
+
+model Users {
+  id                             Int        @id @default(autoincrement())
+  name                           String?    @db.VarChar(255)
+  email                          String     @unique @db.VarChar(255)
+  avatarUrl                      String?    @db.VarChar(255)
+  createdAt                      DateTime   @default(now())
+  updatedAt                      DateTime   @updatedAt
+  teamId                         Int?
+  flags                          Flags[]
+  projects                       Projects[]
+  scopes                         Scopes[]
+  team                           Teams?     @relation(fields: [teamId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}

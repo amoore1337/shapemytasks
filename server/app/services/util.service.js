@@ -60,7 +60,16 @@ function randomStringGenerator(len) {
   return result;
 }
 
+function parsedId(id) {
+  if (typeof id === 'string') {
+    return parseInt(id, 10);
+  }
+
+  return id;
+}
+
 module.exports = {
+  parsedId,
   getCookie,
   charRange,
   base26EncodeNum,

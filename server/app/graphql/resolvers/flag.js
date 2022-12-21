@@ -1,4 +1,5 @@
 const flagService = require('../../services/flag.service');
+const { createFlag } = require('../../services/flagM.ts');
 const { basicQueryAllResolver, basicFindByIdResolver } = require('../helpers');
 const { rejectUnauthenticated } = require('../helpers');
 const { Flag } = require('../../models');
@@ -8,7 +9,7 @@ module.exports = {
     createFlag(_, params, { user }) {
       rejectUnauthenticated(user);
 
-      return flagService.createFlag(params, user);
+      return createFlag(params, user);
     },
 
     updateFlag(_, { id, ...updateValues }, { user }) {

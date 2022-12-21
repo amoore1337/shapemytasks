@@ -1,52 +1,59 @@
 const { rejectUnauthenticated } = require('../helpers');
-const projectService = require('../../services/project.service');
+const {
+  findAllAuthorizedProjectsForUser,
+  findAuthorizedProject,
+  createProject,
+  updateProject,
+  deleteAuthorizedProject,
+} = require('../../services/projectM.ts');
+const { db } = require('../../db.ts');
 
 module.exports = {
   Mutation: {
-    createProject(_, { title, description, visibility }, { user }) {
+    async createProject(_, createParams, { user }) {
       rejectUnauthenticated(user);
 
-      return projectService.createProject(title, description, visibility, user);
+      return createProject(user, createParams);
     },
 
     updateProject(_, { id, ...updateValues }, { user }) {
       rejectUnauthenticated(user);
 
-      return projectService.updateProject(id, user, updateValues);
+      return updateProject(id, user, updateValues);
     },
 
     deleteProjectById(_, { id }, { user }) {
       rejectUnauthenticated(user);
 
-      return projectService.deleteProject(id, user);
+      return deleteAuthorizedProject(user, id);
     },
   },
 
   Query: {
-    projects(_, __, { user }) {
+    async projects(_, __, { user }) {
       rejectUnauthenticated(user);
 
-      return projectService.findAllProjectsForUser(user);
+      return findAllAuthorizedProjectsForUser(user);
     },
 
-    project(_, { id }, { user }) {
+    async project(_, { id }, { user }) {
       rejectUnauthenticated(user);
 
-      return projectService.findProjectForUser(id, user);
+      return findAuthorizedProject(id, user);
     },
   },
 
   Project: {
-    team(project) {
-      return project.getTeam();
+    async team(project) {
+      return db.teams.findUnique({ where: { id: project.teamId } });
     },
 
-    owner(project) {
-      return project.getOwner();
+    async owner(project) {
+      return db.users.findUnique({ where: { id: project.createdById } });
     },
 
-    scopes(project) {
-      return project.getScopes({ order: [['id', 'ASC']] });
+    async scopes(project) {
+      return db.scopes.findMany({ where: { projectId: project.id }, order: [{ id: 'asc' }] });
     },
   },
 };
