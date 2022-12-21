@@ -12,7 +12,7 @@ module.exports = (router) => {
 
   router.get(
     '/google/callback',
-    passport.authenticate('google'),
+    passport.authenticate('google', { session: false }),
     wrapAsync(async (req, res) => {
       const token = await loginFromGoogle(req.user);
       res.cookie('t_id', token, { httpOnly: true });
@@ -22,9 +22,9 @@ module.exports = (router) => {
       <!DOCTYPE html>
       <html>
       <body>
-      
+
       <script>window.close();</script>
-      
+
       </body>
       </html>
     `);
