@@ -1,6 +1,6 @@
-const config = require('nconf');
-const path = require('path');
-const fs = require('fs');
+import config from 'nconf';
+import path from 'path';
+import fs from 'fs';
 
 // Load Environment variables from .env file
 const dotEnvPath = path.resolve(process.cwd(), './config/.env');

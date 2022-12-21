@@ -9,8 +9,7 @@ function makeCharSet(minChar, maxChar, maxLen, increment) {
   charSet.charCount = charSet.maxChar - charSet.minChar + 1;
   for (let i = 0; i < charSet.maxSize; i++) {
     // eslint-disable-next-line max-len
-    charSet.offsets[i] =
-      BigInt(charSet.charCount) ** BigInt(i) + (charSet.offsets[i - 1] || BigInt(0));
+    charSet.offsets[i] = BigInt(charSet.charCount ** i) + (charSet.offsets[i - 1] || BigInt(0));
   }
   charSet.offsets = charSet.offsets.reverse();
   charSet.maxVal = charSet.offsets[0] * BigInt(charSet.charCount) - BigInt(1);
@@ -88,7 +87,9 @@ function midString(a, b) {
   return mid;
 }
 
-const charSet = makeCharSet(' ', '~', 20, BigInt(2) ** BigInt(100));
+const increment = BigInt(2 ** 100);
+
+const charSet = makeCharSet(' ', '~', 20, increment);
 
 module.exports = {
   midString,
