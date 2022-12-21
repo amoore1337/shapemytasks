@@ -1,20 +1,18 @@
-const { gql } = require('apollo-server-express');
 const { GraphQLScalarType, Kind } = require('graphql');
 const requireDir = require('require-dir');
 
 const { getUserForJWT } = require('../services/auth.service');
-const { getCookie } = require('../services/util.service');
 
 const appTypeDefs = requireDir('./typedefs');
 const appResolvers = requireDir('./resolvers');
 
 // ============================================================================================
 
-const customScalarsTypeDef = `
+const customScalarsTypeDef = `#graphql
   scalar Date
 `;
 
-const typeDefs = gql`
+const typeDefs = `#graphql
   ${customScalarsTypeDef}
 
   type Query {
@@ -62,14 +60,6 @@ const resolvers = {
 
 // ============================================================================================
 
-async function getUserForConnection(connection) {
-  if (connection.upgradeReq && connection.upgradeReq.headers) {
-    const token = getCookie(connection.upgradeReq.headers.cookie, 't_id');
-    return getUserForJWT(token);
-  }
-  return null;
-}
-
 async function getUserForRequest(req) {
   if (req.cookies && req.cookies.t_id) {
     return getUserForJWT(req.cookies.t_id);
@@ -77,8 +67,8 @@ async function getUserForRequest(req) {
   return null;
 }
 
-const context = async ({ req, connection }) => ({
-  user: connection ? await getUserForConnection(connection) : await getUserForRequest(req),
+const context = async ({ req }) => ({
+  user: await getUserForRequest(req),
 });
 
 // ============================================================================================

@@ -1,11 +1,11 @@
-const { execute, subscribe } = require('graphql');
-const { SubscriptionServer } = require('subscriptions-transport-ws');
+const { WebSocketServer } = require('ws');
+const { useServer } = require('graphql-ws/lib/use/ws');
 const { getUserForJWT } = require('./services/auth.service');
 const { getCookie } = require('./services/util.service');
 
-async function getUserForConnection(websocket) {
-  if (websocket.upgradeReq && websocket.upgradeReq.headers) {
-    const token = getCookie(websocket.upgradeReq.headers.cookie, 't_id');
+async function getUserForConnection(request) {
+  if (request?.headers?.cookie) {
+    const token = getCookie(request.headers.cookie, 't_id');
     return {
       user: await getUserForJWT(token),
     };
@@ -13,18 +13,19 @@ async function getUserForConnection(websocket) {
   return false;
 }
 
-module.exports = (schema, httpServer, path) =>
-  SubscriptionServer.create(
+module.exports = (schema, httpServer, path) => {
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path,
+  });
+
+  const serverCleanup = useServer(
     {
       schema,
-      execute,
-      subscribe,
-      async onConnect(_, websocket) {
-        return getUserForConnection(websocket);
-      },
+      context: (ctx) => getUserForConnection(ctx.extra.request),
     },
-    {
-      server: httpServer,
-      path,
-    }
+    wsServer
   );
+
+  return serverCleanup;
+};

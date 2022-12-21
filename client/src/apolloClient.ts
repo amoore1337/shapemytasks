@@ -1,9 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { ApolloClient, HttpLink, split, InMemoryCache, from } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
-import { WebSocketLink } from '@apollo/client/link/ws';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { GraphQLError } from 'graphql';
+import { createClient } from 'graphql-ws';
 
 const GRAPH_ERROR_MAP = {
   GRAPHQL_PARSE_FAILED: 'GRAPHQL_PARSE_FAILED',
@@ -33,12 +34,11 @@ const httpLink = new HttpLink({
   uri: '/api/graphql',
 });
 
-const wsLink = new WebSocketLink({
-  uri: `wss://${window.location.host}/api/subscriptions`,
-  options: {
-    reconnect: true,
-  },
-});
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: `wss://${window.location.host}/api/subscriptions`,
+  })
+);
 
 // The split function takes three parameters:
 //

@@ -1,6 +1,4 @@
-const { gql } = require('apollo-server-express');
-
-module.exports = gql`
+module.exports = `#graphql
   type Metrics {
     openProjects: Int!
     totalTasks: Int!
