@@ -60,14 +60,6 @@ const resolvers = {
 
 // ============================================================================================
 
-// async function getUserForConnection(connection) {
-//   if (connection.upgradeReq && connection.upgradeReq.headers) {
-//     const token = getCookie(connection.upgradeReq.headers.cookie, 't_id');
-//     return getUserForJWT(token);
-//   }
-//   return null;
-// }
-
 async function getUserForRequest(req) {
   if (req.cookies && req.cookies.t_id) {
     return getUserForJWT(req.cookies.t_id);
@@ -77,7 +69,6 @@ async function getUserForRequest(req) {
 
 const context = async ({ req }) => ({
   user: await getUserForRequest(req),
-  // user: connection ? await getUserForConnection(connection) : await getUserForRequest(req),
 });
 
 // ============================================================================================

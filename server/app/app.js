@@ -72,8 +72,6 @@ module.exports = async (callback) => {
 
   await apollo.start();
 
-  // apollo.applyMiddleware({ app, path: graphqlPath });
-
   app.use(graphqlPath, expressMiddleware(apollo, { context }));
 
   httpServer.listen(SERVER_PORT, SERVER_HOST, () => {

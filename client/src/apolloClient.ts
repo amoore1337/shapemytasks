@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { ApolloClient, HttpLink, split, InMemoryCache, from } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
-// import { WebSocketLink } from '@apollo/client/link/ws';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { GraphQLError } from 'graphql';
@@ -40,13 +39,6 @@ const wsLink = new GraphQLWsLink(
     url: `wss://${window.location.host}/api/subscriptions`,
   })
 );
-
-// const wsLink = new WebSocketLink({
-//   uri: `wss://${window.location.host}/api/subscriptions`,
-//   options: {
-//     reconnect: true,
-//   },
-// });
 
 // The split function takes three parameters:
 //

@@ -1,3 +1,5 @@
+const { GraphQLError } = require('graphql');
+
 const uniqueColTypeMap = {
   id: 'ID',
   createdById: 'ID',
@@ -74,7 +76,11 @@ function basicFindByIdResolver(Model, requireAuth = true) {
 
 function rejectUnauthenticated(currentUser) {
   if (!currentUser) {
-    throw new Error('You must be logged in to perform this action.');
+    throw new GraphQLError('You are not authorized to perform this action.', {
+      extensions: {
+        code: 'FORBIDDEN',
+      },
+    });
   }
 }
 
