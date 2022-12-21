@@ -1,8 +1,7 @@
-const { gql } = require('apollo-server-express');
 const { typeDefForModel } = require('../helpers');
 const { Project } = require('../../models');
 
-module.exports = gql`
+module.exports = `#graphql
   ${typeDefForModel(Project)}
 
   extend type Query {

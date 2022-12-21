@@ -1,5 +1,3 @@
-const { AuthenticationError } = require('apollo-server-express');
-
 const uniqueColTypeMap = {
   id: 'ID',
   createdById: 'ID',
@@ -76,7 +74,7 @@ function basicFindByIdResolver(Model, requireAuth = true) {
 
 function rejectUnauthenticated(currentUser) {
   if (!currentUser) {
-    throw new AuthenticationError('You must be logged in to perform this action.');
+    throw new Error('You must be logged in to perform this action.');
   }
 }
 

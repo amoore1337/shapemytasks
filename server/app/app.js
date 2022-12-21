@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const config = require('nconf');
 const passport = require('passport');
-const { ApolloServer } = require('apollo-server-express');
+const { ApolloServer } = require('@apollo/server');
+const { expressMiddleware } = require('@apollo/server/express4');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 const graphqlConfig = require('./graphql/schema');
 const createSubscriptionServer = require('./subscriptions.config');
@@ -43,7 +44,7 @@ module.exports = async (callback) => {
 
   const httpServer = require('http').createServer(app);
 
-  const { typeDefs, resolvers, ...graphConfig } = graphqlConfig;
+  const { typeDefs, resolvers, context, ...graphConfig } = graphqlConfig;
 
   const graphqlPath = '/api/graphql';
   const subscriptionPath = '/api/subscriptions';
@@ -52,7 +53,8 @@ module.exports = async (callback) => {
   const subscriptionServer = createSubscriptionServer(schema, httpServer, subscriptionPath);
 
   const apollo = new ApolloServer({
-    schema,
+    typeDefs,
+    resolvers,
     ...graphConfig,
     playground: config.get('NODE_ENV') === 'dev',
     plugins: [
@@ -60,7 +62,7 @@ module.exports = async (callback) => {
         async serverWillStart() {
           return {
             async drainServer() {
-              subscriptionServer.close();
+              await subscriptionServer.dispose();
             },
           };
         },
@@ -70,13 +72,15 @@ module.exports = async (callback) => {
 
   await apollo.start();
 
-  apollo.applyMiddleware({ app, path: graphqlPath });
+  // apollo.applyMiddleware({ app, path: graphqlPath });
+
+  app.use(graphqlPath, expressMiddleware(apollo, { context }));
 
   httpServer.listen(SERVER_PORT, SERVER_HOST, () => {
     console.log(
-      `Server running in ${config.get('NODE_ENV')} mode on port ${SERVER_PORT} - GraphQL: ${
-        apollo.graphqlPath
-      } - Subscriptions: ${subscriptionPath}`
+      `Server running in ${config.get(
+        'NODE_ENV'
+      )} mode on port ${SERVER_PORT} - GraphQL: ${graphqlPath} - Subscriptions: ${subscriptionPath}`
     );
     if (callback) {
       callback();
