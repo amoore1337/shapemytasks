@@ -1,12 +1,12 @@
 const { rejectUnauthenticated } = require('../helpers');
-const metricsService = require('../../services/metrics.service');
+const { findMetricsForUser } = require('../../services/metricsM.ts');
 
 module.exports = {
   Query: {
     metrics: (_, __, { user }) => {
       rejectUnauthenticated(user);
 
-      return metricsService.getMetricsForUser(user);
+      return findMetricsForUser(user);
     },
   },
 };

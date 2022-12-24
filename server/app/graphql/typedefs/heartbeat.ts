@@ -1,4 +1,4 @@
-module.exports = `#graphql
+export = `#graphql
   type Heartbeat {
     authenticated: Boolean!
   }

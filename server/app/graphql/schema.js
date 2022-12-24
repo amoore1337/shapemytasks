@@ -1,7 +1,7 @@
 const { GraphQLScalarType, Kind } = require('graphql');
 const requireDir = require('require-dir');
 
-const { getUserForJWT } = require('../services/auth.service');
+const { getUserForJWT } = require('../services/auth.service.ts');
 
 const appTypeDefs = requireDir('./typedefs');
 const appResolvers = requireDir('./resolvers');

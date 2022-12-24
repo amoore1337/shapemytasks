@@ -1,6 +1,7 @@
 const { basicQueryAllResolver, basicFindByIdResolver } = require('../helpers');
 const { User } = require('../../models');
-const projectService = require('../../services/project.service');
+const { findAllAuthorizedProjectsForUser } = require('../../services/projectM.ts');
+const { db } = require('../../db.ts');
 
 module.exports = {
   Query: {
@@ -9,14 +10,14 @@ module.exports = {
   },
 
   User: {
-    ownsTeam(user) {
-      return user.getOwnsTeam();
-    },
-    team(user) {
-      return user.getTeam();
+    async team(currentUser) {
+      if (currentUser.teamId) {
+        return db.teams.findUnique({ where: { id: currentUser.teamId } });
+      }
+      return null;
     },
     projects(_, __, { user }) {
-      return projectService.findAllProjectsForUser(user);
+      return findAllAuthorizedProjectsForUser(user);
     },
   },
 };

@@ -1,6 +1,11 @@
 const passport = require('passport');
-const { loginFromGoogle } = require('../services/auth.service');
-const { wrapAsync } = require('../services/router.service');
+const { loginFromGoogle } = require('../services/auth.service.ts');
+
+function wrapAsync(fn) {
+  return (req, res, next) => {
+    fn(req, res, next).catch(next);
+  };
+}
 
 module.exports = (router) => {
   router.get('/logout', (_, res) => {

@@ -1,4 +1,8 @@
-function getCookie(cookieSrc, cname) {
+// Bleh, using ID scalar type in graph means that id is string.
+// But is int in DB so need to juggle both so Prisma stays happy.
+export type DbId = string | number;
+
+export function getCookie(cookieSrc: string, cname: string) {
   const name = `${cname}=`;
   if (cookieSrc) {
     const ca = cookieSrc.split(';');
@@ -14,7 +18,7 @@ function getCookie(cookieSrc, cname) {
   return '';
 }
 
-function charRange(start, stop) {
+function charRange(start: string, stop: string) {
   const result = [];
   let index = start.charCodeAt(0);
   const last = stop.charCodeAt(0) + 1;
@@ -25,7 +29,7 @@ function charRange(start, stop) {
   return result;
 }
 
-function base26EncodeNum(num) {
+export function base26EncodeNum(num: number) {
   const chars = charRange('a', 'z');
   let result = '';
 
@@ -34,7 +38,7 @@ function base26EncodeNum(num) {
   }
 
   let quotient = num;
-  let remainder = '';
+  let remainder = 0;
   while (quotient !== 0) {
     // Compensate for 0-based array
     const index = quotient - 1;
@@ -47,11 +51,11 @@ function base26EncodeNum(num) {
   return result;
 }
 
-function getRandomInt(max) {
+function getRandomInt(max: number) {
   return Math.floor(Math.random() * Math.floor(max + 1));
 }
 
-function randomStringGenerator(len) {
+export function randomStringGenerator(len: number) {
   const chars = charRange('a', 'z');
   let result = '';
   for (let index = 0; index < len; index++) {
@@ -60,19 +64,10 @@ function randomStringGenerator(len) {
   return result;
 }
 
-function parsedId(id) {
+export function parsedId(id: DbId) {
   if (typeof id === 'string') {
     return parseInt(id, 10);
   }
 
   return id;
 }
-
-module.exports = {
-  parsedId,
-  getCookie,
-  charRange,
-  base26EncodeNum,
-  getRandomInt,
-  randomStringGenerator,
-};

@@ -1,14 +1,27 @@
-function makeCharSet(minChar, maxChar, maxLen, increment) {
-  const charSet = {
+interface CharSet {
+  minChar: number;
+  maxChar: number;
+  maxSize: number;
+  offsets: bigint[];
+  increment: bigint;
+  charCount: number;
+  maxVal: bigint;
+  midVal: bigint;
+}
+
+function makeCharSet(minChar: string, maxChar: string, maxLen: number, increment: bigint) {
+  const charSet: CharSet = {
     minChar: minChar.charCodeAt(0),
     maxChar: maxChar.charCodeAt(0),
     maxSize: maxLen,
     offsets: [],
     increment,
+    charCount: 0,
+    maxVal: BigInt(0),
+    midVal: BigInt(0),
   };
   charSet.charCount = charSet.maxChar - charSet.minChar + 1;
   for (let i = 0; i < charSet.maxSize; i++) {
-    // eslint-disable-next-line max-len
     charSet.offsets[i] = BigInt(charSet.charCount ** i) + (charSet.offsets[i - 1] || BigInt(0));
   }
   charSet.offsets = charSet.offsets.reverse();
@@ -17,7 +30,7 @@ function makeCharSet(minChar, maxChar, maxLen, increment) {
   return charSet;
 }
 
-function toAlpha(num) {
+function toAlpha(num: bigint) {
   let result = String.fromCharCode(charSet.minChar + Number(num / charSet.offsets[0]));
   num %= charSet.offsets[0];
   let i = 1;
@@ -33,7 +46,7 @@ function toAlpha(num) {
   return result;
 }
 
-function toNum(alpha) {
+function toNum(alpha: string) {
   let result = BigInt(0);
   for (let i = 0; i < alpha.length; i++) {
     const val = BigInt(alpha.charCodeAt(i) - charSet.minChar);
@@ -47,7 +60,7 @@ function toNum(alpha) {
 // if adding to the start of the list, pass `a` as ""
 // if adding to the end of the list, pass `b` as ""
 // if adding the first item to an empty list, pass both as ""
-function midString(a, b) {
+export function midString(a: string, b: string) {
   if (a && b && a > b) {
     const temp = a;
     a = b;
@@ -90,7 +103,3 @@ function midString(a, b) {
 const increment = BigInt(2 ** 100);
 
 const charSet = makeCharSet(' ', '~', 20, increment);
-
-module.exports = {
-  midString,
-};

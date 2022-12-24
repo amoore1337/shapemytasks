@@ -53,7 +53,7 @@ module.exports = {
     },
 
     async scopes(project) {
-      return db.scopes.findMany({ where: { projectId: project.id }, order: [{ id: 'asc' }] });
+      return db.scopes.findMany({ where: { projectId: project.id }, orderBy: [{ id: 'asc' }] });
     },
   },
 };

@@ -1,5 +1,4 @@
-const flagService = require('../../services/flag.service');
-const { createFlag } = require('../../services/flagM.ts');
+const { createFlag, updateFlag, deleteFlag } = require('../../services/flagM.ts');
 const { basicQueryAllResolver, basicFindByIdResolver } = require('../helpers');
 const { rejectUnauthenticated } = require('../helpers');
 const { Flag } = require('../../models');
@@ -15,13 +14,13 @@ module.exports = {
     updateFlag(_, { id, ...updateValues }, { user }) {
       rejectUnauthenticated(user);
 
-      return flagService.updateFlag(id, user, updateValues);
+      return updateFlag(id, updateValues, user);
     },
 
     deleteFlagById(_, { id }, { user }) {
       rejectUnauthenticated(user);
 
-      return flagService.deleteFlag(id, user);
+      return deleteFlag(id, user);
     },
   },
 

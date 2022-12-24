@@ -26,10 +26,6 @@ export async function loginFromGoogle(data: BasicGoogleProfile) {
     email: data.emails[0].value,
     avatarUrl: data.photos[0].value,
   };
-  // const [user] = await User.findOrCreate({
-  //   where: { email },
-  //   profileDetails,
-  // });
   const user = await db.users.upsert({
     where: { email },
     update: {},

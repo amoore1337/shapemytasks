@@ -1,4 +1,4 @@
-module.exports = `#graphql
+export = `#graphql
   type Metrics {
     openProjects: Int!
     totalTasks: Int!

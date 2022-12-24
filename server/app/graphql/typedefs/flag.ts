@@ -1,8 +1,13 @@
-const { typeDefForModel } = require('../helpers');
-const { Flag } = require('../../models');
-
-module.exports = `#graphql
-  ${typeDefForModel(Flag)}
+export = `#graphql
+  type Flag {
+    id: ID!
+    message: String
+    scopeId: ID!
+    createdAt: Date!
+    updatedAt: Date!
+    createdBy: User
+    scope: Scope
+  }
 
   extend type Query {
     flags: [Flag]

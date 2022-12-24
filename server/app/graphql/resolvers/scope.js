@@ -1,75 +1,80 @@
 const { withFilter } = require('graphql-subscriptions');
-const scopeService = require('../../services/scope.service');
 const { basicQueryAllResolver, basicFindByIdResolver } = require('../helpers');
 const { rejectUnauthenticated } = require('../helpers');
 const { Scope } = require('../../models');
-const pubSub = require('../pubSub');
+const {
+  createScope,
+  updateScope,
+  deleteScope,
+  updateScopePosition,
+  batchUpdateScopeProgresses,
+} = require('../../services/scopeM.ts');
+const { subscribeWithFilter } = require('../pubSub.ts');
+const { db } = require('../../db.ts');
 
 module.exports = {
   Mutation: {
     createScope(_, params, { user }) {
       rejectUnauthenticated(user);
 
-      return scopeService.createScope(params, user);
+      return createScope(params, user);
     },
 
     updateScope(_, { id, ...updateValues }, { user }) {
       rejectUnauthenticated(user);
 
-      return scopeService.updateScope(id, user, updateValues);
+      return updateScope(id, user, updateValues);
     },
 
     batchUpdateScopeProgress(_, { inputs }, { user }) {
       rejectUnauthenticated(user);
 
-      return scopeService.updateScopeProgresses(inputs, user);
+      return batchUpdateScopeProgresses(inputs, user);
     },
 
     updateScopePosition(_, { id, targetIndex }, { user }) {
       rejectUnauthenticated(user);
 
-      return scopeService.updateScopePosition(id, targetIndex, user);
+      return updateScopePosition(id, targetIndex, user);
     },
 
     deleteScopeById(_, { id }, { user }) {
       rejectUnauthenticated(user);
 
-      return scopeService.deleteScope(id, user);
+      return deleteScope(id, user);
     },
   },
 
   Subscription: {
     scopeCreated: {
       subscribe: withFilter(
-        () => pubSub.asyncIterator(['SCOPE_CREATED']),
+        subscribeWithFilter(['SCOPE_CREATED']),
         ({ scopeCreated }, { projectId }) =>
-          scopeCreated.dataValues.projectId.toString() === projectId.toString()
+          scopeCreated.projectId.toString() === projectId.toString()
       ),
     },
 
     scopeUpdated: {
       subscribe: withFilter(
-        () => pubSub.asyncIterator(['SCOPE_UPDATED']),
+        subscribeWithFilter(['SCOPE_UPDATED']),
         ({ scopeUpdated }, { projectId }) =>
-          // ({ scopeUpdated, currentUser }, { projectId }, { user }) => (
-          // currentUser.id !== user.id &&
-          scopeUpdated.dataValues.projectId.toString() === projectId.toString()
+          scopeUpdated.projectId.toString() === projectId.toString()
       ),
     },
 
     scopeBatchProgressUpdated: {
       subscribe: withFilter(
-        () => pubSub.asyncIterator(['SCOPE_BATCH_PROGRESS_UPDATED']),
+        subscribeWithFilter(['SCOPE_BATCH_PROGRESS_UPDATED']),
         ({ scopeBatchProgressUpdated }, { projectId }) =>
-          scopeBatchProgressUpdated[0].dataValues.projectId.toString() === projectId.toString()
+          scopeBatchProgressUpdated[0].projectId.toString() === projectId.toString()
       ),
     },
 
     scopeDeleted: {
       subscribe: withFilter(
-        () => pubSub.asyncIterator(['SCOPE_DELETED']),
+        subscribeWithFilter(['SCOPE_DELETED']),
         ({ scopeDeleted }, { projectId }) =>
-          scopeDeleted.dataValues.projectId.toString() === projectId.toString()
+          scopeDeleted.projectId.toString() === projectId.toString()
       ),
     },
   },
@@ -81,7 +86,19 @@ module.exports = {
 
   Scope: {
     flag(scope) {
-      return scope.getFlag();
+      return db.flags.findFirst({ where: { scopeId: scope.id } });
+    },
+
+    project(scope) {
+      return db.project.findUnique({ where: { id: scope.projectId } });
+    },
+
+    creator(scope) {
+      if (scope.createdById) {
+        return db.users.findUnique({ where: { id: scope.createdById } });
+      }
+
+      return null;
     },
   },
 };

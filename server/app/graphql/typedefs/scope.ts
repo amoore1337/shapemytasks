@@ -1,8 +1,21 @@
-const { typeDefForModel } = require('../helpers');
-const { Scope } = require('../../models');
-
-module.exports = `#graphql
-  ${typeDefForModel(Scope)}
+export = `#graphql
+  type Scope {
+    id: ID!
+    title: String!
+    description: String
+    createdById: ID
+    projectId: ID!
+    color: String!
+    progress: Float
+    createdAt: Date!
+    updatedAt: Date!
+    position: String
+    closedAt: Date
+    niceToHave: Boolean
+    flag: Flag
+    creator: User
+    project: Project
+  }
 
   extend type Query {
     scopes: [Scope]

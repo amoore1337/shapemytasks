@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-const { base26EncodeNum, randomStringGenerator } = require('../services/util.service');
+const { base26EncodeNum, randomStringGenerator } = require('../services/utils.ts');
 
 module.exports = (sequelize, DataTypes) => {
   class Team extends Model {

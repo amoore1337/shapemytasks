@@ -1,7 +1,7 @@
-import { Users } from '@prisma/client';
-import { canEditProject } from './user.service';
-import { parsedId } from './util.service';
+import { Projects, Users } from '@prisma/client';
 import { db } from '../db';
+import { canEditProject } from './userM';
+import { parsedId } from './utils';
 
 export async function findAllAuthorizedProjectsForUser(user: Users | undefined | null) {
   if (!user) {
@@ -37,6 +37,10 @@ export async function findAuthorizedProject(
   });
 }
 
+export function isProjectVisible(project: Projects) {
+  return project.visibility === 'visible';
+}
+
 interface CreateProjectParams {
   title: string;
   description?: string;
@@ -59,7 +63,7 @@ export async function updateProject(
   updateValues: UpdateProjectParams
 ) {
   const project = await db.projects.findUnique({ where: { id: parsedId(projectId) } });
-  if (project && updateValues && (await canEditProject(user, project))) {
+  if (project && updateValues && canEditProject(user, project)) {
     return db.projects.update({ where: { id: project.id }, data: updateValues });
   }
 
@@ -68,7 +72,7 @@ export async function updateProject(
 
 export async function deleteAuthorizedProject(user: Users, projectId: string | number) {
   const project = await db.projects.findUnique({ where: { id: parsedId(projectId) } });
-  if (project && (await canEditProject(user, project))) {
+  if (project && canEditProject(user, project)) {
     return db.projects.delete({ where: { id: project.id } });
   }
   return null;

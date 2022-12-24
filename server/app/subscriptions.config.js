@@ -1,7 +1,7 @@
 const { WebSocketServer } = require('ws');
 const { useServer } = require('graphql-ws/lib/use/ws');
-const { getUserForJWT } = require('./services/auth.service');
-const { getCookie } = require('./services/util.service');
+const { getUserForJWT } = require('./services/auth.service.ts');
+const { getCookie } = require('./services/utils.ts');
 
 async function getUserForConnection(request) {
   if (request?.headers?.cookie) {
