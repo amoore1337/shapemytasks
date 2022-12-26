@@ -1,7 +1,7 @@
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
-import { getUserForJWT } from './services/auth.service';
-import { getCookie } from './services/utils';
+import { getUserForJWT } from './models/auth';
+import { getCookie } from './utils';
 import { IncomingMessage } from 'http';
 import { GraphQLSchema } from 'graphql';
 import { Server } from 'https';

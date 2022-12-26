@@ -1,8 +1,8 @@
-import { findAllAuthorizedProjectsForUser } from '../../services/projectM';
+import { findAllAuthorizedProjectsForUser } from '../../models/project';
 import { db } from '../../db';
 import { Users } from '@prisma/client';
 import { GraphContext, IdParam, Response, withAuthRequired } from '../helpers';
-import { parsedId } from '../../services/utils';
+import { parsedId } from '../../utils';
 
 export = {
   Query: {

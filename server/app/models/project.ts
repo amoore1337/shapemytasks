@@ -1,7 +1,7 @@
 import { Projects, Users } from '@prisma/client';
 import { db } from '../db';
-import { canEditProject } from './userM';
-import { parsedId } from './utils';
+import { canEditProject } from './user';
+import { parsedId } from '../utils';
 
 export async function findAllAuthorizedProjectsForUser(user: Users | undefined | null) {
   if (!user) {

@@ -5,7 +5,7 @@ import {
   createProject,
   updateProject,
   deleteAuthorizedProject,
-} from '../../services/projectM';
+} from '../../models/project';
 import { db } from '../../db';
 import { Projects } from '@prisma/client';
 

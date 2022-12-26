@@ -1,6 +1,6 @@
-import { createAndJoinTeam, joinTeam } from '../../services/userM';
-import { findAllAuthorizedProjectsForUser } from '../../services/projectM';
-import { findAllAuthorizedScopesByUser } from '../../services/scopeM';
+import { createAndJoinTeam, joinTeam } from '../../models/user';
+import { findAllAuthorizedProjectsForUser } from '../../models/project';
+import { findAllAuthorizedScopesByUser } from '../../models/scope';
 import { AuthenticatedGraphContext, GraphContext, Response, withAuthRequired } from '../helpers';
 import { db } from '../../db';
 import { Users } from '@prisma/client';

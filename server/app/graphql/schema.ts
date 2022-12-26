@@ -1,7 +1,7 @@
 import { GraphQLScalarType, Kind } from 'graphql';
 import requireDir from 'require-dir';
 
-import { getUserForJWT } from '../services/auth.service';
+import { getUserForJWT } from '../models/auth';
 
 const appTypeDefs = requireDir('./typedefs');
 const appResolvers = requireDir('./resolvers');

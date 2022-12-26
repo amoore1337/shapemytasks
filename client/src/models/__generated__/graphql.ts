@@ -39,11 +39,10 @@ export type Flag = {
   __typename?: 'Flag';
   createdAt: Scalars['Date'];
   createdBy?: Maybe<User>;
-  createdById?: Maybe<Scalars['ID']>;
   id: Scalars['ID'];
   message?: Maybe<Scalars['String']>;
   scope?: Maybe<Scope>;
-  scopeId?: Maybe<Scalars['Int']>;
+  scopeId: Scalars['ID'];
   updatedAt: Scalars['Date'];
 };
 
@@ -172,7 +171,7 @@ export type Project = {
   scopes?: Maybe<Array<Maybe<Scope>>>;
   team?: Maybe<Team>;
   teamId?: Maybe<Scalars['ID']>;
-  title?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
   updatedAt: Scalars['Date'];
   visibility: Scalars['String'];
 };
@@ -224,8 +223,8 @@ export type Scope = {
   closedAt?: Maybe<Scalars['Date']>;
   color: Scalars['String'];
   createdAt: Scalars['Date'];
-  createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['ID']>;
+  creator?: Maybe<User>;
   description?: Maybe<Scalars['String']>;
   flag?: Maybe<Flag>;
   id: Scalars['ID'];
@@ -233,8 +232,8 @@ export type Scope = {
   position?: Maybe<Scalars['String']>;
   progress: Scalars['Float'];
   project?: Maybe<Project>;
-  projectId?: Maybe<Scalars['ID']>;
-  title?: Maybe<Scalars['String']>;
+  projectId: Scalars['ID'];
+  title: Scalars['String'];
   updatedAt: Scalars['Date'];
 };
 
@@ -274,8 +273,9 @@ export type Team = {
   id: Scalars['ID'];
   joinCode?: Maybe<Scalars['String']>;
   members?: Maybe<Array<Maybe<User>>>;
-  name?: Maybe<Scalars['String']>;
-  restrictEmailDomain?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  projects?: Maybe<Array<Maybe<Project>>>;
+  restrictedEmailDomain?: Maybe<Scalars['String']>;
   updatedAt: Scalars['Date'];
 };
 
@@ -287,6 +287,7 @@ export type User = {
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   projects?: Maybe<Array<Maybe<Project>>>;
+  scopes?: Maybe<Array<Maybe<Scope>>>;
   team?: Maybe<Team>;
   teamId?: Maybe<Scalars['ID']>;
   updatedAt: Scalars['Date'];
@@ -309,16 +310,16 @@ export type ProjectQueryVariables = Exact<{
 }>;
 
 
-export type ProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, title?: string | null, description?: string | null, visibility: string, createdAt: any, updatedAt: any, scopes?: Array<{ __typename?: 'Scope', id: string, title?: string | null, progress: number, color: string, projectId?: string | null, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null> | null } | null };
+export type ProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', id: string, title: string, description?: string | null, visibility: string, createdAt: any, updatedAt: any, scopes?: Array<{ __typename?: 'Scope', id: string, title: string, progress: number, color: string, projectId: string, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null> | null } | null };
 
-export type CurrentUserFragmentFragment = { __typename?: 'CurrentUser', id: string, email: string, name?: string | null, avatarUrl?: string | null, team?: { __typename?: 'Team', id: string, name?: string | null, joinCode?: string | null } | null };
+export type CurrentUserFragmentFragment = { __typename?: 'CurrentUser', id: string, email: string, name?: string | null, avatarUrl?: string | null, team?: { __typename?: 'Team', id: string, name: string, joinCode?: string | null } | null };
 
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'CurrentUser', id: string, email: string, name?: string | null, avatarUrl?: string | null, team?: { __typename?: 'Team', id: string, name?: string | null, joinCode?: string | null } | null } | null };
+export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'CurrentUser', id: string, email: string, name?: string | null, avatarUrl?: string | null, team?: { __typename?: 'Team', id: string, name: string, joinCode?: string | null } | null } | null };
 
-export type FlagFragmentFragment = { __typename?: 'Flag', id: string, message?: string | null, scopeId?: number | null };
+export type FlagFragmentFragment = { __typename?: 'Flag', id: string, message?: string | null, scopeId: string };
 
 export type CreateFlagMutationVariables = Exact<{
   scopeId: Scalars['ID'];
@@ -326,7 +327,7 @@ export type CreateFlagMutationVariables = Exact<{
 }>;
 
 
-export type CreateFlagMutation = { __typename?: 'Mutation', createFlag?: { __typename?: 'Flag', id: string, message?: string | null, scopeId?: number | null } | null };
+export type CreateFlagMutation = { __typename?: 'Mutation', createFlag?: { __typename?: 'Flag', id: string, message?: string | null, scopeId: string } | null };
 
 export type DeleteFlagMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -335,14 +336,14 @@ export type DeleteFlagMutationVariables = Exact<{
 
 export type DeleteFlagMutation = { __typename?: 'Mutation', deleteFlagById?: { __typename?: 'Flag', id: string } | null };
 
-export type ExistingFlagFragment = { __typename?: 'Flag', id: string, scopeId?: number | null };
+export type ExistingFlagFragment = { __typename?: 'Flag', id: string, scopeId: string };
 
-export type ProjectFragmentFragment = { __typename?: 'Project', id: string, title?: string | null, description?: string | null, visibility: string, createdAt: any, updatedAt: any };
+export type ProjectFragmentFragment = { __typename?: 'Project', id: string, title: string, description?: string | null, visibility: string, createdAt: any, updatedAt: any };
 
 export type ProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProjectsQuery = { __typename?: 'Query', projects?: Array<{ __typename?: 'Project', id: string, title?: string | null, description?: string | null, visibility: string, createdAt: any, updatedAt: any } | null> | null };
+export type ProjectsQuery = { __typename?: 'Query', projects?: Array<{ __typename?: 'Project', id: string, title: string, description?: string | null, visibility: string, createdAt: any, updatedAt: any } | null> | null };
 
 export type CreateProjectMutationVariables = Exact<{
   title: Scalars['String'];
@@ -351,7 +352,7 @@ export type CreateProjectMutationVariables = Exact<{
 }>;
 
 
-export type CreateProjectMutation = { __typename?: 'Mutation', createProject?: { __typename?: 'Project', id: string, title?: string | null, description?: string | null, visibility: string, createdAt: any, updatedAt: any } | null };
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject?: { __typename?: 'Project', id: string, title: string, description?: string | null, visibility: string, createdAt: any, updatedAt: any } | null };
 
 export type DeleteProjectMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -365,28 +366,28 @@ export type ProjectScopeCreatedSubscriptionSubscriptionVariables = Exact<{
 }>;
 
 
-export type ProjectScopeCreatedSubscriptionSubscription = { __typename?: 'Subscription', scopeCreated?: { __typename?: 'Scope', id: string, title?: string | null, progress: number, color: string, projectId?: string | null, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null };
+export type ProjectScopeCreatedSubscriptionSubscription = { __typename?: 'Subscription', scopeCreated?: { __typename?: 'Scope', id: string, title: string, progress: number, color: string, projectId: string, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null };
 
 export type ProjectScopeUpdatedSubscriptionSubscriptionVariables = Exact<{
   projectId: Scalars['ID'];
 }>;
 
 
-export type ProjectScopeUpdatedSubscriptionSubscription = { __typename?: 'Subscription', scopeUpdated?: { __typename?: 'Scope', id: string, title?: string | null, progress: number, color: string, projectId?: string | null, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null };
+export type ProjectScopeUpdatedSubscriptionSubscription = { __typename?: 'Subscription', scopeUpdated?: { __typename?: 'Scope', id: string, title: string, progress: number, color: string, projectId: string, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null };
 
 export type ProjectScopeBatchProgressUpdatedSubscriptionSubscriptionVariables = Exact<{
   projectId: Scalars['ID'];
 }>;
 
 
-export type ProjectScopeBatchProgressUpdatedSubscriptionSubscription = { __typename?: 'Subscription', scopeBatchProgressUpdated?: Array<{ __typename?: 'Scope', id: string, title?: string | null, progress: number, color: string, projectId?: string | null, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null> | null };
+export type ProjectScopeBatchProgressUpdatedSubscriptionSubscription = { __typename?: 'Subscription', scopeBatchProgressUpdated?: Array<{ __typename?: 'Scope', id: string, title: string, progress: number, color: string, projectId: string, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null> | null };
 
 export type ProjectScopeDeletedSubscriptionSubscriptionVariables = Exact<{
   projectId: Scalars['ID'];
 }>;
 
 
-export type ProjectScopeDeletedSubscriptionSubscription = { __typename?: 'Subscription', scopeDeleted?: { __typename?: 'Scope', id: string, title?: string | null, progress: number, color: string, projectId?: string | null, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null };
+export type ProjectScopeDeletedSubscriptionSubscription = { __typename?: 'Subscription', scopeDeleted?: { __typename?: 'Scope', id: string, title: string, progress: number, color: string, projectId: string, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null };
 
 export type UpdateProjectMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -395,9 +396,9 @@ export type UpdateProjectMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject?: { __typename?: 'Project', id: string, title?: string | null, description?: string | null } | null };
+export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject?: { __typename?: 'Project', id: string, title: string, description?: string | null } | null };
 
-export type ScopeFragmentFragment = { __typename?: 'Scope', id: string, title?: string | null, progress: number, color: string, projectId?: string | null, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null };
+export type ScopeFragmentFragment = { __typename?: 'Scope', id: string, title: string, progress: number, color: string, projectId: string, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null };
 
 export type CreateScopeMutationVariables = Exact<{
   title: Scalars['String'];
@@ -407,7 +408,7 @@ export type CreateScopeMutationVariables = Exact<{
 }>;
 
 
-export type CreateScopeMutation = { __typename?: 'Mutation', createScope?: { __typename?: 'Scope', id: string, title?: string | null, progress: number, color: string, projectId?: string | null, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null };
+export type CreateScopeMutation = { __typename?: 'Mutation', createScope?: { __typename?: 'Scope', id: string, title: string, progress: number, color: string, projectId: string, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null };
 
 export type UpdateScopeMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -418,7 +419,7 @@ export type UpdateScopeMutationVariables = Exact<{
 }>;
 
 
-export type UpdateScopeMutation = { __typename?: 'Mutation', updateScope?: { __typename?: 'Scope', id: string, title?: string | null, progress: number, color: string, projectId?: string | null, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null };
+export type UpdateScopeMutation = { __typename?: 'Mutation', updateScope?: { __typename?: 'Scope', id: string, title: string, progress: number, color: string, projectId: string, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null };
 
 export type DeleteScopeMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -433,7 +434,7 @@ export type UpdateScopePositionMutationVariables = Exact<{
 }>;
 
 
-export type UpdateScopePositionMutation = { __typename?: 'Mutation', updateScopePosition?: { __typename?: 'Scope', id: string, title?: string | null, progress: number, color: string, projectId?: string | null, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null };
+export type UpdateScopePositionMutation = { __typename?: 'Mutation', updateScopePosition?: { __typename?: 'Scope', id: string, title: string, progress: number, color: string, projectId: string, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null };
 
 export type UpdateScopeProgressMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -441,14 +442,14 @@ export type UpdateScopeProgressMutationVariables = Exact<{
 }>;
 
 
-export type UpdateScopeProgressMutation = { __typename?: 'Mutation', updateScope?: { __typename?: 'Scope', id: string, title?: string | null, description?: string | null, progress: number, createdAt: any, updatedAt: any } | null };
+export type UpdateScopeProgressMutation = { __typename?: 'Mutation', updateScope?: { __typename?: 'Scope', id: string, title: string, description?: string | null, progress: number, createdAt: any, updatedAt: any } | null };
 
 export type UpdateScopeProgressesMutationVariables = Exact<{
   inputs: Array<BatchUpdateScopeProgressMap> | BatchUpdateScopeProgressMap;
 }>;
 
 
-export type UpdateScopeProgressesMutation = { __typename?: 'Mutation', batchUpdateScopeProgress?: Array<{ __typename?: 'Scope', id: string, title?: string | null, progress: number, color: string, projectId?: string | null, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null> | null };
+export type UpdateScopeProgressesMutation = { __typename?: 'Mutation', batchUpdateScopeProgress?: Array<{ __typename?: 'Scope', id: string, title: string, progress: number, color: string, projectId: string, position?: string | null, closedAt?: any | null, niceToHave?: boolean | null, createdAt: any, updatedAt: any, flag?: { __typename?: 'Flag', id: string, message?: string | null, createdAt: any, updatedAt: any, createdBy?: { __typename?: 'User', id: string, name?: string | null, email: string, updatedAt: any, createdAt: any } | null } | null } | null> | null };
 
 export type JoinTeamMutationVariables = Exact<{
   name: Scalars['String'];
@@ -458,7 +459,7 @@ export type JoinTeamMutationVariables = Exact<{
 }>;
 
 
-export type JoinTeamMutation = { __typename?: 'Mutation', createTeam?: { __typename?: 'CurrentUser', id: string, email: string, name?: string | null, avatarUrl?: string | null, team?: { __typename?: 'Team', id: string, name?: string | null, joinCode?: string | null } | null } | null, joinTeam?: { __typename?: 'CurrentUser', id: string, email: string, name?: string | null, avatarUrl?: string | null, team?: { __typename?: 'Team', id: string, name?: string | null, joinCode?: string | null } | null } | null };
+export type JoinTeamMutation = { __typename?: 'Mutation', createTeam?: { __typename?: 'CurrentUser', id: string, email: string, name?: string | null, avatarUrl?: string | null, team?: { __typename?: 'Team', id: string, name: string, joinCode?: string | null } | null } | null, joinTeam?: { __typename?: 'CurrentUser', id: string, email: string, name?: string | null, avatarUrl?: string | null, team?: { __typename?: 'Team', id: string, name: string, joinCode?: string | null } | null } | null };
 
 export type HeartbeatQueryVariables = Exact<{ [key: string]: never; }>;
 

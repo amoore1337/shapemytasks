@@ -1,10 +1,10 @@
 import { Scopes, Users } from '@prisma/client';
 import { db } from '../db';
 import { publishEvent, SubscriptionEvents } from '../graphql/pubSub';
-import { midString } from './midString';
-import { canEditProject } from './userM';
-import { findAllAuthorizedProjectsForUser } from './projectM';
-import { DbId, parsedId } from './utils';
+import { midString } from '../midString';
+import { canEditProject } from './user';
+import { findAllAuthorizedProjectsForUser } from './project';
+import { DbId, parsedId } from '../utils';
 
 interface ScopeCreateParams {
   title: string;

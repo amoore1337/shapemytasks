@@ -6,11 +6,11 @@ import {
   deleteScope,
   updateScopePosition,
   batchUpdateScopeProgresses,
-} from '../../services/scopeM';
+} from '../../models/scope';
 import { subscribeWithFilter, SubscriptionEvents } from '../pubSub';
 import { db } from '../../db';
 import { Scopes } from '@prisma/client';
-import { parsedId } from '../../services/utils';
+import { parsedId } from '../../utils';
 
 interface CreateScopeParams {
   title: string;

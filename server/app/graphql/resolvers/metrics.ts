@@ -1,5 +1,5 @@
 import { withAuthRequired } from '../helpers';
-import { findMetricsForUser } from '../../services/metricsM';
+import { findMetricsForUser } from '../../models/metrics';
 
 export = {
   Query: {

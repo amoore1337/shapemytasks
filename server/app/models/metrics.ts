@@ -1,6 +1,6 @@
 import { Users } from '@prisma/client';
 import { db } from '../db';
-import { findAllAuthorizedProjectsForUser } from './projectM';
+import { findAllAuthorizedProjectsForUser } from './project';
 
 export async function findMetricsForUser(user: Users | null) {
   if (!user) {

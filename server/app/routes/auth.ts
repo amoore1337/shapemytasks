@@ -1,13 +1,16 @@
-const passport = require('passport');
-const { loginFromGoogle } = require('../services/auth.service.ts');
+import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
+import passport from 'passport';
+import { loginFromGoogle } from '../models/auth';
 
-function wrapAsync(fn) {
-  return (req, res, next) => {
+type AsyncHandler = (req: Request, res: Response, next: NextFunction) => Promise<void>;
+
+function wrapAsync(fn: AsyncHandler) {
+  return (req: Request, res: Response, next: NextFunction) => {
     fn(req, res, next).catch(next);
   };
 }
 
-module.exports = (router) => {
+export = (router: Router) => {
   router.get('/logout', (_, res) => {
     res.clearCookie('t_id');
     res.sendStatus(200);
@@ -19,7 +22,7 @@ module.exports = (router) => {
     '/google/callback',
     passport.authenticate('google', { session: false }),
     wrapAsync(async (req, res) => {
-      const token = await loginFromGoogle(req.user);
+      const token = await loginFromGoogle(req.user! as any);
       res.cookie('t_id', token, { httpOnly: true });
 
       // Close the tab or popup that the google auth page was opened in:

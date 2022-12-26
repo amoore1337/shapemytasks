@@ -1,7 +1,7 @@
 import { Flags } from '@prisma/client';
 import { db } from '../../db';
-import { createFlag, updateFlag, deleteFlag } from '../../services/flagM';
-import { parsedId } from '../../services/utils';
+import { createFlag, updateFlag, deleteFlag } from '../../models/flag';
+import { parsedId } from '../../utils';
 import { IdParam, Response, withAuthRequired } from '../helpers';
 
 interface CreateFlagParams {

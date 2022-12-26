@@ -1,9 +1,8 @@
 import { Users } from '@prisma/client';
 import { db } from '../db';
 import { publishEvent, SubscriptionEvents } from '../graphql/pubSub';
-import { findAllAuthorizedProjectsForUser } from './projectM';
-import { canEditProject } from './userM';
-import { DbId, parsedId } from './utils';
+import { canEditProject } from './user';
+import { DbId, parsedId } from '../utils';
 
 interface CreateFlagParams {
   message?: string;

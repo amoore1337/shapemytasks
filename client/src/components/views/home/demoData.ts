@@ -41,6 +41,7 @@ function buildFlag(id?: string): Flag | null {
   return {
     __typename: 'Flag',
     id,
+    scopeId: '0',
     message: null,
     createdBy: {
       __typename: 'User',

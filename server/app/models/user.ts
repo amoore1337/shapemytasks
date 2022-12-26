@@ -1,7 +1,7 @@
 import { Projects, Users } from '@prisma/client';
 import { db } from '../db';
-import { isProjectVisible } from './projectM';
-import { base26EncodeNum, randomStringGenerator } from './utils';
+import { isProjectVisible } from './project';
+import { base26EncodeNum, randomStringGenerator } from '../utils';
 
 export async function joinTeam(user: Users, joinCode: string) {
   if (user.teamId) {

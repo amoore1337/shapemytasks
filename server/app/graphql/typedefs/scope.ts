@@ -6,7 +6,7 @@ export = `#graphql
     createdById: ID
     projectId: ID!
     color: String!
-    progress: Float
+    progress: Float!
     createdAt: Date!
     updatedAt: Date!
     position: String

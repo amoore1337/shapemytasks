@@ -1,6 +1,6 @@
 import { Teams } from '@prisma/client';
 import { db } from '../../db';
-import { parsedId } from '../../services/utils';
+import { parsedId } from '../../utils';
 import { IdParam, Response, withAuthRequired } from '../helpers';
 
 export = {
