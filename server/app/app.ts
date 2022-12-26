@@ -3,8 +3,9 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import config from 'nconf';
 import passport from 'passport';
-import { ApolloServer } from '@apollo/server';
+import { ApolloServer, ApolloServerPlugin, BaseContext } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import graphqlConfig from './graphql/schema';
 import createSubscriptionServer from './subscriptions.config';
@@ -49,22 +50,27 @@ export = async (callback: () => void) => {
   const schema = makeExecutableSchema({ typeDefs, resolvers });
   const subscriptionServer = createSubscriptionServer(schema, httpServer, subscriptionPath);
 
+  const apolloPlugins: ApolloServerPlugin<BaseContext>[] = [
+    {
+      async serverWillStart() {
+        return {
+          async drainServer() {
+            await subscriptionServer.dispose();
+          },
+        };
+      },
+    },
+  ];
+
+  if (config.get('NODE_ENV') === 'prod') {
+    apolloPlugins.push(ApolloServerPluginLandingPageDisabled());
+  }
+
   const apollo = new ApolloServer({
     typeDefs,
     resolvers,
     ...graphConfig,
-    // playground: config.get('NODE_ENV') === 'dev',
-    plugins: [
-      {
-        async serverWillStart() {
-          return {
-            async drainServer() {
-              await subscriptionServer.dispose();
-            },
-          };
-        },
-      },
-    ],
+    plugins: apolloPlugins,
   });
 
   await apollo.start();
@@ -102,7 +108,6 @@ async function waitForDb() {
 
   let ready = false;
   while (!ready) {
-    // eslint-disable-next-line no-await-in-loop
     ready = await dbReady(500);
   }
 }

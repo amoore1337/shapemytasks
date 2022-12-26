@@ -2,8 +2,26 @@
 
 ## Useful Commands
 
-- Generate migration file:
+- Push schema changes to local db:
 
 ```bash
-$ npm run gen:migration --name=some-file-name
+$ npm run db:push
+```
+
+- Create db migration files:
+
+```bash
+$ npm run db:migrate
+```
+
+- Reset local db changes:
+
+```bash
+$ npm run db:reset
+```
+
+- Apply migrations in production:
+
+```bash
+$ npm run migrate
 ```

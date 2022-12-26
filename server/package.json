@@ -7,6 +7,10 @@
     "start": "nodemon index.js",
     "lint": "eslint --fix",
     "format": "prettier --write .",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:reset": "prisma migrate reset",
+    "migrate": "prisma migrate deploy",
     "build": "rimraf ./build && tsc",
     "prod": "node build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
