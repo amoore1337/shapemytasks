@@ -1,20 +1,20 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const config = require('nconf');
-const passport = require('passport');
-const { ApolloServer } = require('@apollo/server');
-const { expressMiddleware } = require('@apollo/server/express4');
-const { makeExecutableSchema } = require('@graphql-tools/schema');
-const graphqlConfig = require('./graphql/schema');
-const createSubscriptionServer = require('./subscriptions.config');
-require('./passport.config');
+import express, { Response } from 'express';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import config from 'nconf';
+import passport from 'passport';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import graphqlConfig from './graphql/schema';
+import createSubscriptionServer from './subscriptions.config';
+import './passport.config';
 
 const SERVER_PORT = config.get('SERVER_PORT') || 3000;
 const SERVER_HOST = config.get('SERVER_HOST');
 
 let app;
-module.exports = async (callback) => {
+export = async (callback: () => void) => {
   app = express();
 
   app.use(passport.initialize());
@@ -27,7 +27,7 @@ module.exports = async (callback) => {
   require('./routes/index')(app);
 
   // Basic Error handler
-  app.use((err, _, res, next) => {
+  app.use((err: any, _: any, res: Response, next: any) => {
     res.status(err.statusCode || 500);
     const errorJson = {
       message: err.message,
@@ -37,10 +37,7 @@ module.exports = async (callback) => {
     next(err);
   });
 
-  const { sequelize } = require('./db.config');
-  await waitForDb(sequelize);
-
-  await sequelize.sync();
+  await waitForDb();
 
   const httpServer = require('http').createServer(app);
 
@@ -56,7 +53,7 @@ module.exports = async (callback) => {
     typeDefs,
     resolvers,
     ...graphConfig,
-    playground: config.get('NODE_ENV') === 'dev',
+    // playground: config.get('NODE_ENV') === 'dev',
     plugins: [
       {
         async serverWillStart() {
@@ -86,13 +83,12 @@ module.exports = async (callback) => {
   });
 };
 
-async function waitForDb(sequelize) {
-  const dbReady = (wait) =>
+async function waitForDb() {
+  const dbReady = (wait?: number): Promise<boolean> =>
     new Promise((resolve) => {
       setTimeout(async () => {
         try {
           console.log('Trying to connect to db...');
-          await sequelize.authenticate();
           resolve(true);
         } catch (error) {
           resolve(false);
