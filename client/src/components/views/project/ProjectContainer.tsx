@@ -7,6 +7,7 @@ import { gql } from '@/apollo';
 import { UpdatedItemsMap } from '@/components/hillChart/HillChart';
 import { useRegisterProjectSubscriptions } from '@/models/project';
 import { useUpdateScopePosition, useUpdateScopeProgresses } from '@/models/scope';
+import { Project as IProject } from '@/models/types';
 import routes from '@/routes';
 
 import Project from './Project';
@@ -39,7 +40,7 @@ export default function ProjectContainer() {
   const [updateScopeProgress] = useUpdateScopeProgresses();
   const [updateScopePosition] = useUpdateScopePosition();
 
-  useRegisterProjectSubscriptions(data?.project);
+  useRegisterProjectSubscriptions(data?.project as IProject);
 
   const navigate = useNavigate();
 
@@ -121,8 +122,8 @@ export default function ProjectContainer() {
 
   return (
     <Project
-      project={data?.project}
-      allScopes={data?.project?.scopes || []}
+      project={data?.project as IProject}
+      allScopes={(data?.project?.scopes as Scopes) || []}
       scopes={sortedScopes}
       scopeSortOption={sortOption}
       onScopeSortChange={handleSortChange}
