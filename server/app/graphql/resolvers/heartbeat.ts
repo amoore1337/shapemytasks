@@ -1,5 +1,7 @@
+import { GraphContext } from '../helpers';
+
 export = {
   Query: {
-    heartbeat: (_: any, __: any, { user }: any) => ({ authenticated: !!user }),
+    heartbeat: (_: null, __: null, { user }: GraphContext) => ({ authenticated: !!user }),
   },
 };

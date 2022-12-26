@@ -6,7 +6,7 @@ import { canEditProject } from './userM';
 import { DbId, parsedId } from './utils';
 
 interface CreateFlagParams {
-  message: string;
+  message?: string;
   scopeId: DbId;
 }
 

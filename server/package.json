@@ -46,6 +46,7 @@
     "@types/jsonwebtoken": "^8.5.9",
     "@types/nconf": "^0.10.3",
     "@types/node": "^18.11.17",
+    "@types/require-dir": "^1.0.2",
     "eslint": "^8.30.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
