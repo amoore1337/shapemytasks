@@ -23,6 +23,41 @@ export async function findAllAuthorizedScopesByUser(user: Users) {
   });
 }
 
+export async function findAllAuthorizedScopes(user: Users) {
+  const projects = await findAllAuthorizedProjectsForUser(user);
+
+  return db.scopes.findMany({
+    where: { projectId: { in: projects.map((p) => p.id) } },
+  });
+}
+
+export async function findAuthorizedScope(scopeId: DbId, user: Users) {
+  if (!user.teamId) {
+    const scope: Scopes = await db.$queryRaw`
+      SELECT "Scopes".* FROM "Scopes"
+      INNER JOIN (
+        SELECT id FROM "Projects"
+        WHERE ("Projects"."createdById" = ${user.id} AND "Projects"."teamId" = null)
+      ) projects ON "Scopes"."projectId" = projects.id
+      WHERE "Scopes".id = ${parsedId(scopeId)}
+    `;
+
+    return scope;
+  }
+
+  const scope: Scopes = await db.$queryRaw`
+    SELECT "Scopes".* FROM "Scopes"
+    INNER JOIN (
+      SELECT id FROM "Projects"
+      WHERE ("Projects"."createdById" = ${user.id} AND "Projects"."teamId" = ${user.teamId})
+      OR ("Projects"."teamId" = ${user.teamId} AND "Projects".visibility = 'visible')
+    ) projects ON "Scopes"."projectId" = projects.id
+    WHERE "Scopes".id = ${parsedId(scopeId)}
+  `;
+
+  return scope;
+}
+
 export async function createScope({ projectId, ...params }: ScopeCreateParams, user: Users) {
   if (!projectId) {
     return null;

@@ -1,11 +1,15 @@
 import { Projects, Users } from '@prisma/client';
 import { db } from '../db';
 import { canEditProject } from './user';
-import { parsedId } from '../utils';
+import { DbId, parsedId } from '../utils';
 
 export async function findAllAuthorizedProjectsForUser(user: Users | undefined | null) {
   if (!user) {
     return [];
+  }
+
+  if (!user.teamId) {
+    return db.projects.findMany({ where: { createdById: user.id, teamId: null } });
   }
 
   return db.projects.findMany({
@@ -18,12 +22,15 @@ export async function findAllAuthorizedProjectsForUser(user: Users | undefined |
   });
 }
 
-export async function findAuthorizedProject(
-  projectId: number | string,
-  user: Users | undefined | null
-) {
+export async function findAuthorizedProject(projectId: DbId, user: Users | undefined | null) {
   if (!user) {
     return null;
+  }
+
+  if (!user.teamId) {
+    return db.projects.findFirst({
+      where: { id: parsedId(projectId), createdById: user.id, teamId: null },
+    });
   }
 
   return db.projects.findFirst({
@@ -48,7 +55,9 @@ interface CreateProjectParams {
 }
 
 export async function createProject(user: Users, createParams: CreateProjectParams) {
-  return db.projects.create({ data: { ...createParams, createdById: user.id } });
+  return db.projects.create({
+    data: { ...createParams, createdById: user.id, teamId: user.teamId },
+  });
 }
 
 interface UpdateProjectParams {

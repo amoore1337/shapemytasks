@@ -30,6 +30,7 @@ function App() {
   return (
     <ApolloProvider client={apolloClient}>
       <Helmet>
+        <title>Shape My Tasks</title>
         <meta name="og:type" content="object" />
         <meta name="og:site_name" content="Shape My Tasks" />
         <meta name="og:url" content="https://shapemytasks.com/" />

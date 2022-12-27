@@ -11,7 +11,7 @@ export async function joinTeam(user: Users, joinCode: string) {
     }
   }
 
-  const team = await db.teams.findFirst({ where: { joinCode } });
+  const team = await db.teams.findFirst({ where: { joinCode: joinCode.toLowerCase() } });
   if (!team) {
     throw new Error('No team found for code!');
   }
@@ -38,7 +38,7 @@ export function canEditProject(user: Users | null, project: Projects | null) {
     return false;
   }
 
-  if (user.id === project.createdById) {
+  if (user.id === project.createdById && user.teamId === project.teamId) {
     return true;
   }
 
