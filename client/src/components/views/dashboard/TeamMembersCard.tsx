@@ -6,9 +6,11 @@ import { Button, Typography } from '@mui/material';
 
 import { CurrentUserContext } from '@/CurrentUserContext';
 import { gql } from '@/apollo';
+import ConfirmationModal from '@/components/ConfirmationModal';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import ManageTeamModal from '@/components/ManageTeamModal';
 import TeamCodeCopyButton from '@/components/TeamCodeCopyButton';
+import { useRemoveUserFromTeam } from '@/models/team/useRemoveFromTeam';
 
 const TEAM_MEMBERS_QUERY = gql(`
   query TeamMembers($id: ID!) {
@@ -26,10 +28,20 @@ const TEAM_MEMBERS_QUERY = gql(`
 export default function TeamMembersCard() {
   const { currentUser } = useContext(CurrentUserContext);
   const [openTeamsModal, setOpenTeamsModal] = useState(false);
+  const [userToRemove, setUserToRemove] = useState<string>();
   const { loading, data } = useQuery(TEAM_MEMBERS_QUERY, {
     variables: { id: currentUser?.team?.id! },
     skip: !currentUser?.team?.id,
   });
+
+  const [removeTeamMember] = useRemoveUserFromTeam();
+
+  const confirmRemoveUser = () => {
+    if (userToRemove) {
+      removeTeamMember(userToRemove);
+    }
+    setUserToRemove(undefined);
+  };
 
   const members = data?.team?.members || [];
 
@@ -57,6 +69,19 @@ export default function TeamMembersCard() {
                   key={member.id}
                 >
                   {member.name || member.email}
+                  {member.id === currentUser?.id && (
+                    <span className="ml-2 text-sm italic text-gray-400">(You)</span>
+                  )}
+                  {member.id !== currentUser?.id && (
+                    <Button
+                      variant="outlined"
+                      className="ml-2"
+                      color="error"
+                      onClick={() => setUserToRemove(member.id)}
+                    >
+                      Remove
+                    </Button>
+                  )}
                 </li>
               )
           )}
@@ -77,6 +102,13 @@ export default function TeamMembersCard() {
         </>
       )}
       <ManageTeamModal open={openTeamsModal} onClose={() => setOpenTeamsModal(false)} />
+      <ConfirmationModal
+        open={!!userToRemove}
+        title="Are you sure you want to remove user?"
+        text="The user will no longer have access to any projects or scopes associated with your team. This action cannot be undone."
+        onCancel={() => setUserToRemove(undefined)}
+        onConfirm={confirmRemoveUser}
+      />
     </section>
   );
 }

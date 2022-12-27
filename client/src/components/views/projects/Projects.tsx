@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 
 import { useQuery } from '@apollo/client';
-import { Grid, Link } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import { Grid, IconButton, Link, Menu, MenuItem } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
 import DeleteConfirmationModal from '@/components/ConfirmationModal';
@@ -56,19 +59,19 @@ export default function Projects() {
       <Grid container spacing={2} justifyContent="center">
         {data?.projects?.map((project) => (
           <Grid item key={project?.id}>
-            <ProjectCard
-              className="hover:bg-blue-100"
-              onEdit={() => handleProjectEdit(project)}
-              onDelete={() => handleProjectDelete(project)}
-            >
+            <ProjectCard className="hover:bg-blue-100">
               <Link
                 component={RouterLink}
                 to={withParams(routes.project, { id: project!.id })}
-                className="text-gray-800 hover:underline"
+                className="flex h-full w-full items-center justify-center text-gray-800"
                 underline="none"
               >
                 {project?.title}
               </Link>
+              <ProjectActionsMenu
+                onEdit={() => handleProjectEdit(project)}
+                onDelete={() => handleProjectDelete(project)}
+              />
             </ProjectCard>
           </Grid>
         ))}
@@ -93,5 +96,49 @@ export default function Projects() {
         />
       )}
     </div>
+  );
+}
+
+function ProjectActionsMenu({ onEdit, onDelete }: { onEdit: () => void; onDelete: () => void }) {
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLButtonElement>(null);
+
+  const handleMenuOpen = (event: MouseEvent<HTMLButtonElement>) => {
+    setMenuAnchor(event.currentTarget);
+  };
+
+  const handleEdit = () => {
+    setMenuAnchor(null);
+    if (onEdit) {
+      onEdit();
+    }
+  };
+
+  const handleDelete = () => {
+    setMenuAnchor(null);
+    if (onDelete) {
+      onDelete();
+    }
+  };
+  return (
+    <>
+      <IconButton size="small" className="absolute top-2 right-2" onClick={handleMenuOpen}>
+        <MoreIcon fontSize="inherit" />
+      </IconButton>
+      <Menu
+        anchorEl={menuAnchor}
+        open={!!menuAnchor}
+        onClose={() => setMenuAnchor(null)}
+        keepMounted
+      >
+        <MenuItem onClick={handleEdit}>
+          <EditIcon fontSize="small" className="mr-3" />
+          Edit
+        </MenuItem>
+        <MenuItem onClick={handleDelete}>
+          <DeleteIcon fontSize="small" className="mr-3" />
+          Delete
+        </MenuItem>
+      </Menu>
+    </>
   );
 }

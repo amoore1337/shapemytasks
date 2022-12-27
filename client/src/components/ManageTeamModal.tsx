@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+import { useApolloClient } from '@apollo/client';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
   Typography,
@@ -36,6 +37,8 @@ export default function UserSettingsModal({ open, onClose }: Props) {
     onError: () => setShowErrorToast(true),
   });
 
+  const apolloClient = useApolloClient();
+
   useEffect(() => {
     // If we're done, close the modal
     if (called && !loading && !error && onClose) {
@@ -65,10 +68,10 @@ export default function UserSettingsModal({ open, onClose }: Props) {
     }
   };
 
-  const submitTeam = () => {
+  const submitTeam = async () => {
     if (teamName && (!enforceDomainRestriction || emailDomain)) {
       const restrictEmailDomain = enforceDomainRestriction ? emailDomain : '';
-      joinTeam({
+      await joinTeam({
         variables: {
           name: teamName,
           joinCode: '',
@@ -76,8 +79,10 @@ export default function UserSettingsModal({ open, onClose }: Props) {
           joinTeam: false,
         },
       });
+      apolloClient.resetStore();
     } else if (teamCode) {
-      joinTeam({ variables: { name: '', joinCode: teamCode, joinTeam: true } });
+      await joinTeam({ variables: { name: '', joinCode: teamCode, joinTeam: true } });
+      apolloClient.resetStore();
     } else {
       setFormError(true);
     }

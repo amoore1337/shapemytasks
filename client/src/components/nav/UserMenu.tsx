@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { MouseEventHandler, useContext, useState } from 'react';
 
 import DefaultAvatar from '@mui/icons-material/AccountCircle';
 import GroupIcon from '@mui/icons-material/Group';
@@ -38,7 +38,7 @@ export default function UserMenu() {
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const [userMenu, setUserMenu] = useState<HTMLButtonElement>();
 
-  const handleAvatarClick = (event: MouseEvent) => {
+  const handleAvatarClick: MouseEventHandler<HTMLButtonElement> = (event) => {
     setUserMenu(event.currentTarget as HTMLButtonElement);
     setUserMenuOpened((isOpened) => !isOpened);
   };

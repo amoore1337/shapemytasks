@@ -14,4 +14,8 @@ export = `#graphql
   extend type Query {
     team(id: ID!): Team
   }
+
+  extend type Mutation {
+    removeUserFromTeam(userId: ID!): Team
+  }
 `;

@@ -6,6 +6,8 @@ import {
   deleteScope,
   updateScopePosition,
   batchUpdateScopeProgresses,
+  findAllAuthorizedScopes,
+  findAuthorizedScope,
 } from '../../models/scope';
 import { subscribeWithFilter, SubscriptionEvents } from '../pubSub';
 import { db } from '../../db';
@@ -88,11 +90,12 @@ export = {
   },
 
   Query: {
-    // TODO: Add permission filter
-    scopes: withAuthRequired(() => db.scopes.findMany()),
+    scopes: withAuthRequired<null, null, Response<Scopes[]>>((_, __, { user }) =>
+      findAllAuthorizedScopes(user)
+    ),
 
-    scope: withAuthRequired<null, IdParam, Response<Scopes>>((_, { id }) =>
-      db.scopes.findUnique({ where: { id: parsedId(id) } })
+    scope: withAuthRequired<null, IdParam, Response<Scopes>>((_, { id }, { user }) =>
+      findAuthorizedScope(id, user)
     ),
   },
 
