@@ -68,10 +68,13 @@ export async function createScope({ projectId, ...params }: ScopeCreateParams, u
   const project = await db.projects.findUnique({ where: { id: parsedId(projectId) } });
   if (project && canEditProject(user, project)) {
     // TODO: Update collation on table so ordering by position works by default
-    const lastScope: Scopes = await db.$queryRaw`
+    const result: Scopes[] = await db.$queryRaw`
       SELECT * from "Scopes" WHERE "projectId" = ${project.id}
-      ORDER BY position COLLATE "C" asc LIMIT 1;
+      ORDER BY position COLLATE "C" DESC LIMIT 1;
     `;
+
+    // Raw query returns an array, pull out the real value
+    const lastScope = result?.[0];
 
     const scope = await db.scopes.create({
       data: {
