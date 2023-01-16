@@ -18,12 +18,11 @@ export default async function rebalanceByProject(projectId: string | undefined) 
     return;
   }
 
-  let prevScope: Scopes | null = null;
+  let prevPosition: string = '';
   for (const scope of scopes) {
-    const prevPosition = prevScope?.position ?? '';
     const position = midString(prevPosition, '');
     await db.scopes.update({ where: { id: scope.id }, data: { position } });
     console.log(`${scope.title} -> ${position}`);
-    prevScope = scope;
+    prevPosition = position;
   }
 }
