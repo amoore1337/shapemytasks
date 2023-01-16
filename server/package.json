@@ -13,6 +13,7 @@
     "migrate": "prisma migrate deploy",
     "build": "rimraf ./build && tsc",
     "prod": "node build/index.js",
+    "scriptRunner": "ts-node ./scripts/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "amoore1337",
