@@ -6,6 +6,7 @@ WORKDIR /home/node/app
 
 COPY --chown=node:node ./app ./app
 COPY --chown=node:node ./config ./config
+COPY --chown=node:node ./scripts ./scripts
 COPY --chown=node:node ./prisma ./prisma
 COPY --chown=node:node ./apollo.config.js ./apollo.config.js
 COPY --chown=node:node ./index.ts ./index.ts
