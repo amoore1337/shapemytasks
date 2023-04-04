@@ -1,4 +1,4 @@
-import { Typography, Link } from '@mui/material';
+import { Link, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
 import Dot from '@/components/Dot';

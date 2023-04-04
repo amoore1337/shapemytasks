@@ -1,5 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { ApolloClient, HttpLink, split, InMemoryCache, from } from '@apollo/client';
+import { ApolloClient, from, HttpLink, InMemoryCache, split } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';

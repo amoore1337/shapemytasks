@@ -1,7 +1,7 @@
 import { MutationHookOptions, useMutation } from '@apollo/client';
 
 import { gql } from '@/apollo';
-import { CreateProjectMutationVariables, CreateProjectMutation } from '@/models/types';
+import { CreateProjectMutation, CreateProjectMutationVariables } from '@/models/types';
 import { addCacheItem } from '@/utils/cache';
 
 export const CREATE_PROJECT = gql(`

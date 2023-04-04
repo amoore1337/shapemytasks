@@ -2,10 +2,10 @@ import { ProjectQuery } from '@/models/types';
 
 import buildRefetchSubscriberHook from '../buildRefetchSubscriberHook';
 
-export * from './useRegisterProjectSubscriptions';
 export * from './useCreateProject';
-export * from './useUpdateProject';
 export * from './useDeleteProject';
+export * from './useRegisterProjectSubscriptions';
+export * from './useUpdateProject';
 
 export const useProjectRefetchSubscriber = buildRefetchSubscriberHook('projects');
 

@@ -5,8 +5,8 @@ import { Button, Paper } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
-import { CurrentUserContext } from '@/CurrentUserContext';
 import LoadingIndicator from '@/components/LoadingIndicator';
+import { CurrentUserContext } from '@/CurrentUserContext';
 import { ReactComponent as GoogleIcon } from '@/icons/google.svg';
 import logo from '@/icons/smt_logo.png';
 import { CURRENT_USER_QUERY } from '@/models/auth';

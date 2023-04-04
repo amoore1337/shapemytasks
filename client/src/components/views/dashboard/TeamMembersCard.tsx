@@ -4,12 +4,12 @@ import { useQuery } from '@apollo/client';
 import GroupIcon from '@mui/icons-material/Group';
 import { Button, Typography } from '@mui/material';
 
-import { CurrentUserContext } from '@/CurrentUserContext';
 import { gql } from '@/apollo';
 import ConfirmationModal from '@/components/ConfirmationModal';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import ManageTeamModal from '@/components/ManageTeamModal';
 import TeamCodeCopyButton from '@/components/TeamCodeCopyButton';
+import { CurrentUserContext } from '@/CurrentUserContext';
 import { useRemoveUserFromTeam } from '@/models/team/useRemoveFromTeam';
 
 const TEAM_MEMBERS_QUERY = gql(`

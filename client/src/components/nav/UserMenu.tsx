@@ -2,13 +2,13 @@ import { MouseEventHandler, useContext, useState } from 'react';
 
 import DefaultAvatar from '@mui/icons-material/AccountCircle';
 import GroupIcon from '@mui/icons-material/Group';
-import { Popover, Button, Typography } from '@mui/material';
+import { Button, Popover, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
-import { CurrentUserContext } from '@/CurrentUserContext';
 import ManageTeamModal from '@/components/ManageTeamModal';
 import TeamCodeCopyButton from '@/components/TeamCodeCopyButton';
+import { CurrentUserContext } from '@/CurrentUserContext';
 import routes from '@/routes';
 
 const MenuContent = styled.div`

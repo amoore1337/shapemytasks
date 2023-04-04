@@ -1,12 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 import {
+  ApolloCache,
+  Cache,
+  DocumentNode,
   gql,
   Reference,
-  Cache,
-  ApolloCache,
-  DocumentNode,
-  TypedDocumentNode,
   StoreObject,
+  TypedDocumentNode,
 } from '@apollo/client';
 
 type GeneralKeyVal = { [key: string]: any };

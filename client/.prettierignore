@@ -1,0 +1,11 @@
+node_modules
+
+/build
+.env
+src/models/__generated__/
+apollo.config.cjs
+.eslintrc.cjs
+codegen.ts
+package-lock.json
+
+build-analysis.html

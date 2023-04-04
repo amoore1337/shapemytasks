@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from 'react';
+import { MouseEvent, useState } from 'react';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import DragIcon from '@mui/icons-material/DragIndicator';
@@ -12,7 +12,7 @@ import { Button, IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/ma
 import DeleteConfirmationModal from '@/components/ConfirmationModal';
 import Dot from '@/components/Dot';
 import { useDeleteFlag } from '@/models/flag';
-import { useUpdateScope, useDeleteScope } from '@/models/scope';
+import { useDeleteScope, useUpdateScope } from '@/models/scope';
 
 import { ProjectScope } from '../helpers';
 

@@ -2,8 +2,8 @@ import { useContext, useEffect } from 'react';
 
 import { Typography } from '@mui/material';
 
-import { CurrentUserContext } from '@/CurrentUserContext';
 import Modal from '@/components/Modal';
+import { CurrentUserContext } from '@/CurrentUserContext';
 import { useCreateProject } from '@/models/project';
 
 import ProjectModalForm, { FormValues } from './ProjectModalForm';
