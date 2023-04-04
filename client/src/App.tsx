@@ -1,4 +1,4 @@
-import React from 'react';
+import { lazy, Suspense } from 'react';
 
 import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from '@mui/material';
@@ -9,20 +9,22 @@ import tw, { styled } from 'twin.macro';
 
 import { CurrentUserProvider } from './CurrentUserContext';
 import apolloClient from './apolloClient';
+import LoadingIndicator from './components/LoadingIndicator';
 import PrivateRoute from './components/PrivateRoute';
 import Nav from './components/nav/Nav';
 import Login from './components/views/Login';
-import PrivacyPolicy from './components/views/PrivacyPolicy';
-import Dashboard from './components/views/dashboard/Dashboard';
-import Home from './components/views/home/Home';
-import ProjectContainer from './components/views/project/ProjectContainer';
-import Projects from './components/views/projects/Projects';
 import materialTheme from './materialTheme';
 import routes from './routes';
 import useHeartbeat from './useHeartbeat';
 
+const HomePage = lazy(() => import('./components/views/home'));
+const PrivacyPolicyPage = lazy(() => import('./components/views/PrivacyPolicy'));
+const DashboardPage = lazy(() => import('./components/views/dashboard'));
+const ProjectsPage = lazy(() => import('./components/views/projects'));
+const ProjectPage = lazy(() => import('./components/views/project'));
+
 const ContentContainer = styled.div`
-  ${tw`flex-grow overflow-hidden`}
+  ${tw`grow overflow-hidden`}
   flex-basis: 1px;
 `;
 
@@ -48,12 +50,47 @@ function App() {
 const appRoutes = (
   <Routes>
     <Route path={routes.login} element={<Login />} />
-    <Route path={routes.home} element={<Home />} />
-    <Route path={routes.privacy} element={<PrivacyPolicy />} />
+    <Route
+      path={routes.home}
+      element={
+        <Suspense fallback={<LoadingIndicator />}>
+          <HomePage />
+        </Suspense>
+      }
+    />
+    <Route
+      path={routes.privacy}
+      element={
+        <Suspense fallback={<LoadingIndicator />}>
+          <PrivacyPolicyPage />
+        </Suspense>
+      }
+    />
     <Route path="/" element={<PrivateRoute />}>
-      <Route path={routes.dashboard} element={<Dashboard />} />
-      <Route path={routes.project} element={<ProjectContainer />} />
-      <Route path={routes.projects} element={<Projects />} />
+      <Route
+        path={routes.dashboard}
+        element={
+          <Suspense fallback={<LoadingIndicator />}>
+            <DashboardPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path={routes.project}
+        element={
+          <Suspense fallback={<LoadingIndicator />}>
+            <ProjectPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path={routes.projects}
+        element={
+          <Suspense fallback={<LoadingIndicator />}>
+            <ProjectsPage />
+          </Suspense>
+        }
+      />
       <Route path="/" element={<Navigate to={routes.projects} replace />} />
     </Route>
     <Route path="*" element={<Navigate to={routes.home} replace />} />
