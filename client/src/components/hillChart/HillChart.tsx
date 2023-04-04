@@ -1,8 +1,8 @@
 import { memo, MutableRefObject, useEffect, useRef, useState } from 'react';
 
 import { Button } from '@mui/material';
-import { SVG, Svg, Path, Circle as CircleBase, G, extend } from '@svgdotjs/svg.js';
 import '@svgdotjs/svg.draggable.js';
+import { Circle as CircleBase, extend, G, Path, SVG, Svg } from '@svgdotjs/svg.js';
 import { theme } from 'twin.macro';
 
 import { debounced } from '@/utils/timing';
@@ -12,10 +12,10 @@ import {
   ChartItem,
   Circle,
   CircleElement,
+  DEFAULT_VIEW_BOX,
   findChartPoint,
   getProgressFromPosition,
   hillForumula,
-  DEFAULT_VIEW_BOX,
 } from './helpers';
 
 type Props = {

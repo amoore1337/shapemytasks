@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Svg } from '@svgdotjs/svg.js';
-import tw, { styled, css } from 'twin.macro';
+import tw, { css, styled } from 'twin.macro';
 
 import { Circle, CircleElement, getProgressFromPosition, ViewBox } from './helpers';
 

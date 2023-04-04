@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 
 import { useQuery } from '@apollo/client';
-import { TextField, Autocomplete } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 
-import { CurrentUserContext } from '@/CurrentUserContext';
 import LoadingIndicator from '@/components/LoadingIndicator';
+import { CurrentUserContext } from '@/CurrentUserContext';
 import { Project, ProjectsDocument } from '@/models/types';
 
 type Props = {

@@ -2,8 +2,8 @@ import { useContext, useEffect } from 'react';
 
 import { useLazyQuery } from '@apollo/client';
 
-import { CurrentUserContext } from './CurrentUserContext';
 import { gql } from './apollo';
+import { CurrentUserContext } from './CurrentUserContext';
 
 const HEARTBEAT = gql(`
   query Heartbeat {

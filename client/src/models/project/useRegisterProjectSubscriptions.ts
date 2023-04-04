@@ -1,4 +1,4 @@
-import { useSubscription, StoreObject } from '@apollo/client';
+import { StoreObject, useSubscription } from '@apollo/client';
 
 import { gql } from '@/apollo';
 import { Project, ScopeFragmentFragmentDoc } from '@/models/types';

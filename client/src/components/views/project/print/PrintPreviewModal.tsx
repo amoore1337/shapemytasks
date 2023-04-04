@@ -1,12 +1,12 @@
-import { CSSProperties, useState, useEffect } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 
 import DownloadIcon from '@mui/icons-material/GetApp';
 import { Button } from '@mui/material';
 import { toPng } from 'html-to-image';
 import useDimensions from 'react-cool-dimensions';
 
-import Modal from '@/components/Modal';
 import HillChart, { VIEW_BOX } from '@/components/hillChart/HillChart';
+import Modal from '@/components/Modal';
 
 import {
   Scopes,

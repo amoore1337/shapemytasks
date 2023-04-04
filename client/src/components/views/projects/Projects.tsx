@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from 'react';
+import { MouseEvent, useState } from 'react';
 
 import { useQuery } from '@apollo/client';
 import DeleteIcon from '@mui/icons-material/Delete';

@@ -1,18 +1,16 @@
-import { lazy, Suspense } from 'react';
-
 import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider } from '@mui/material';
+import { lazy, Suspense } from 'react';
 import useDimensions from 'react-cool-dimensions';
 import { Helmet } from 'react-helmet';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
-
-import { CurrentUserProvider } from './CurrentUserContext';
 import apolloClient from './apolloClient';
 import LoadingIndicator from './components/LoadingIndicator';
-import PrivateRoute from './components/PrivateRoute';
 import Nav from './components/nav/Nav';
+import PrivateRoute from './components/PrivateRoute';
 import Login from './components/views/Login';
+import { CurrentUserProvider } from './CurrentUserContext';
 import materialTheme from './materialTheme';
 import routes from './routes';
 import useHeartbeat from './useHeartbeat';

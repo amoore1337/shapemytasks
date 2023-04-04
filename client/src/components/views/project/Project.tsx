@@ -6,14 +6,11 @@ import useDimensions from 'react-cool-dimensions';
 import { Helmet } from 'react-helmet';
 
 import ErrorToast from '@/components/ErrorToast';
-import LoadingIndicator from '@/components/LoadingIndicator';
-import HillChart, { UpdatedItemsMap, VIEW_BOX } from '@/components/hillChart/HillChart';
 import { ChartItem } from '@/components/hillChart/helpers';
+import HillChart, { UpdatedItemsMap, VIEW_BOX } from '@/components/hillChart/HillChart';
+import LoadingIndicator from '@/components/LoadingIndicator';
 import { Project as ProjectDetails } from '@/models/types';
 
-import ScopeFilterDropdown from './ScopeFilterDropdown';
-import ScopeSortDropdown from './ScopeSortDropdown';
-import SortComboButton from './SortComboButton';
 import {
   FilterOption,
   Scopes,
@@ -22,7 +19,10 @@ import {
   SortOption,
 } from './helpers';
 import PrintPreviewModal from './print/PrintPreviewModal';
+import ScopeFilterDropdown from './ScopeFilterDropdown';
 import ScopeList from './scopeList/ScopeList';
+import ScopeSortDropdown from './ScopeSortDropdown';
+import SortComboButton from './SortComboButton';
 
 type Props = {
   project?: ProjectDetails | null;

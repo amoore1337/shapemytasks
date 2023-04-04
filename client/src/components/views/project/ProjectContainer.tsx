@@ -10,17 +10,17 @@ import { useUpdateScopePosition, useUpdateScopeProgresses } from '@/models/scope
 import { Project as IProject } from '@/models/types';
 import routes from '@/routes';
 
-import Project from './Project';
 import {
   FilterOption,
   findScopeIndex,
   moveArrayItem,
-  Scopes,
   ProjectScope,
+  Scopes,
   SCOPE_FILTER_OPTIONS,
   SCOPE_SORT_OPTIONS,
   SortOption,
 } from './helpers';
+import Project from './Project';
 
 const PROJECT_QUERY = gql(`
   query Project($id: ID!) {
