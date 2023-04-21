@@ -1,4 +1,5 @@
-import { ReactNode, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 
 import { styled } from 'twin.macro';
 
@@ -19,6 +20,7 @@ const DrawerContainer = styled.div`
 let timeout: number;
 export default function SlideOutDrawer({ open, width, onClose, className = '', children }: Props) {
   const [showContent, setShowContent] = useState(open);
+
   useEffect(() => {
     if (!open) {
       timeout = window.setTimeout(() => {
@@ -36,7 +38,7 @@ export default function SlideOutDrawer({ open, width, onClose, className = '', c
         window.clearTimeout(timeout);
       }
     };
-  }, [open]);
+  }, [onClose, open]);
 
   return (
     <DrawerContainer

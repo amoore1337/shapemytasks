@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 
-import { MutationHookOptions, MutationResult, useMutation } from '@apollo/client';
+import type { MutationHookOptions, MutationResult} from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
 import { gql } from '@/apollo';
-import { RemoveFromTeamMutation, RemoveFromTeamMutationVariables, User } from '@/models/types';
+import type { RemoveFromTeamMutation, RemoveFromTeamMutationVariables, User } from '@/models/types';
 
 export const REMOVE_FROM_TEAM = gql(`
   mutation RemoveFromTeam($userId: ID!) {

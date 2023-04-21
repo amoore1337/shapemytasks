@@ -5,7 +5,7 @@ import { Button, TextField, Typography } from '@mui/material';
 import Modal from '@/components/Modal';
 import { useCreateFlag } from '@/models/flag';
 
-import { ProjectScope } from '../helpers';
+import type { ProjectScope } from '../helpers';
 
 type Props = {
   scope: ProjectScope;
@@ -31,7 +31,7 @@ export default function AddFlagModal({ onClose, scope, ...props }: Props) {
     if (!loading && called && onClose) {
       onClose();
     }
-  }, [loading, called]);
+  }, [loading, called, onClose]);
 
   return (
     <Modal

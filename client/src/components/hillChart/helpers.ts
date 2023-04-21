@@ -1,6 +1,6 @@
-import React from 'react';
+import type React from 'react';
 
-import { Circle as CircleBase, Element } from '@svgdotjs/svg.js';
+import type { Circle as CircleBase, Element } from '@svgdotjs/svg.js';
 
 export type ChartItem = {
   id: string;

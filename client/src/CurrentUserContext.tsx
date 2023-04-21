@@ -1,9 +1,7 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
-import React, { createContext, useCallback, useEffect, useState } from 'react';
-
+import type { CurrentUser } from '@/models/auth';
+import { CURRENT_USER_QUERY } from '@/models/auth';
 import { useApolloClient, useLazyQuery } from '@apollo/client';
-
-import { CurrentUser, CURRENT_USER_QUERY } from '@/models/auth';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 
 type CurrentUserCtx = {
   currentUser?: CurrentUser | null;
@@ -12,11 +10,16 @@ type CurrentUserCtx = {
   refresh: () => Promise<void>;
 };
 
-export const CurrentUserContext = createContext<CurrentUserCtx>({
-  loading: true,
-  logout: () => Promise.resolve(),
-  refresh: () => Promise.resolve(),
-});
+export const CurrentUserContext = createContext<CurrentUserCtx | null>(null);
+
+export function useCurrentUser() {
+  const currentUserContext = useContext(CurrentUserContext);
+  if (!currentUserContext) {
+    new Error('Current User can only be read inside CurrentUserProvider');
+  }
+
+  return currentUserContext!;
+}
 
 export function CurrentUserProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<CurrentUser>();
@@ -30,7 +33,13 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
   const loadUser = useCallback(async () => {
     setLoading(true);
     fetchUser();
-  }, []);
+  }, [fetchUser]);
+
+  const handleLogout = useCallback(async () => {
+    setCurrentUser(null);
+    await fetch('/api/auth/logout');
+    await client.resetStore();
+  }, [client]);
 
   // We need to keep a separate, in-mem copy of currentUser so that
   // we can explicitly nil it out before emptying the cache.
@@ -51,13 +60,7 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
     };
     document.addEventListener('logout', logout);
     return () => document.removeEventListener('logout', logout);
-  }, []);
-
-  const handleLogout = useCallback(async () => {
-    setCurrentUser(null);
-    await fetch('/api/auth/logout');
-    await client.resetStore();
-  }, []);
+  }, [handleLogout, loadUser]);
 
   return (
     <CurrentUserContext.Provider

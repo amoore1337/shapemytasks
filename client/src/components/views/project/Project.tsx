@@ -6,17 +6,19 @@ import useDimensions from 'react-cool-dimensions';
 import { Helmet } from 'react-helmet';
 
 import ErrorToast from '@/components/ErrorToast';
-import { ChartItem } from '@/components/hillChart/helpers';
-import HillChart, { UpdatedItemsMap, VIEW_BOX } from '@/components/hillChart/HillChart';
+import type { ChartItem } from '@/components/hillChart/helpers';
+import type { UpdatedItemsMap} from '@/components/hillChart/HillChart';
+import HillChart, { VIEW_BOX } from '@/components/hillChart/HillChart';
 import LoadingIndicator from '@/components/LoadingIndicator';
-import { Project as ProjectDetails } from '@/models/types';
+import type { Project as ProjectDetails } from '@/models/types';
 
-import {
+import type {
   FilterOption,
   Scopes,
+  SortOption} from './helpers';
+import {
   SCOPE_FILTER_OPTIONS,
-  SCOPE_SORT_OPTIONS,
-  SortOption,
+  SCOPE_SORT_OPTIONS
 } from './helpers';
 import PrintPreviewModal from './print/PrintPreviewModal';
 import ScopeFilterDropdown from './ScopeFilterDropdown';

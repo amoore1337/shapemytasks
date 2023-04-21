@@ -1,4 +1,4 @@
-import { Flag, Scope } from '@/models/types';
+import type { Flag, Scope } from '@/models/types';
 import { getRandomColor } from '@/utils/color';
 
 export const PROJECT_ID = 'demo';

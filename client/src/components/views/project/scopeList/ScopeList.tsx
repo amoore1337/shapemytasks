@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import useDimensions from 'react-cool-dimensions';
 import { DndProvider } from 'react-dnd';
@@ -7,7 +7,7 @@ import tw, { styled } from 'twin.macro';
 
 import SlideOutDrawer from '@/components/SlideOutDrawer';
 
-import { Scopes } from '../helpers';
+import type { Scopes } from '../helpers';
 
 import AddScope from './AddScope';
 import ScopeItem from './ScopeItem';

@@ -1,4 +1,4 @@
-import { RefetchQueryDescriptor } from '@apollo/client';
+import type { RefetchQueryDescriptor } from '@apollo/client';
 
 function refetchSubscription() {
   const refetchMap: { [collectionName: string]: RefetchQueryDescriptor[] } = {};

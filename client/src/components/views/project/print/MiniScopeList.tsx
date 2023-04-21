@@ -1,10 +1,10 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import tw, { styled } from 'twin.macro';
 
 import Dot from '@/components/Dot';
 
-import { ProjectScope, Scopes } from '../helpers';
+import type { ProjectScope, Scopes } from '../helpers';
 
 const ListContainer = styled.div`
   ${tw`px-6`}

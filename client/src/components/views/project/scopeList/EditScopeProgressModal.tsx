@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import HillChart, { UpdatedItemsMap } from '@/components/hillChart/HillChart';
+import type { UpdatedItemsMap } from '@/components/hillChart/HillChart';
+import HillChart from '@/components/hillChart/HillChart';
 import Modal from '@/components/Modal';
 import { useUpdateScopeProgressById } from '@/models/scope';
 
-import { ProjectScope } from '../helpers';
+import type { ProjectScope } from '../helpers';
 
 type Props = {
   scope: ProjectScope;
@@ -22,7 +23,7 @@ export default function EditScopeProgressModal({ onClose, scope, ...props }: Pro
       updateScope({ variables: { id: scope.id, progress: updatedItems[scope.id] } });
       setEnableProgressEdit(false);
     },
-    [updateScope]
+    [scope.id, updateScope]
   );
 
   const handleClose = useCallback(() => {
@@ -37,13 +38,13 @@ export default function EditScopeProgressModal({ onClose, scope, ...props }: Pro
       handleClose();
       setEnableProgressEdit(false);
     }
-  }, [loading, called]);
+  }, [loading, called, handleClose]);
 
   useEffect(() => {
     if (!data || data[0]?.id !== scope.id) {
       setData([scope]);
     }
-  }, [scope]);
+  }, [data, scope]);
 
   return (
     <Modal

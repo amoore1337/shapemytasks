@@ -2,7 +2,7 @@ import { ApolloClient, from, HttpLink, InMemoryCache, split } from '@apollo/clie
 import { onError } from '@apollo/client/link/error';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { GraphQLError } from 'graphql';
+import type { GraphQLError } from 'graphql';
 import { createClient } from 'graphql-ws';
 
 const GRAPH_ERROR_MAP = {

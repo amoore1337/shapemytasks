@@ -1,4 +1,5 @@
-import { CSSProperties, useEffect, useState } from 'react';
+import type { CSSProperties} from 'react';
+import { useEffect, useState } from 'react';
 
 import DownloadIcon from '@mui/icons-material/GetApp';
 import { Button } from '@mui/material';
@@ -8,8 +9,9 @@ import useDimensions from 'react-cool-dimensions';
 import HillChart, { VIEW_BOX } from '@/components/hillChart/HillChart';
 import Modal from '@/components/Modal';
 
+import type {
+  Scopes} from '../helpers';
 import {
-  Scopes,
   sortScopesByClosedAt,
   sortScopesByPosition,
   sortScopesByProgressDesc,

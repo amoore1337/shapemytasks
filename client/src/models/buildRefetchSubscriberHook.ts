@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { RefetchQueryDescriptor } from '@apollo/client';
+import type { RefetchQueryDescriptor } from '@apollo/client';
 
 import refetchSubscriber from '@/models/refetchSubscriber';
 

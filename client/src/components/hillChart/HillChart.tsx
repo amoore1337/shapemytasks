@@ -1,22 +1,17 @@
-import { memo, MutableRefObject, useEffect, useRef, useState } from 'react';
+import type { MutableRefObject } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import { Button } from '@mui/material';
 import '@svgdotjs/svg.draggable.js';
-import { Circle as CircleBase, extend, G, Path, SVG, Svg } from '@svgdotjs/svg.js';
+import type { G, Path, Svg } from '@svgdotjs/svg.js';
+import { Circle as CircleBase, extend, SVG } from '@svgdotjs/svg.js';
 import { theme } from 'twin.macro';
 
 import { debounced } from '@/utils/timing';
 
 import ChartPointLabel, { updatePointLabelPos } from './ChartPointLabel';
-import {
-  ChartItem,
-  Circle,
-  CircleElement,
-  DEFAULT_VIEW_BOX,
-  findChartPoint,
-  getProgressFromPosition,
-  hillForumula,
-} from './helpers';
+import type { ChartItem, Circle, CircleElement } from './helpers';
+import { DEFAULT_VIEW_BOX, findChartPoint, getProgressFromPosition, hillForumula } from './helpers';
 
 type Props = {
   width?: string | number;
@@ -74,7 +69,7 @@ function HillChartComponent({
   const [plottedItems, setPlottedItems] = useState<string[]>([]);
   const [svgReady, setSvgReady] = useState(false);
 
-  const plotPoints = () => {
+  const plotPoints = useCallback(() => {
     const circles = currentChartPoints(hillChartSvg.current);
     const items: string[] = [];
 
@@ -110,7 +105,7 @@ function HillChartComponent({
     }
 
     setPlottedItems(items);
-  };
+  }, [allowEdit, data]);
 
   const handleSave = () => {
     if (!onSave || !Object.keys(updatedItems.current).length) {
@@ -150,7 +145,7 @@ function HillChartComponent({
 
   useEffect(() => {
     plotPoints();
-  }, [data]);
+  }, [data, plotPoints]);
 
   // Fix labels on window resize:
   useEffect(() => {

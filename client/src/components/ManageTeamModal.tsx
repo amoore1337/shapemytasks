@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-
+import { useCurrentUser } from '@/CurrentUserContext';
+import { useCreateOrJoinTeam } from '@/models/team';
 import { useApolloClient } from '@apollo/client';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
@@ -12,10 +12,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-
-import { CurrentUserContext } from '@/CurrentUserContext';
-import { useCreateOrJoinTeam } from '@/models/team';
-
+import React, { useEffect, useState } from 'react';
 import ErrorToast from './ErrorToast';
 import Modal from './Modal';
 
@@ -23,8 +20,9 @@ type Props = {
   open: boolean;
   onClose?: () => void;
 };
+
 export default function UserSettingsModal({ open, onClose }: Props) {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
   const [expandedSection, setExpandedSection] = useState<'join' | 'create'>('join');
   const [teamName, setTeamName] = useState('');
   const [teamCode, setTeamCode] = useState('');
@@ -44,7 +42,7 @@ export default function UserSettingsModal({ open, onClose }: Props) {
     if (called && !loading && !error && onClose) {
       onClose();
     }
-  }, [loading, called]);
+  }, [loading, called, error, onClose]);
 
   const handleAccordionChange = (section: 'join' | 'create') => {
     if (expandedSection !== section) {

@@ -1,6 +1,7 @@
 import { FormControl, InputLabel, Select } from '@mui/material';
 
-import { FilterOption, SCOPE_FILTER_OPTIONS } from './helpers';
+import type { FilterOption} from './helpers';
+import { SCOPE_FILTER_OPTIONS } from './helpers';
 
 type Props = {
   filterOption: FilterOption | null;

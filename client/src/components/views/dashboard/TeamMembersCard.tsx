@@ -1,16 +1,14 @@
-import { useContext, useState } from 'react';
-
-import { useQuery } from '@apollo/client';
-import GroupIcon from '@mui/icons-material/Group';
-import { Button, Typography } from '@mui/material';
-
 import { gql } from '@/apollo';
 import ConfirmationModal from '@/components/ConfirmationModal';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import ManageTeamModal from '@/components/ManageTeamModal';
 import TeamCodeCopyButton from '@/components/TeamCodeCopyButton';
-import { CurrentUserContext } from '@/CurrentUserContext';
+import { useCurrentUser } from '@/CurrentUserContext';
 import { useRemoveUserFromTeam } from '@/models/team/useRemoveFromTeam';
+import { useQuery } from '@apollo/client';
+import GroupIcon from '@mui/icons-material/Group';
+import { Button, Typography } from '@mui/material';
+import { useState } from 'react';
 
 const TEAM_MEMBERS_QUERY = gql(`
   query TeamMembers($id: ID!) {
@@ -26,7 +24,7 @@ const TEAM_MEMBERS_QUERY = gql(`
 `);
 
 export default function TeamMembersCard() {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
   const [openTeamsModal, setOpenTeamsModal] = useState(false);
   const [userToRemove, setUserToRemove] = useState<string>();
   const { loading, data } = useQuery(TEAM_MEMBERS_QUERY, {

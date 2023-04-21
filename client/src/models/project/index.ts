@@ -1,4 +1,4 @@
-import { ProjectQuery } from '@/models/types';
+import type { ProjectQuery } from '@/models/types';
 
 import buildRefetchSubscriberHook from '../buildRefetchSubscriberHook';
 

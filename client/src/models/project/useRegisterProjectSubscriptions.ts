@@ -1,7 +1,9 @@
-import { StoreObject, useSubscription } from '@apollo/client';
+import type { StoreObject} from '@apollo/client';
+import { useSubscription } from '@apollo/client';
 
 import { gql } from '@/apollo';
-import { Project, ScopeFragmentFragmentDoc } from '@/models/types';
+import type { Project} from '@/models/types';
+import { ScopeFragmentFragmentDoc } from '@/models/types';
 import { addCacheItem, removeCacheItem } from '@/utils/cache';
 
 const NEW_SCOPE_SUBSCRIPTION = gql(`

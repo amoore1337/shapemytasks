@@ -1,4 +1,5 @@
-import { FocusEvent, FocusEventHandler, useCallback } from 'react';
+import type { FocusEvent, FocusEventHandler} from 'react';
+import { useCallback } from 'react';
 
 export default function useOnChildBlur(onBlur: (event: FocusEvent<HTMLElement>) => void) {
   const handleBlur: FocusEventHandler<HTMLElement> = useCallback(

@@ -4,9 +4,10 @@ import { Typography } from '@mui/material';
 
 import Modal from '@/components/Modal';
 import { useUpdateProject } from '@/models/project';
-import { Project } from '@/models/types';
+import type { Project } from '@/models/types';
 
-import ProjectModalForm, { FormValues } from './ProjectModalForm';
+import type { FormValues } from './ProjectModalForm';
+import ProjectModalForm from './ProjectModalForm';
 
 type Props = {
   project: Project;
@@ -24,7 +25,7 @@ export default function EditProjectModal({ onClose, project, ...props }: Props) 
     if (!loading && called && onClose) {
       onClose();
     }
-  }, [loading, called]);
+  }, [loading, called, onClose]);
 
   return (
     <Modal

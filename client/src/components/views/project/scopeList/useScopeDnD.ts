@@ -1,12 +1,13 @@
-import {
+import type {
   ConnectDragPreview,
   ConnectDragSource,
-  ConnectDropTarget,
+  ConnectDropTarget} from 'react-dnd';
+import {
   useDrag,
   useDrop,
 } from 'react-dnd';
 
-import { ProjectScope } from '../helpers';
+import type { ProjectScope } from '../helpers';
 
 type MoveFn = (scopeId: string, toIndex: number, moveComplete: boolean) => void;
 type FindFn = (scopeId: string) => number;

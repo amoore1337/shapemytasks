@@ -1,12 +1,10 @@
-import { useContext, useEffect } from 'react';
-
-import { Typography } from '@mui/material';
-
 import Modal from '@/components/Modal';
-import { CurrentUserContext } from '@/CurrentUserContext';
+import { useCurrentUser } from '@/CurrentUserContext';
 import { useCreateProject } from '@/models/project';
-
-import ProjectModalForm, { FormValues } from './ProjectModalForm';
+import { Typography } from '@mui/material';
+import { useEffect } from 'react';
+import type { FormValues } from './ProjectModalForm';
+import ProjectModalForm from './ProjectModalForm';
 
 type Props = {
   open: boolean;
@@ -14,8 +12,8 @@ type Props = {
 };
 
 export default function AddProjectModal({ onClose, ...props }: Props) {
-  const [createProject, { loading, called }] = useCreateProject();
-  const { currentUser } = useContext(CurrentUserContext);
+  const [createProject, { loading, called, reset }] = useCreateProject();
+  const { currentUser } = useCurrentUser();
 
   const handleSubmit = (values: FormValues) =>
     createProject({
@@ -24,9 +22,10 @@ export default function AddProjectModal({ onClose, ...props }: Props) {
 
   useEffect(() => {
     if (!loading && called && onClose) {
+      reset();
       onClose();
     }
-  }, [loading, called]);
+  }, [loading, called, onClose, reset]);
 
   return (
     <Modal
