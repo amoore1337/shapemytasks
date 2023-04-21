@@ -1,25 +1,16 @@
-import { useEffect, useState } from 'react';
-
-import PhotoIcon from '@mui/icons-material/PhotoCamera';
-import { Button, IconButton, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
-import useDimensions from 'react-cool-dimensions';
-import { Helmet } from 'react-helmet';
-
 import ErrorToast from '@/components/ErrorToast';
 import type { ChartItem } from '@/components/hillChart/helpers';
-import type { UpdatedItemsMap} from '@/components/hillChart/HillChart';
+import type { UpdatedItemsMap } from '@/components/hillChart/HillChart';
 import HillChart, { VIEW_BOX } from '@/components/hillChart/HillChart';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import type { Project as ProjectDetails } from '@/models/types';
-
-import type {
-  FilterOption,
-  Scopes,
-  SortOption} from './helpers';
-import {
-  SCOPE_FILTER_OPTIONS,
-  SCOPE_SORT_OPTIONS
-} from './helpers';
+import PhotoIcon from '@mui/icons-material/PhotoCamera';
+import { Button, IconButton, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useEffect, useState } from 'react';
+import useDimensions from 'react-cool-dimensions';
+import { Helmet } from 'react-helmet';
+import type { FilterOption, Scopes, SortOption } from './helpers';
+import { SCOPE_FILTER_OPTIONS, SCOPE_SORT_OPTIONS } from './helpers';
 import PrintPreviewModal from './print/PrintPreviewModal';
 import ScopeFilterDropdown from './ScopeFilterDropdown';
 import ScopeList from './scopeList/ScopeList';

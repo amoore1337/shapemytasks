@@ -5,10 +5,9 @@ import type {
   DocumentNode,
   Reference,
   StoreObject,
-  TypedDocumentNode} from '@apollo/client';
-import {
-  gql
+  TypedDocumentNode,
 } from '@apollo/client';
+import { gql } from '@apollo/client';
 
 type GeneralKeyVal = { [key: string]: any };
 

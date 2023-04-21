@@ -1,4 +1,4 @@
-import type { CSSProperties} from 'react';
+import type { CSSProperties } from 'react';
 import { useEffect, useState } from 'react';
 
 import DownloadIcon from '@mui/icons-material/GetApp';
@@ -9,13 +9,8 @@ import useDimensions from 'react-cool-dimensions';
 import HillChart, { VIEW_BOX } from '@/components/hillChart/HillChart';
 import Modal from '@/components/Modal';
 
-import type {
-  Scopes} from '../helpers';
-import {
-  sortScopesByClosedAt,
-  sortScopesByPosition,
-  sortScopesByProgressDesc,
-} from '../helpers';
+import type { Scopes } from '../helpers';
+import { sortScopesByClosedAt, sortScopesByPosition, sortScopesByProgressDesc } from '../helpers';
 
 import MiniScopeList from './MiniScopeList';
 

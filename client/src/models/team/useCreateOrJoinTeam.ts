@@ -1,4 +1,4 @@
-import type { MutationHookOptions} from '@apollo/client';
+import type { MutationHookOptions } from '@apollo/client';
 import { gql, useMutation } from '@apollo/client';
 
 import type { JoinTeamMutation, JoinTeamMutationVariables } from '@/models/types';

@@ -1,11 +1,5 @@
-import type {
-  ConnectDragPreview,
-  ConnectDragSource,
-  ConnectDropTarget} from 'react-dnd';
-import {
-  useDrag,
-  useDrop,
-} from 'react-dnd';
+import type { ConnectDragPreview, ConnectDragSource, ConnectDropTarget } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 
 import type { ProjectScope } from '../helpers';
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { Fade, Tooltip } from '@mui/material';
-import type { ColorChangeHandler} from 'react-color';
+import type { ColorChangeHandler } from 'react-color';
 import { TwitterPicker } from 'react-color';
 
 import useOnChildBlur from '@/useOnChildBlur';

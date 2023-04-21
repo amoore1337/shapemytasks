@@ -1,5 +1,5 @@
 import { Button, TextField } from '@mui/material';
-import type { FormikConfig} from 'formik';
+import type { FormikConfig } from 'formik';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 

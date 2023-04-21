@@ -1,4 +1,4 @@
-import type { MouseEvent} from 'react';
+import type { MouseEvent } from 'react';
 import { useState } from 'react';
 
 import { useQuery } from '@apollo/client';
@@ -11,7 +11,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import DeleteConfirmationModal from '@/components/ConfirmationModal';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import { useDeleteProject } from '@/models/project';
-import type { Project} from '@/models/types';
+import type { Project } from '@/models/types';
 import { ProjectsDocument } from '@/models/types';
 import routes, { withParams } from '@/routes';
 

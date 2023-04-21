@@ -1,4 +1,4 @@
-import type { BreakpointsOptions} from '@mui/material/styles';
+import type { BreakpointsOptions } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 
 declare module '@mui/material/Button' {
