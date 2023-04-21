@@ -1,9 +1,7 @@
-import { useContext, useEffect } from 'react';
-
 import { useLazyQuery } from '@apollo/client';
-
+import { useEffect } from 'react';
 import { gql } from './apollo';
-import { CurrentUserContext } from './CurrentUserContext';
+import { useCurrentUser } from './CurrentUserContext';
 
 const HEARTBEAT = gql(`
   query Heartbeat {
@@ -16,34 +14,36 @@ const HEARTBEAT = gql(`
 const FIVE_MINUTES = 5 * 60 * 1000;
 
 export default function useHeartbeat() {
-  const { currentUser, logout } = useContext(CurrentUserContext);
+  const { currentUser, logout } = useCurrentUser();
   const [checkHealth, { loading, data, stopPolling, startPolling }] = useLazyQuery(HEARTBEAT, {
     fetchPolicy: 'network-only',
   });
 
+  // Check the health on initial render
   useEffect(() => {
     checkHealth();
-    return () => {
-      if (stopPolling) {
-        stopPolling();
-      }
-    };
-  }, []);
+  }, [checkHealth]);
 
   useEffect(() => {
-    if (!currentUser && stopPolling) {
-      stopPolling();
-    } else if (currentUser && startPolling) {
+    if (currentUser) {
       startPolling(FIVE_MINUTES);
+    } else {
+      stopPolling();
     }
-  }, [currentUser]);
+
+    // Ensure we always clean up any existing polling
+    return () => {
+      stopPolling();
+    };
+  }, [currentUser, startPolling, stopPolling]);
 
   useEffect(() => {
     if (loading || !data?.heartbeat) {
       return;
     }
-    if (currentUser && !data.heartbeat.authenticated) {
+    if (!data.heartbeat.authenticated) {
       logout();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 }

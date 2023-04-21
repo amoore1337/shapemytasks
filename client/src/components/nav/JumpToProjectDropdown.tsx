@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
-
+import LoadingIndicator from '@/components/LoadingIndicator';
+import { useCurrentUser } from '@/CurrentUserContext';
+import type { Project } from '@/models/types';
+import { ProjectsDocument } from '@/models/types';
 import { useQuery } from '@apollo/client';
 import { Autocomplete, TextField } from '@mui/material';
-
-import LoadingIndicator from '@/components/LoadingIndicator';
-import { CurrentUserContext } from '@/CurrentUserContext';
-import { Project, ProjectsDocument } from '@/models/types';
+import { useEffect, useMemo, useState } from 'react';
 
 type Props = {
   selectedProjectId?: string;
@@ -13,14 +12,14 @@ type Props = {
 };
 
 export default function JumpToProjectDropdown({ selectedProjectId, onChange }: Props) {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
   const { data, loading } = useQuery(ProjectsDocument, { skip: !currentUser });
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const projects = data?.projects || [];
+  const projects = useMemo(() => data?.projects || [], [data?.projects]);
   useEffect(() => {
     setSelectedProject(projects.find((p) => p?.id === selectedProjectId) || null);
-  }, [selectedProjectId, data]);
+  }, [selectedProjectId, data, projects]);
 
   if (!data) {
     return null;

@@ -43,12 +43,6 @@
     "build:analyze": "tsc && ANALYZE_BUILD=true vite build",
     "gen:types": "NODE_TLS_REJECT_UNAUTHORIZED=0 graphql-codegen"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "babelMacros": {
     "twin": {
       "config": "tailwind.config.cjs",
@@ -71,6 +65,9 @@
     "autoprefixer": "^10.4.13",
     "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-node": "^0.3.7",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-hooks": "^4.6.0",

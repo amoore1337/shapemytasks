@@ -1,7 +1,8 @@
-import { MutationHookOptions, useMutation } from '@apollo/client';
+import type { MutationHookOptions } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
 import { gql } from '@/apollo';
-import { UpdateProjectMutation, UpdateProjectMutationVariables } from '@/models/types';
+import type { UpdateProjectMutation, UpdateProjectMutationVariables } from '@/models/types';
 
 const UPDATE_PROJECT = gql(`
   mutation UpdateProject($id: ID!, $title: String, $description: String) {

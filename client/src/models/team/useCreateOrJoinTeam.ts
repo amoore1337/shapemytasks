@@ -1,6 +1,7 @@
-import { gql, MutationHookOptions, useMutation } from '@apollo/client';
+import type { MutationHookOptions } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 
-import { JoinTeamMutation, JoinTeamMutationVariables } from '@/models/types';
+import type { JoinTeamMutation, JoinTeamMutationVariables } from '@/models/types';
 
 const CREATE_OR_JOIN_TEAM = gql(`
   mutation JoinTeam($name: String!, $joinCode: String!, $joinTeam: Boolean!, $restrictEmailDomain: String) {

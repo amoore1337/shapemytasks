@@ -1,5 +1,9 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
+import JumpToProjectDropdown from '@/components/nav/JumpToProjectDropdown';
+import UserMenu from '@/components/nav/UserMenu';
+import { useCurrentUser } from '@/CurrentUserContext';
+import routes, { withParams } from '@/routes';
 import ProjectsIcon from '@mui/icons-material/Apps';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import HomeIcon from '@mui/icons-material/Home';
@@ -21,18 +25,12 @@ import {
 import { Link as RouterLink, useMatch, useNavigate } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
 
-import { CurrentUserContext } from '../../CurrentUserContext';
-import routes, { withParams } from '../../routes';
-
-import JumpToProjectDropdown from './JumpToProjectDropdown';
-import UserMenu from './UserMenu';
-
 export default function Nav() {
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('sm'));
   const [jumpToProjectId, setJumpToProjectId] = useState<string>();
   const [sideNavOpened, setSideNavOpened] = useState(false);
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useCurrentUser();
   const navigate = useNavigate();
 
   const projectRouteMatch = useMatch(routes.project);
@@ -41,10 +39,13 @@ export default function Nav() {
     setJumpToProjectId(projectRouteMatch?.params.id);
   }, [projectRouteMatch]);
 
-  const handleJumpToProject = useCallback((projectId: string) => {
-    setJumpToProjectId(projectId);
-    navigate(withParams(routes.project, { id: projectId }));
-  }, []);
+  const handleJumpToProject = useCallback(
+    (projectId: string) => {
+      setJumpToProjectId(projectId);
+      navigate(withParams(routes.project, { id: projectId }));
+    },
+    [navigate]
+  );
 
   return (
     <AppBar position="sticky" color="inherit">

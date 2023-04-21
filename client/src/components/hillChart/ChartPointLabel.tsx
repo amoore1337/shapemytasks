@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-import { Svg } from '@svgdotjs/svg.js';
+import type { Svg } from '@svgdotjs/svg.js';
 import tw, { css, styled } from 'twin.macro';
 
-import { Circle, CircleElement, getProgressFromPosition, ViewBox } from './helpers';
+import type { Circle, CircleElement, ViewBox } from './helpers';
+import { getProgressFromPosition } from './helpers';
 
 const LABEL_HEIGHT = 24;
 
@@ -42,8 +43,8 @@ export default function ChartPointLabel({
   printMode,
   className = '',
 }: Props) {
-  const chartRect = chart.node.getBoundingClientRect();
-  const startPos = point.node.getBoundingClientRect();
+  const chartRect = useMemo(() => chart.node.getBoundingClientRect(), [chart]);
+  const startPos = useMemo(() => point.node.getBoundingClientRect(), [point]);
   const [pos, setPos] = useState<Position>(getStartPosition(chartRect, startPos, point));
   const [labelStyle, setLabelStyle] = useState<React.CSSProperties>({
     top: startPos.top - 5,
@@ -55,7 +56,7 @@ export default function ChartPointLabel({
   // TODO: Investigate this more...
   useEffect(() => {
     setPos(getStartPosition(chartRect, startPos, point));
-  }, [startPos.top, startPos.bottom, startPos.left, startPos.right]);
+  }, [startPos.top, startPos.bottom, startPos.left, startPos.right, chartRect, startPos, point]);
 
   useEffect(() => {
     const handlePosChange = ({ detail: { ...newPos } }: CustomEvent<Position>) => {
@@ -64,26 +65,28 @@ export default function ChartPointLabel({
     const redirectMouseEvent = (event: Event) => {
       point.dispatchEvent(new MouseEvent(event.type, event));
     };
-    if (labelEl.current) {
-      labelEl.current.addEventListener(
+
+    const labelElement = labelEl.current;
+    if (labelElement) {
+      labelElement.addEventListener(
         `${point.chart}.item.${point.chartItem.id}`,
         handlePosChange as EventListener
       );
       if (dragEnabled) {
-        labelEl.current.addEventListener('mousedown', redirectMouseEvent);
+        labelElement.addEventListener('mousedown', redirectMouseEvent);
       }
     }
 
     return () => {
-      if (labelEl.current) {
-        labelEl.current.removeEventListener(
+      if (labelElement) {
+        labelElement.removeEventListener(
           `${point.chart}.item.${point.chartItem.id}`,
           handlePosChange as EventListener
         );
-        labelEl.current.removeEventListener('mousedown', redirectMouseEvent);
+        labelElement.removeEventListener('mousedown', redirectMouseEvent);
       }
     };
-  }, [labelEl, dragEnabled]);
+  }, [labelEl, dragEnabled, point]);
 
   useEffect(() => {
     const pointDiameter = Math.abs(pos.right - pos.left);

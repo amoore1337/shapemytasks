@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 
 import CancelIcon from '@mui/icons-material/Cancel';
-import { Backdrop, Fade, Modal, ModalProps } from '@mui/material';
+import type { ModalProps } from '@mui/material';
+import { Backdrop, Fade, Modal } from '@mui/material';
 import { styled } from 'twin.macro';
 
 const FADE_IN_TIMEOUT = 500;
@@ -20,8 +21,6 @@ type Props = ModalProps & {
   afterClose?: () => void;
 };
 
-let timeout: number;
-
 export default function StyledModal({
   open,
   onClose,
@@ -34,6 +33,8 @@ export default function StyledModal({
   ...props
 }: Props) {
   useEffect(() => {
+    let timeout: number;
+
     if (open && afterOpen) {
       timeout = window.setTimeout(afterOpen, FADE_IN_TIMEOUT);
     } else if (!open && afterClose) {
@@ -45,7 +46,7 @@ export default function StyledModal({
         window.clearTimeout(timeout);
       }
     };
-  }, [open]);
+  }, [afterClose, afterOpen, open]);
 
   const handleClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void = (
     event,

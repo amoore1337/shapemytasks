@@ -1,6 +1,7 @@
 import { FormControl, InputLabel, Select } from '@mui/material';
 
-import { SCOPE_SORT_OPTIONS, SortOption } from './helpers';
+import type { SortOption } from './helpers';
+import { SCOPE_SORT_OPTIONS } from './helpers';
 
 type Props = {
   sortOption: SortOption;

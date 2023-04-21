@@ -1,6 +1,6 @@
 import { gql } from '@/apollo';
 
-import { CurrentUserQuery } from '../__generated__/graphql';
+import type { CurrentUserQuery } from '../__generated__/graphql';
 
 export type CurrentUser = CurrentUserQuery['currentUser'];
 

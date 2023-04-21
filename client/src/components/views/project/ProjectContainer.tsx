@@ -4,22 +4,14 @@ import { useQuery } from '@apollo/client';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { gql } from '@/apollo';
-import { UpdatedItemsMap } from '@/components/hillChart/HillChart';
+import type { UpdatedItemsMap } from '@/components/hillChart/HillChart';
 import { useRegisterProjectSubscriptions } from '@/models/project';
 import { useUpdateScopePosition, useUpdateScopeProgresses } from '@/models/scope';
-import { Project as IProject } from '@/models/types';
+import type { Project as IProject } from '@/models/types';
 import routes from '@/routes';
 
-import {
-  FilterOption,
-  findScopeIndex,
-  moveArrayItem,
-  ProjectScope,
-  Scopes,
-  SCOPE_FILTER_OPTIONS,
-  SCOPE_SORT_OPTIONS,
-  SortOption,
-} from './helpers';
+import type { FilterOption, ProjectScope, Scopes, SortOption } from './helpers';
+import { findScopeIndex, moveArrayItem, SCOPE_FILTER_OPTIONS, SCOPE_SORT_OPTIONS } from './helpers';
 import Project from './Project';
 
 const PROJECT_QUERY = gql(`
@@ -95,7 +87,7 @@ export default function ProjectContainer() {
     if (!hasError && error) {
       setHasError(true);
     }
-  }, [error]);
+  }, [error, hasError]);
 
   useEffect(() => {
     const scopes = (data?.project?.scopes as Exclude<Scopes, null>) || [];
@@ -108,7 +100,7 @@ export default function ProjectContainer() {
     if (!loading && !data?.project) {
       navigate(routes.projects);
     }
-  }, [loading, data]);
+  }, [loading, data, navigate]);
 
   const handleSortChange = (value: string) => {
     const newOption = SCOPE_SORT_OPTIONS.find((o) => o.value === value);

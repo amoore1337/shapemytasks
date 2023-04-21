@@ -1,13 +1,13 @@
 /* eslint-disable no-underscore-dangle */
-import {
+import type {
   ApolloCache,
   Cache,
   DocumentNode,
-  gql,
   Reference,
   StoreObject,
   TypedDocumentNode,
 } from '@apollo/client';
+import { gql } from '@apollo/client';
 
 type GeneralKeyVal = { [key: string]: any };
 

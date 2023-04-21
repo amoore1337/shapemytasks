@@ -1,5 +1,6 @@
 import { Button, TextField } from '@mui/material';
-import { FormikConfig, useFormik } from 'formik';
+import type { FormikConfig } from 'formik';
+import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 export type FormValues = {

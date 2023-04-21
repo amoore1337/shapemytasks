@@ -1,7 +1,8 @@
-import { MutationHookOptions, useMutation } from '@apollo/client';
+import type { MutationHookOptions } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
 import { gql } from '@/apollo';
-import { DeleteProjectMutation, DeleteProjectMutationVariables } from '@/models/types';
+import type { DeleteProjectMutation, DeleteProjectMutationVariables } from '@/models/types';
 import { removeCacheItem } from '@/utils/cache';
 
 export const DELETE_PROJECT = gql(`

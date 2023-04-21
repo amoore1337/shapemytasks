@@ -1,15 +1,14 @@
-import { MouseEventHandler, useContext, useState } from 'react';
-
+import ManageTeamModal from '@/components/ManageTeamModal';
+import TeamCodeCopyButton from '@/components/TeamCodeCopyButton';
+import { useCurrentUser } from '@/CurrentUserContext';
+import routes from '@/routes';
 import DefaultAvatar from '@mui/icons-material/AccountCircle';
 import GroupIcon from '@mui/icons-material/Group';
 import { Button, Popover, Typography } from '@mui/material';
+import type { MouseEventHandler } from 'react';
+import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import tw, { styled } from 'twin.macro';
-
-import ManageTeamModal from '@/components/ManageTeamModal';
-import TeamCodeCopyButton from '@/components/TeamCodeCopyButton';
-import { CurrentUserContext } from '@/CurrentUserContext';
-import routes from '@/routes';
 
 const MenuContent = styled.div`
   ${tw`flex flex-col py-2 text-gray-800`}
@@ -34,7 +33,7 @@ type Props = {
 };
 
 export default function UserMenu() {
-  const { currentUser, loading } = useContext(CurrentUserContext);
+  const { currentUser, loading } = useCurrentUser();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const [userMenu, setUserMenu] = useState<HTMLButtonElement>();
 
@@ -71,7 +70,7 @@ export default function UserMenu() {
 function Menu(props: Props) {
   const { onClose } = props;
   const [openTeamsModal, setOpenTeamsModal] = useState(false);
-  const { currentUser, logout } = useContext(CurrentUserContext);
+  const { currentUser, logout } = useCurrentUser();
 
   const handleLogout = async () => {
     if (onClose) {

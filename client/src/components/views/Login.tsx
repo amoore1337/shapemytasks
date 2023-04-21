@@ -1,17 +1,15 @@
-import { useContext, useEffect, useState } from 'react';
-
-import { useQuery } from '@apollo/client';
-import { Button, Paper } from '@mui/material';
-import { useLocation, useNavigate } from 'react-router-dom';
-import tw, { styled } from 'twin.macro';
-
 import LoadingIndicator from '@/components/LoadingIndicator';
-import { CurrentUserContext } from '@/CurrentUserContext';
+import { useCurrentUser } from '@/CurrentUserContext';
 import { ReactComponent as GoogleIcon } from '@/icons/google.svg';
 import logo from '@/icons/smt_logo.png';
 import { CURRENT_USER_QUERY } from '@/models/auth';
 import routes from '@/routes';
 import { openPopup } from '@/utils/window';
+import { useQuery } from '@apollo/client';
+import { Button, Paper } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import tw, { styled } from 'twin.macro';
 
 const LoginContainer = styled(Paper)(() => [
   tw`p-8 flex flex-col items-center`,
@@ -29,7 +27,7 @@ export default function Login() {
     pollInterval: 1000,
     fetchPolicy: 'network-only',
   });
-  const { currentUser, loading, refresh } = useContext(CurrentUserContext);
+  const { currentUser, loading, refresh } = useCurrentUser();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -40,13 +38,13 @@ export default function Login() {
       stopPolling();
       refresh();
     }
-  }, [data]);
+  }, [data, refresh, stopPolling]);
 
   useEffect(() => {
     if (!loading && currentUser) {
       navigate(toLocation(location.state?.from));
     }
-  }, [currentUser, loading]);
+  }, [currentUser, loading, location.state?.from, navigate]);
 
   const handleLoginStart = () => {
     openPopup(LOGIN_URL, 'Google Login');

@@ -1,4 +1,4 @@
-import { Scope } from '@/models/types';
+import type { Scope } from '@/models/types';
 
 export type ProjectScope = Scope;
 export type Scopes = (ProjectScope | null)[];

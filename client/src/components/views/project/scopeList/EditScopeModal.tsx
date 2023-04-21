@@ -5,7 +5,7 @@ import { Button, TextField, Typography } from '@mui/material';
 import Modal from '@/components/Modal';
 import { useUpdateScope } from '@/models/scope';
 
-import { ProjectScope } from '../helpers';
+import type { ProjectScope } from '../helpers';
 
 import DotColorPicker from './DotColorPicker';
 
@@ -19,7 +19,7 @@ export default function EditScopeModal({ onClose, scope, ...props }: Props) {
   const [title, setTitle] = useState(scope.title);
   const [color, setColor] = useState(scope.color);
   const [showError, setShowError] = useState(false);
-  const [updateScope, { loading, called }] = useUpdateScope();
+  const [updateScope, { loading, called, reset }] = useUpdateScope();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -40,9 +40,10 @@ export default function EditScopeModal({ onClose, scope, ...props }: Props) {
 
   useEffect(() => {
     if (!loading && called && onClose) {
+      reset();
       onClose();
     }
-  }, [loading, called]);
+  }, [loading, called, onClose, reset]);
 
   return (
     <Modal

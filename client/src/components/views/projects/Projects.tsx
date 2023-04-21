@@ -1,4 +1,5 @@
-import { MouseEvent, useState } from 'react';
+import type { MouseEvent } from 'react';
+import { useState } from 'react';
 
 import { useQuery } from '@apollo/client';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,7 +11,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import DeleteConfirmationModal from '@/components/ConfirmationModal';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import { useDeleteProject } from '@/models/project';
-import { Project, ProjectsDocument } from '@/models/types';
+import type { Project } from '@/models/types';
+import { ProjectsDocument } from '@/models/types';
 import routes, { withParams } from '@/routes';
 
 import AddProjectCard from './AddProjectCard';
