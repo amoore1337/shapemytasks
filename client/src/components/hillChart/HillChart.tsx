@@ -1,5 +1,5 @@
 import type { MutableRefObject } from 'react';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 
 import { Button } from '@mui/material';
 import '@svgdotjs/svg.draggable.js';
@@ -69,7 +69,7 @@ function HillChartComponent({
   const [plottedItems, setPlottedItems] = useState<string[]>([]);
   const [svgReady, setSvgReady] = useState(false);
 
-  const plotPoints = useCallback(() => {
+  const plotPoints = () => {
     const circles = currentChartPoints(hillChartSvg.current);
     const items: string[] = [];
 
@@ -105,7 +105,7 @@ function HillChartComponent({
     }
 
     setPlottedItems(items);
-  }, [allowEdit, data]);
+  };
 
   const handleSave = () => {
     if (!onSave || !Object.keys(updatedItems.current).length) {
@@ -143,9 +143,15 @@ function HillChartComponent({
     };
   }, [container]);
 
+  // Any time the `data` changes, re-plot points using whatever the current
+  // value of `allowEdit` is at the time.
+  // NOTE: the lack of memoization of `plotPoints` is intentional. We do
+  // not want to replot points every time `allowEdit` changes. Only when
+  // `data` changes.
   useEffect(() => {
     plotPoints();
-  }, [data, plotPoints]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   // Fix labels on window resize:
   useEffect(() => {
