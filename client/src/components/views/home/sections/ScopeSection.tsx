@@ -9,7 +9,7 @@ import { MAX_MOBILE_WIDTH, MAX_SUBTEXT_WIDTH, MAX_TITLE_WIDTH, MAX_WIDTH } from 
 export default function ScopeSection({ isMobile }: { isMobile: boolean }) {
   return isMobile ? (
     <div
-      className="mt-20 flex w-full flex-col items-center justify-center px-4"
+      className="mt-10 flex w-full flex-col items-center justify-center px-4 md:mt-20"
       style={{ maxWidth: MAX_MOBILE_WIDTH }}
     >
       <CaptureSection isMobile />

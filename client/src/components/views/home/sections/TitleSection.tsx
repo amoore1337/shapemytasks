@@ -13,7 +13,7 @@ export default function TitleSection({ isMobile }: { isMobile: boolean }) {
       className="flex w-full flex-col items-center justify-center px-4"
       style={{ maxWidth: MAX_MOBILE_WIDTH }}
     >
-      <Visual className="mb-16" />
+      <Visual className="mb-10" />
       <Callout isMobile />
     </div>
   ) : (

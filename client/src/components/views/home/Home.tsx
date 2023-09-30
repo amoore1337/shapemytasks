@@ -11,7 +11,7 @@ export default function Home() {
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('lg'));
   return (
-    <div className="relative flex w-full flex-col items-center py-20 text-gray-800">
+    <div className="relative flex w-full flex-col items-center py-10 text-gray-800 md:py-20">
       <TitleSection isMobile={isMobile} />
       <ScopeSection isMobile={isMobile} />
       <HillChartSection isMobile={isMobile} />

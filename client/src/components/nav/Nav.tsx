@@ -18,7 +18,6 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
-  Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
@@ -64,9 +63,7 @@ export default function Nav() {
           loggedIn={!!currentUser}
         />
         <div className="flex flex-grow items-center">
-          <Typography variant="h6" component="h1" className="mr-4" color="inherit">
-            Shape My Tasks
-          </Typography>
+          <h1 className="mr-4 text-lg font-medium md:text-xl">Shape My Tasks</h1>
           {!isMobile && (
             <JumpToProjectDropdown
               selectedProjectId={jumpToProjectId}
